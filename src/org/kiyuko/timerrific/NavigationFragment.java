@@ -19,33 +19,21 @@
 package org.kiyuko.timerrific;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.app.SherlockFragment;
 
-public class MainActivity extends SherlockFragmentActivity {
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-
-		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_main);
-
-		getSupportFragmentManager().beginTransaction()
-			.replace(R.id.navigation_fragment, new NavigationFragment())
-			.replace(R.id.content_fragment, new ContentFragment())
-		.commit();
-	}
+public class NavigationFragment extends SherlockFragment {
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-		super.onCreateOptionsMenu(menu);
+		super.onCreateView(inflater, container, savedInstanceState);
 
-		getSupportMenuInflater().inflate(R.menu.main, menu);
-
-		return true;
+		return inflater.inflate(R.layout.fragment_navigation, container, false);
 	}
 
 }
