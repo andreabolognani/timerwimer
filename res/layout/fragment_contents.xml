@@ -12,6 +12,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/content" />
+        android:text="@string/contents" />
 
 </LinearLayout>

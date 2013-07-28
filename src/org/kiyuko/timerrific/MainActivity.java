@@ -34,7 +34,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		getSupportFragmentManager().beginTransaction()
 			.replace(R.id.navigation_fragment, new NavigationFragment())
-			.replace(R.id.content_fragment, new ContentFragment())
+			.replace(R.id.contents_fragment, new ContentsFragment())
 		.commit();
 	}
 

@@ -10,7 +10,7 @@
         android:background="@android:color/darker_gray" />
 
     <FrameLayout
-        android:id="@+id/content_fragment"
+        android:id="@+id/contents_fragment"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

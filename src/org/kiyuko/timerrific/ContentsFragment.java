@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class ContentFragment extends SherlockFragment {
+public class ContentsFragment extends SherlockFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +33,7 @@ public class ContentFragment extends SherlockFragment {
 
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		return inflater.inflate(R.layout.fragment_content, container, false);
+		return inflater.inflate(R.layout.fragment_contents, container, false);
 	}
 
 }
