@@ -25,6 +25,9 @@ import com.actionbarsherlock.view.Menu;
 
 public class MainActivity extends SherlockFragmentActivity {
 
+	private NavigationFragment mNavigationFragment;
+	private ContentsFragment mContentsFragment;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,10 +35,16 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		setContentView(R.layout.activity_main);
 
+		mNavigationFragment = new NavigationFragment();
+		mContentsFragment = new ContentsFragment();
+
 		getSupportFragmentManager().beginTransaction()
-			.replace(R.id.navigation_fragment, new NavigationFragment())
-			.replace(R.id.contents_fragment, new ContentsFragment())
+			.replace(R.id.navigation_fragment, mNavigationFragment)
+			.replace(R.id.contents_fragment, mContentsFragment)
 		.commit();
+
+		mNavigationFragment.setHasOptionsMenu(true);
+		mContentsFragment.setHasOptionsMenu(true);
 	}
 
 	@Override

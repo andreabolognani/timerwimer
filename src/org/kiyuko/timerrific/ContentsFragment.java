@@ -24,16 +24,30 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 
 public class ContentsFragment extends SherlockFragment {
+
+	private SherlockFragmentActivity mActivity;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
+		mActivity = getSherlockActivity();
 
 		super.onCreateView(inflater, container, savedInstanceState);
 
 		return inflater.inflate(R.layout.fragment_contents, container, false);
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+		super.onCreateOptionsMenu(menu, inflater);
+
+		mActivity.getSupportMenuInflater().inflate(R.menu.contents, menu);
+	}
 }
