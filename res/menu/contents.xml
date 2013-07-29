@@ -5,7 +5,7 @@
         android:id="@+id/action_remove"
         android:orderInCategory="91"
         android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_content_discard"
+        android:icon="@drawable/ic_action_remove"
         android:title="@string/action_remove"/>
 
 </menu>
