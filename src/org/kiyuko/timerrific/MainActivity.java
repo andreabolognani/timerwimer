@@ -19,12 +19,14 @@
 package org.kiyuko.timerrific;
 
 import android.os.Bundle;
+import android.support.v4.widget.SlidingPaneLayout;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 
 public class MainActivity extends SherlockFragmentActivity {
 
+	private SlidingPaneLayout mSlidingPane;
 	private NavigationFragment mNavigationFragment;
 	private ContentsFragment mContentsFragment;
 
@@ -35,6 +37,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		setContentView(R.layout.activity_main);
 
+		mSlidingPane = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
 		mNavigationFragment = new NavigationFragment();
 		mContentsFragment = new ContentsFragment();
 
@@ -43,8 +46,11 @@ public class MainActivity extends SherlockFragmentActivity {
 			.replace(R.id.contents_fragment, mContentsFragment)
 		.commit();
 
+		// Make sure the navigation is shown on startup
+		mSlidingPane.openPane();
+
 		mNavigationFragment.setHasOptionsMenu(true);
-		mContentsFragment.setHasOptionsMenu(true);
+		mContentsFragment.setHasOptionsMenu(false);
 	}
 
 	@Override
