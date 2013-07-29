@@ -24,11 +24,14 @@ import android.support.v4.widget.SlidingPaneLayout;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 public class MainActivity extends SherlockFragmentActivity implements ViewTreeObserver.OnGlobalLayoutListener, SlidingPaneLayout.PanelSlideListener {
 
+	private ActionBar mActionBar;
 	private SlidingPaneLayout mSlidingPane;
 	private NavigationFragment mNavigationFragment;
 	private ContentsFragment mContentsFragment;
@@ -40,6 +43,7 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 
 		setContentView(R.layout.activity_main);
 
+		mActionBar = getSupportActionBar();
 		mSlidingPane = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
 		mNavigationFragment = new NavigationFragment();
 		mContentsFragment = new ContentsFragment();
@@ -65,6 +69,24 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 		getSupportMenuInflater().inflate(R.menu.main, menu);
 
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+
+			case android.R.id.home:
+
+				// Open the pane to reveal the navigation
+				mSlidingPane.openPane();
+
+				return true;
+
+			default:
+
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -94,6 +116,8 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 	@Override
 	public void onPanelOpened(View panel) {
 
+		mActionBar.setDisplayHomeAsUpEnabled(false);
+
 		if (mSlidingPane.isSlideable()) {
 
 			// Only the navigation is active
@@ -110,6 +134,8 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 
 	@Override
 	public void onPanelClosed(View panel) {
+
+		mActionBar.setDisplayHomeAsUpEnabled(true);
 
 		// Only the contents are active
 		mNavigationFragment.setHasOptionsMenu(false);
