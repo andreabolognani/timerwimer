@@ -18,13 +18,16 @@
 
 package org.kiyuko.timerrific;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SlidingPaneLayout;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends SherlockFragmentActivity implements ViewTreeObserver.OnGlobalLayoutListener, SlidingPaneLayout.PanelSlideListener {
 
 	private SlidingPaneLayout mSlidingPane;
 	private NavigationFragment mNavigationFragment;
@@ -41,6 +44,10 @@ public class MainActivity extends SherlockFragmentActivity {
 		mNavigationFragment = new NavigationFragment();
 		mContentsFragment = new ContentsFragment();
 
+		// Register listeners for layout changes
+		mSlidingPane.setPanelSlideListener(this);
+		mSlidingPane.getViewTreeObserver().addOnGlobalLayoutListener(this);
+
 		getSupportFragmentManager().beginTransaction()
 			.replace(R.id.navigation_fragment, mNavigationFragment)
 			.replace(R.id.contents_fragment, mContentsFragment)
@@ -48,9 +55,6 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		// Make sure the navigation is shown on startup
 		mSlidingPane.openPane();
-
-		mNavigationFragment.setHasOptionsMenu(true);
-		mContentsFragment.setHasOptionsMenu(false);
 	}
 
 	@Override
@@ -63,4 +67,55 @@ public class MainActivity extends SherlockFragmentActivity {
 		return true;
 	}
 
+	@Override
+	public void onGlobalLayout() {
+
+		if (mSlidingPane.isSlideable() && !mSlidingPane.isOpen()) {
+
+			// If only the contents are shown, the panel is closed
+			onPanelClosed(mSlidingPane);
+		}
+		else {
+
+			// Otherwise, the panel is open
+			onPanelOpened(mSlidingPane);
+		}
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+			mSlidingPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+		}
+		else {
+
+			mSlidingPane.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+		}
+	}
+
+	@Override
+	public void onPanelOpened(View panel) {
+
+		if (mSlidingPane.isSlideable()) {
+
+			// Only the navigation is active
+			mNavigationFragment.setHasOptionsMenu(true);
+			mContentsFragment.setHasOptionsMenu(false);
+		}
+		else {
+
+			// Both the navigation and the contents are active
+			mNavigationFragment.setHasOptionsMenu(false);
+			mContentsFragment.setHasOptionsMenu(true);
+		}
+	}
+
+	@Override
+	public void onPanelClosed(View panel) {
+
+		// Only the contents are active
+		mNavigationFragment.setHasOptionsMenu(false);
+		mContentsFragment.setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onPanelSlide(View panel, float slideOffset) {}
 }
