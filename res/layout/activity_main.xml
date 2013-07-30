@@ -6,15 +6,15 @@
 
     <FrameLayout
         android:id="@+id/navigation_fragment"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/background_light" />
 
     <FrameLayout
         android:id="@+id/contents_fragment"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/background_light" />
+        android:background="@android:color/darker_gray" />
 
 </android.support.v4.widget.SlidingPaneLayout>
