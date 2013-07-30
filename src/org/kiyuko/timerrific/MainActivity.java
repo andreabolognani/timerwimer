@@ -93,7 +93,7 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 
 			case R.id.action_settings:
 
-				Toast.makeText(this, "Not implemented (MainActivity)", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Not implemented", Toast.LENGTH_SHORT).show();
 
 				return true;
 

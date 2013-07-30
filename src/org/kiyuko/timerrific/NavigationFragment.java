@@ -24,15 +24,15 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class NavigationFragment extends SherlockListFragment {
+public class NavigationFragment extends BaseListFragment {
 
 	private SherlockFragmentActivity mActivity;
 	private TimerDatabase mDatabase;
@@ -88,11 +88,15 @@ public class NavigationFragment extends SherlockListFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
+		Timer timer;
+
 		switch (item.getItemId()) {
 
 			case R.id.action_add:
 
-				Toast.makeText(mActivity, "Not implemented (NavigationFragment)", Toast.LENGTH_SHORT).show();
+				timer = mDatabase.get(getSelectedId());
+
+				Toast.makeText(mActivity, "Selected: " + timer.getLabel(), Toast.LENGTH_SHORT).show();
 
 				return true;
 
@@ -100,5 +104,13 @@ public class NavigationFragment extends SherlockListFragment {
 
 				return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+
+		super.onListItemClick(l, v, position, id);
+
+		setSelectedId(id);
 	}
 }

@@ -24,15 +24,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ContentsFragment extends SherlockFragment {
+public class ContentsFragment extends BaseFragment {
 
 	private SherlockFragmentActivity mActivity;
+	private TimerDatabase mDatabase;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +42,17 @@ public class ContentsFragment extends SherlockFragment {
 
 		mActivity = getSherlockActivity();
 
+		mDatabase = new TimerDatabase(mActivity);
+
 		return inflater.inflate(R.layout.fragment_contents, container, false);
+	}
+
+	@Override
+	public void onDestroy() {
+
+		mDatabase.close();
+
+		super.onDestroy();
 	}
 
 	@Override
@@ -56,11 +66,14 @@ public class ContentsFragment extends SherlockFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
+		Timer timer;
+
 		switch (item.getItemId()) {
 
 			case R.id.action_remove:
 
-				Toast.makeText(mActivity, "Not implemented (ContentsFragment)", Toast.LENGTH_SHORT).show();
+				timer = mDatabase.get(getSelectedId());
+				Toast.makeText(mActivity, "Selected: " + timer.getLabel(), Toast.LENGTH_SHORT).show();
 
 				return true;
 
