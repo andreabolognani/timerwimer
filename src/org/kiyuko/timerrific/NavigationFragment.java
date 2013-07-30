@@ -19,20 +19,24 @@
 package org.kiyuko.timerrific;
 
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class NavigationFragment extends SherlockFragment {
+public class NavigationFragment extends SherlockListFragment {
 
 	private SherlockFragmentActivity mActivity;
+	private TimerDatabase mDatabase;
+	private CursorAdapter mAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +46,35 @@ public class NavigationFragment extends SherlockFragment {
 
 		mActivity = getSherlockActivity();
 
+		mDatabase = new TimerDatabase(mActivity);
+
+		// Display data taken from the database
+		mAdapter = new SimpleCursorAdapter(mActivity,
+				android.R.layout.simple_list_item_1,
+				null,
+				new String[] { TimerDatabase.COLUMN_TIMER_LABEL },
+				new int[] { android.R.id.text1 });
+		setListAdapter(mAdapter);
+
 		return inflater.inflate(R.layout.fragment_navigation, container, false);
+	}
+
+	@Override
+	public void onResume() {
+
+		super.onResume();
+
+		// Refresh the data every time the fragment is displayed
+		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+	}
+
+	@Override
+	public void onDestroy() {
+
+		// Release the database connection
+		mDatabase.close();
+
+		super.onDestroy();
 	}
 
 	@Override

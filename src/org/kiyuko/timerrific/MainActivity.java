@@ -49,6 +49,13 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 		mNavigationFragment = new NavigationFragment();
 		mContentsFragment = new ContentsFragment();
 
+		// Insert some dummy data into the database
+		TimerDatabase db = new TimerDatabase(this);
+		for (int i = 0; i < 8; i++) {
+
+			db.put(new Timer(i, "" + (i + 1), 60));
+		}
+
 		// Register listeners for layout changes
 		mSlidingPane.setPanelSlideListener(this);
 		mSlidingPane.getViewTreeObserver().addOnGlobalLayoutListener(this);
