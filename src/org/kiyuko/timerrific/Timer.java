@@ -1,0 +1,67 @@
+/* Timerrific -- Countdown timers for Android devices
+ * Copyright (C) 2013  Andrea Bolognani <eof@kiyuko.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+package org.kiyuko.timerrific;
+
+public class Timer {
+
+	public static final long INVALID_ID = -1;
+
+	private long mId;
+	private String mLabel;
+	private int mTargetTime;
+
+	public Timer() {
+
+		mId = INVALID_ID;
+		mLabel = "";
+		mTargetTime = 0;
+	}
+
+	public Timer(long id, String label, int targetTime) {
+
+		mId = id;
+		mLabel = label;
+		mTargetTime = targetTime;
+	}
+
+	public long getId() {
+
+		return mId;
+	}
+
+	public void setLabel(String label) {
+
+		mLabel = label;
+	}
+
+	public String getLabel() {
+
+		return mLabel;
+	}
+
+	public void setTargetTime(int targetTime) {
+
+		mTargetTime = targetTime;
+	}
+
+	public int getTargetTime() {
+
+		return mTargetTime;
+	}
+}
