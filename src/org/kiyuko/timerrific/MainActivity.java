@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -80,6 +81,12 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 
 				// Open the pane to reveal the navigation
 				mSlidingPane.openPane();
+
+				return true;
+
+			case R.id.action_settings:
+
+				Toast.makeText(this, "Not implemented (MainActivity)", Toast.LENGTH_SHORT).show();
 
 				return true;
 

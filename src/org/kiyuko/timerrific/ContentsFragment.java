@@ -22,11 +22,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class ContentsFragment extends SherlockFragment {
 
@@ -36,9 +38,9 @@ public class ContentsFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		mActivity = getSherlockActivity();
-
 		super.onCreateView(inflater, container, savedInstanceState);
+
+		mActivity = getSherlockActivity();
 
 		return inflater.inflate(R.layout.fragment_contents, container, false);
 	}
@@ -49,5 +51,22 @@ public class ContentsFragment extends SherlockFragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		mActivity.getSupportMenuInflater().inflate(R.menu.contents, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+
+			case R.id.action_remove:
+
+				Toast.makeText(mActivity, "Not implemented (ContentsFragment)", Toast.LENGTH_SHORT).show();
+
+				return true;
+
+			default:
+
+				return super.onOptionsItemSelected(item);
+		}
 	}
 }
