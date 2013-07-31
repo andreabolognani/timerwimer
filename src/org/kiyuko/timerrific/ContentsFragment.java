@@ -24,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -87,14 +86,17 @@ public class ContentsFragment extends BaseFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		Timer timer;
-
 		switch (item.getItemId()) {
 
 			case R.id.action_remove:
 
-				timer = mDatabase.get(getSelectionId());
-				Toast.makeText(mActivity, "Selected: " + timer.getLabel(), Toast.LENGTH_SHORT).show();
+				// Remove selected timer from the database
+				mDatabase.remove(getSelectionId());
+
+				// Invalidate selection
+				setSelectionId(Timer.INVALID_ID);
+
+				mActivity.onSelectionChanged();
 
 				return true;
 
