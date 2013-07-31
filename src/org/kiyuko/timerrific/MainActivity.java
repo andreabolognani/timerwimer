@@ -114,6 +114,17 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	}
 
 	@Override
+	public void onSelectionChanged() {
+
+		super.onSelectionChanged();
+
+		// Update the contents
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.contents_fragment, new ContentsFragment())
+		.commit();
+	}
+
+	@Override
 	public void onGlobalLayout() {
 
 		if (mSlidingPane.isSlideable() && !mSlidingPane.isOpen()) {

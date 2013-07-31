@@ -33,7 +33,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class ContentsFragment extends BaseFragment {
 
-	private SherlockFragmentActivity mActivity;
+	private BaseFragmentActivity mActivity;
 	private TextView mLabelView;
 	private TimerDatabase mDatabase;
 
@@ -42,7 +42,7 @@ public class ContentsFragment extends BaseFragment {
 
 		super.onAttach(activity);
 
-		mActivity = (SherlockFragmentActivity) activity;
+		mActivity = (BaseFragmentActivity) activity;
 	}
 
 	@Override

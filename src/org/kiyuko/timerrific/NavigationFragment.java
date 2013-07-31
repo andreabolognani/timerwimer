@@ -35,7 +35,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class NavigationFragment extends BaseListFragment {
 
-	private SherlockFragmentActivity mActivity;
+	private BaseFragmentActivity mActivity;
 	private TimerDatabase mDatabase;
 	private CursorAdapter mAdapter;
 
@@ -44,7 +44,7 @@ public class NavigationFragment extends BaseListFragment {
 
 		super.onAttach(activity);
 
-		mActivity = (SherlockFragmentActivity) activity;
+		mActivity = (BaseFragmentActivity) activity;
 	}
 
 	@Override
@@ -119,5 +119,7 @@ public class NavigationFragment extends BaseListFragment {
 		super.onListItemClick(l, v, position, id);
 
 		setSelectedId(id);
+
+		mActivity.onSelectionChanged();
 	}
 }

@@ -46,4 +46,6 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
 
 		return preferences.getLong(KEY_SELECTED_ID, Timer.INVALID_ID);
 	}
+
+	public void onSelectionChanged() {}
 }
