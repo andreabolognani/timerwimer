@@ -57,6 +57,13 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 			mDatabase.put(new Timer(i, "" + (i + 1), 60));
 		}
 
+		if (getSelectionId() == Timer.INVALID_ID) {
+
+			// There's no previous selection, or the previous
+			// selection is invalid: display the first timer
+			setSelectionId(mDatabase.getLowestId());
+		}
+
 		// Register listeners for layout changes
 		mSlidingPane.setPanelSlideListener(this);
 		mSlidingPane.getViewTreeObserver().addOnGlobalLayoutListener(this);
