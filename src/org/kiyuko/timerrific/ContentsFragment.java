@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -32,19 +33,33 @@ import com.actionbarsherlock.view.MenuItem;
 public class ContentsFragment extends BaseFragment {
 
 	private SherlockFragmentActivity mActivity;
+	private TextView mLabelView;
 	private TimerDatabase mDatabase;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		View view;
+		Timer timer;
+
 		super.onCreateView(inflater, container, savedInstanceState);
 
+		view = inflater.inflate(R.layout.fragment_contents, container, false);
+
 		mActivity = getSherlockActivity();
+		mLabelView = (TextView) view.findViewById(R.id.label_view);
 
 		mDatabase = new TimerDatabase(mActivity);
 
-		return inflater.inflate(R.layout.fragment_contents, container, false);
+		timer = mDatabase.get(getSelectedId());
+
+		if (timer != null && timer.getLabel() != null) {
+
+			mLabelView.setText("Label: " + timer.getLabel());
+		}
+
+		return view;
 	}
 
 	@Override
