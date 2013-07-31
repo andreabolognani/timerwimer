@@ -122,6 +122,12 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		getSupportFragmentManager().beginTransaction()
 			.replace(R.id.contents_fragment, new ContentsFragment())
 		.commit();
+
+		if (mSlidingPane.isSlideable()) {
+
+			// Close the pane to focus on the contents
+			mSlidingPane.closePane();
+		}
 	}
 
 	@Override
