@@ -118,15 +118,22 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		super.onSelectionChanged();
 
+		mContentsFragment = new ContentsFragment();
+
 		// Update the contents
 		getSupportFragmentManager().beginTransaction()
-			.replace(R.id.contents_fragment, new ContentsFragment())
+			.replace(R.id.contents_fragment, mContentsFragment)
 		.commit();
 
 		if (mSlidingPane.isSlideable()) {
 
 			// Close the pane to focus on the contents
 			mSlidingPane.closePane();
+		}
+		else {
+
+			// Make sure the options menu is updated
+			onPanelOpened(mSlidingPane);
 		}
 	}
 
