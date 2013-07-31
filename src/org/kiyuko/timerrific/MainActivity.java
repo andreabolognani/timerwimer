@@ -30,12 +30,13 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class MainActivity extends SherlockFragmentActivity implements ViewTreeObserver.OnGlobalLayoutListener, SlidingPaneLayout.PanelSlideListener {
+public class MainActivity extends BaseFragmentActivity implements ViewTreeObserver.OnGlobalLayoutListener, SlidingPaneLayout.PanelSlideListener {
 
 	private ActionBar mActionBar;
 	private SlidingPaneLayout mSlidingPane;
 	private NavigationFragment mNavigationFragment;
 	private ContentsFragment mContentsFragment;
+	private TimerDatabase mDatabase;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +50,12 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 		mNavigationFragment = new NavigationFragment();
 		mContentsFragment = new ContentsFragment();
 
+		mDatabase = new TimerDatabase(this);
+
 		// Insert some dummy data into the database
-		TimerDatabase db = new TimerDatabase(this);
 		for (int i = 0; i < 8; i++) {
 
-			db.put(new Timer(i, "" + (i + 1), 60));
+			mDatabase.put(new Timer(i, "" + (i + 1), 60));
 		}
 
 		// Register listeners for layout changes
@@ -67,6 +69,14 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 
 		// Make sure the navigation is shown on startup
 		mSlidingPane.openPane();
+	}
+
+	@Override
+	protected void onDestroy() {
+
+		mDatabase.close();
+
+		super.onDestroy();
 	}
 
 	@Override
@@ -131,6 +141,7 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 	public void onPanelOpened(View panel) {
 
 		mActionBar.setDisplayHomeAsUpEnabled(false);
+		mActionBar.setTitle(R.string.app_name);
 
 		if (mSlidingPane.isSlideable()) {
 
@@ -149,7 +160,12 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 	@Override
 	public void onPanelClosed(View panel) {
 
+		Timer timer;
+
+		timer = mDatabase.get(getSelectedId());
+
 		mActionBar.setDisplayHomeAsUpEnabled(true);
+		mActionBar.setTitle(timer.getLabel());
 
 		// Only the contents are active
 		mNavigationFragment.setHasOptionsMenu(false);
