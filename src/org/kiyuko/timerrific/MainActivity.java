@@ -186,7 +186,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		Timer timer;
 
-		timer = mDatabase.get(getSelectedId());
+		timer = mDatabase.get(getSelectionId());
 
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setTitle(timer.getLabel());

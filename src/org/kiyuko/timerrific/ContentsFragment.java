@@ -59,7 +59,7 @@ public class ContentsFragment extends BaseFragment {
 		mLabelView = (TextView) view.findViewById(R.id.label_view);
 		mDatabase = new TimerDatabase(mActivity);
 
-		timer = mDatabase.get(getSelectedId());
+		timer = mDatabase.get(getSelectionId());
 
 		if (timer != null && timer.getLabel() != null) {
 
@@ -94,7 +94,7 @@ public class ContentsFragment extends BaseFragment {
 
 			case R.id.action_remove:
 
-				timer = mDatabase.get(getSelectedId());
+				timer = mDatabase.get(getSelectionId());
 				Toast.makeText(mActivity, "Selected: " + timer.getLabel(), Toast.LENGTH_SHORT).show();
 
 				return true;

@@ -101,7 +101,7 @@ public class NavigationFragment extends BaseListFragment {
 
 			case R.id.action_add:
 
-				timer = mDatabase.get(getSelectedId());
+				timer = mDatabase.get(getSelectionId());
 
 				Toast.makeText(mActivity, "Selected: " + timer.getLabel(), Toast.LENGTH_SHORT).show();
 
@@ -118,7 +118,7 @@ public class NavigationFragment extends BaseListFragment {
 
 		super.onListItemClick(l, v, position, id);
 
-		setSelectedId(id);
+		setSelectionId(id);
 
 		mActivity.onSelectionChanged();
 	}
