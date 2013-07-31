@@ -18,6 +18,7 @@
 
 package org.kiyuko.timerrific;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -39,12 +40,18 @@ public class NavigationFragment extends BaseListFragment {
 	private CursorAdapter mAdapter;
 
 	@Override
+	public void onAttach(Activity activity) {
+
+		super.onAttach(activity);
+
+		mActivity = (SherlockFragmentActivity) activity;
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		super.onCreateView(inflater, container, savedInstanceState);
-
-		mActivity = getSherlockActivity();
 
 		mDatabase = new TimerDatabase(mActivity);
 

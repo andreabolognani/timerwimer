@@ -18,6 +18,7 @@
 
 package org.kiyuko.timerrific;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,14 @@ public class ContentsFragment extends BaseFragment {
 	private TimerDatabase mDatabase;
 
 	@Override
+	public void onAttach(Activity activity) {
+
+		super.onAttach(activity);
+
+		mActivity = (SherlockFragmentActivity) activity;
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -47,9 +56,7 @@ public class ContentsFragment extends BaseFragment {
 
 		view = inflater.inflate(R.layout.fragment_contents, container, false);
 
-		mActivity = getSherlockActivity();
 		mLabelView = (TextView) view.findViewById(R.id.label_view);
-
 		mDatabase = new TimerDatabase(mActivity);
 
 		timer = mDatabase.get(getSelectedId());
