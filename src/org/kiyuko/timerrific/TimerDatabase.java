@@ -224,4 +224,19 @@ public class TimerDatabase extends SQLiteOpenHelper {
 
 		return timer;
 	}
+
+	public void remove(long id) {
+
+		SQLiteDatabase db;
+
+		db = getWritableDatabase();
+
+		if (db == null) {
+			return;
+		}
+
+		db.delete(TABLE_TIMER,
+				SELECTION,
+				new String[] { "" + id });
+	}
 }
