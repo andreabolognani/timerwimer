@@ -164,6 +164,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onPanelOpened(View panel) {
 
+		mActionBar.setHomeButtonEnabled(false);
 		mActionBar.setDisplayHomeAsUpEnabled(false);
 		mActionBar.setTitle(R.string.app_name);
 
@@ -188,6 +189,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		timer = mDatabase.get(getSelectionId());
 
+		mActionBar.setHomeButtonEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setTitle(timer.getLabel());
 
