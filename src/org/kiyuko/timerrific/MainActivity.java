@@ -141,7 +141,7 @@ public class MainActivity extends SherlockFragmentActivity implements ViewTreeOb
 		else {
 
 			// Both the navigation and the contents are active
-			mNavigationFragment.setHasOptionsMenu(false);
+			mNavigationFragment.setHasOptionsMenu(true);
 			mContentsFragment.setHasOptionsMenu(true);
 		}
 	}
