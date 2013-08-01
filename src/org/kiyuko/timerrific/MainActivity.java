@@ -51,12 +51,6 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		mDatabase = new TimerDatabase(this);
 
-		// Insert some dummy data into the database
-		for (int i = 0; i < 3; i++) {
-
-			mDatabase.put(new Timer(i, "" + (i + 1), 60));
-		}
-
 		// Register listeners for layout changes
 		mSlidingPane.setPanelSlideListener(this);
 		mSlidingPane.getViewTreeObserver().addOnGlobalLayoutListener(this);

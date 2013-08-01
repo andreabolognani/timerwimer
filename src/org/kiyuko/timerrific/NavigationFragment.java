@@ -94,11 +94,23 @@ public class NavigationFragment extends BaseListFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
+		long id;
+
 		switch (item.getItemId()) {
 
 			case R.id.action_add:
 
-				Toast.makeText(mActivity, "Not implemented", Toast.LENGTH_SHORT).show();
+				id = mDatabase.newId();
+
+				// Insert a new timer into the database
+				mDatabase.put(new Timer(id,
+						"" + (id + 1),
+						60));
+
+				// Change selection
+				setSelectionId(id);
+
+				mActivity.onSelectionChanged();
 
 				return true;
 
