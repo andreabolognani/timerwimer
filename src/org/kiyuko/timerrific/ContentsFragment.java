@@ -32,7 +32,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class ContentsFragment extends BaseFragment {
 
 	private BaseFragmentActivity mActivity;
-	private TextView mLabelView;
+	private TextView mCurrentTimeView;
 	private TimerDatabase mDatabase;
 
 	@Override
@@ -48,20 +48,44 @@ public class ContentsFragment extends BaseFragment {
 			Bundle savedInstanceState) {
 
 		View view;
+		TextView messageView;
 		Timer timer;
 
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		view = inflater.inflate(R.layout.fragment_contents, container, false);
-
-		mLabelView = (TextView) view.findViewById(R.id.label_view);
 		mDatabase = new TimerDatabase(mActivity);
 
-		timer = mDatabase.get(getSelectionId());
+		if (mDatabase.isEmpty() || getSelectionId() == Timer.INVALID_ID) {
 
-		if (timer != null && timer.getLabel() != null) {
+			// Display a single message if no timer is selected
+			view = inflater.inflate(R.layout.fragment_contents_message, container, false);
 
-			mLabelView.setText("Label: " + timer.getLabel());
+			messageView = (TextView) view.findViewById(R.id.message_view);
+
+			if (mDatabase.isEmpty()) {
+
+				// No timers
+				messageView.setText(R.string.no_timers);
+			}
+			else {
+
+				// No timer selected
+				messageView.setText(R.string.no_timer_selected);
+			}
+		}
+		else {
+
+			// Display timer details
+			view = inflater.inflate(R.layout.fragment_contents, container, false);
+
+			mCurrentTimeView = (TextView) view.findViewById(R.id.current_time_view);
+
+			timer = mDatabase.get(getSelectionId());
+
+			if (timer != null) {
+
+				mCurrentTimeView.setText("Current time: " + timer.getTargetTime());
+			}
 		}
 
 		return view;
@@ -80,7 +104,11 @@ public class ContentsFragment extends BaseFragment {
 
 		super.onCreateOptionsMenu(menu, inflater);
 
-		mActivity.getSupportMenuInflater().inflate(R.menu.contents, menu);
+		if (getSelectionId() != Timer.INVALID_ID) {
+
+			// Valid selection: add items to options menu
+			mActivity.getSupportMenuInflater().inflate(R.menu.contents, menu);
+		}
 	}
 
 	@Override

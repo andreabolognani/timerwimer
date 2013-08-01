@@ -52,16 +52,9 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		mDatabase = new TimerDatabase(this);
 
 		// Insert some dummy data into the database
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 3; i++) {
 
 			mDatabase.put(new Timer(i, "" + (i + 1), 60));
-		}
-
-		if (getSelectionId() == Timer.INVALID_ID) {
-
-			// There's no previous selection, or the previous
-			// selection is invalid: display the first timer
-			setSelectionId(mDatabase.getLowestId());
 		}
 
 		// Register listeners for layout changes
@@ -124,13 +117,6 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		super.onSelectionChanged();
 
-		if (getSelectionId() == Timer.INVALID_ID) {
-
-			// There's no previous selection, or the previous
-			// selection is invalid: display the first timer
-			setSelectionId(mDatabase.getLowestId());
-		}
-
 		mNavigationFragment = new NavigationFragment();
 		mContentsFragment = new ContentsFragment();
 
@@ -149,8 +135,17 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 			}
 			else {
 
-				// Make sure the options menu is updated
-				onPanelClosed(mSlidingPane);
+				if (getSelectionId() == Timer.INVALID_ID) {
+
+					// No selection: open the pane to allow the user
+					// to make a selection
+					mSlidingPane.openPane();
+				}
+				else {
+
+					// Make sure the options menu is updated
+					onPanelClosed(mSlidingPane);
+				}
 			}
 		}
 		else {
@@ -214,7 +209,17 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		mActionBar.setHomeButtonEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setTitle(timer.getLabel());
+
+		if (timer != null && timer.getLabel() != null) {
+
+			// Display timer label
+			mActionBar.setTitle(timer.getLabel());
+		}
+		else {
+
+			// With no selection, display the application name
+			mActionBar.setTitle(R.string.app_name);
+		}
 
 		// Only the contents are active
 		mNavigationFragment.setHasOptionsMenu(false);
