@@ -118,15 +118,7 @@ public class ContentsFragment extends BaseFragment {
 
 			case R.id.action_remove:
 
-				// Remove selected timer from the database
-				mDatabase.remove(getSelectionId());
-
-				// Invalidate selection
-				setSelectionId(Timer.INVALID_ID);
-
-				mActivity.onSelectionChanged();
-
-				return true;
+				return mActivity.onOptionsItemSelected(item);
 
 			default:
 

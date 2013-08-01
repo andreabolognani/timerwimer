@@ -85,12 +85,42 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
+		long id;
+
 		switch (item.getItemId()) {
 
 			case android.R.id.home:
 
 				// Open the pane to reveal the navigation
 				mSlidingPane.openPane();
+
+				return true;
+
+			case R.id.action_add:
+
+				id = mDatabase.newId();
+
+				// Insert a new timer into the database
+				mDatabase.put(new Timer(id,
+						"" + (id + 1),
+						60));
+
+				// Change selection
+				setSelectionId(id);
+
+				onSelectionChanged();
+
+				return true;
+
+			case R.id.action_remove:
+
+				// Remove selected timer from the database
+				mDatabase.remove(getSelectionId());
+
+				// Invalidate selection
+				setSelectionId(Timer.INVALID_ID);
+
+				onSelectionChanged();
 
 				return true;
 
