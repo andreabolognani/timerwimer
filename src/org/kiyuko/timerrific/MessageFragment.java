@@ -25,14 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
-public class ContentsFragment extends BaseFragment {
+public class MessageFragment extends BaseFragment {
 
 	private BaseFragmentActivity mActivity;
-	private TextView mCurrentTimeView;
+	private TextView mMessageView;
 	private TimerDatabase mDatabase;
 
 	@Override
@@ -48,22 +44,25 @@ public class ContentsFragment extends BaseFragment {
 			Bundle savedInstanceState) {
 
 		View view;
-		Timer timer;
 
 		super.onCreateView(inflater, container, savedInstanceState);
 
 		mDatabase = new TimerDatabase(mActivity);
 
-		// Display timer details
-		view = inflater.inflate(R.layout.fragment_contents, container, false);
+		// Display a single message if no timer is selected
+		view = inflater.inflate(R.layout.fragment_message, container, false);
 
-		mCurrentTimeView = (TextView) view.findViewById(R.id.current_time_view);
+		mMessageView = (TextView) view.findViewById(R.id.message_view);
 
-		timer = mDatabase.get(getSelectionId());
+		if (mDatabase.isEmpty()) {
 
-		if (timer != null) {
+			// No timers
+			mMessageView.setText(R.string.no_timers);
+		}
+		else {
 
-			mCurrentTimeView.setText("Current time: " + timer.getTargetTime());
+			// No timer selected
+			mMessageView.setText(R.string.no_timer_selected);
 		}
 
 		return view;
@@ -75,28 +74,5 @@ public class ContentsFragment extends BaseFragment {
 		mDatabase.close();
 
 		super.onDestroy();
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-		super.onCreateOptionsMenu(menu, inflater);
-
-		mActivity.getSupportMenuInflater().inflate(R.menu.contents, menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-
-			case R.id.action_remove:
-
-				return mActivity.onOptionsItemSelected(item);
-
-			default:
-
-				return super.onOptionsItemSelected(item);
-		}
 	}
 }

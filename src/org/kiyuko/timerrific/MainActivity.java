@@ -33,8 +33,8 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 	private ActionBar mActionBar;
 	private SlidingPaneLayout mSlidingPane;
-	private NavigationFragment mNavigationFragment;
-	private ContentsFragment mContentsFragment;
+	private BaseListFragment mNavigationFragment;
+	private BaseFragment mContentsFragment;
 	private TimerDatabase mDatabase;
 
 	@Override
@@ -46,8 +46,17 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		mActionBar = getSupportActionBar();
 		mSlidingPane = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
+
 		mNavigationFragment = new NavigationFragment();
-		mContentsFragment = new ContentsFragment();
+
+		if (getSelectionId() == Timer.INVALID_ID) {
+
+			mContentsFragment = new MessageFragment();
+		}
+		else {
+
+			mContentsFragment = new ContentsFragment();
+		}
 
 		mDatabase = new TimerDatabase(this);
 
@@ -142,7 +151,15 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		super.onSelectionChanged();
 
 		mNavigationFragment = new NavigationFragment();
-		mContentsFragment = new ContentsFragment();
+
+		if (getSelectionId() == Timer.INVALID_ID) {
+
+			mContentsFragment = new MessageFragment();
+		}
+		else {
+
+			mContentsFragment = new ContentsFragment();
+		}
 
 		// Update the contents
 		getSupportFragmentManager().beginTransaction()
