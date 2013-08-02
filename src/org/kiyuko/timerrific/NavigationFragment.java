@@ -34,6 +34,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class NavigationFragment extends BaseListFragment {
 
 	private BaseFragmentActivity mActivity;
+	private ListView mListView;
 	private TimerDatabase mDatabase;
 	private CursorAdapter mAdapter;
 
@@ -55,7 +56,7 @@ public class NavigationFragment extends BaseListFragment {
 
 		// Display data taken from the database
 		mAdapter = new SimpleCursorAdapter(mActivity,
-				android.R.layout.simple_list_item_1,
+				android.R.layout.simple_list_item_activated_1,
 				null,
 				new String[] { TimerDatabase.COLUMN_TIMER_LABEL },
 				new int[] { android.R.id.text1 });
@@ -69,8 +70,16 @@ public class NavigationFragment extends BaseListFragment {
 
 		super.onResume();
 
+		mListView = getListView();
+
 		// Refresh the data every time the fragment is displayed
 		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+
+		if (getSelectionId() != Timer.INVALID_ID) {
+
+			// Restore visual feedback
+			mListView.setItemChecked(getPositionFromId(getSelectionId()), true);
+		}
 	}
 
 	@Override
@@ -112,6 +121,30 @@ public class NavigationFragment extends BaseListFragment {
 
 		setSelectionId(id);
 
+		// Give visual feedback
+		mListView.setItemChecked(position, true);
+
+		// Notify the activity
 		mActivity.onSelectionChanged();
+	}
+
+	private int getPositionFromId(long id) {
+
+		int position;
+		int count;
+
+		position = -1;
+		count = mListView.getCount();
+
+		for (int i = 0; i < count; i++) {
+
+			if (mListView.getItemIdAtPosition(i) == id) {
+
+				position = i;
+				break;
+			}
+		}
+
+		return position;
 	}
 }
