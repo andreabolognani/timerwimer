@@ -82,6 +82,20 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	}
 
 	@Override
+	public void onBackPressed() {
+
+		if (mSlidingPane.isSlideable() && !mSlidingPane.isOpen()) {
+
+			// Showing contents only: return to navigation
+			mSlidingPane.openPane();
+		}
+		else {
+
+			finish();
+		}
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		super.onCreateOptionsMenu(menu);
