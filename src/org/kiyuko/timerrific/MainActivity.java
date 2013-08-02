@@ -29,7 +29,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class MainActivity extends BaseFragmentActivity implements ViewTreeObserver.OnGlobalLayoutListener, SlidingPaneLayout.PanelSlideListener, SelectionChangeListener {
+public class MainActivity extends BaseFragmentActivity implements ViewTreeObserver.OnGlobalLayoutListener, SlidingPaneLayout.PanelSlideListener, SelectionChangeListener, DatabaseListener {
 
 	private ActionBar mActionBar;
 	private SlidingPaneLayout mSlidingPane;
@@ -126,12 +126,12 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 				// Insert a new timer into the database
 				mDatabase.put(new Timer(id,
 						"" + (id + 1),
-						60));
+						((int) id + 1)));
 
 				// Change selection
 				setSelectionId(id);
 
-				onSelectionChanged();
+				onItemAdded(id);
 
 				return true;
 
@@ -159,6 +159,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		}
 	}
 
+	@Override
 	public void onSelectionChanged() {
 
 		if (getSelectionId() == Timer.INVALID_ID) {
@@ -204,6 +205,41 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 			// Make sure the options menu is updated
 			onPanelOpened(mSlidingPane);
+		}
+	}
+
+	@Override
+	public void onItemAdded(long id) {
+
+		mContentsFragment = new ContentsFragment();
+
+		// Replace contents
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.contents_fragment, mContentsFragment)
+		.commit();
+
+		if (mSlidingPane.isSlideable()) {
+
+			// Single pane: focus on contents
+			mSlidingPane.closePane();
+		}
+		else {
+
+			// Dual pane: update action bar
+			onPanelOpened(mSlidingPane);
+		}
+
+		try {
+
+			// Notify fragments
+			((DatabaseListener) mNavigationFragment).onItemAdded(id);
+			((DatabaseListener) mContentsFragment).onItemAdded(id);
+		}
+		catch (ClassCastException e) {
+
+			throw new ClassCastException(mNavigationFragment.getClass().getName()
+					+ " and " + mContentsFragment.getClass().getName()
+					+ " must implement DatabaseListener");
 		}
 	}
 

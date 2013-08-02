@@ -31,7 +31,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class NavigationFragment extends BaseListFragment {
+public class NavigationFragment extends BaseListFragment implements DatabaseListener {
 
 	private BaseFragmentActivity mActivity;
 	private ListView mListView;
@@ -134,6 +134,21 @@ public class NavigationFragment extends BaseListFragment {
 			throw new ClassCastException(mActivity.getClass().getName()
 					+ " must implement SelectionChangeListener");
 		}
+	}
+
+	@Override
+	public void onItemAdded(long id) {
+
+		int position;
+
+		// Refresh data
+		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+
+		position = getPositionFromId(id);
+
+		// Update scroll position and visual feedback
+		mListView.setItemChecked(position, true);
+		mListView.setSelection(position);
 	}
 
 	private int getPositionFromId(long id) {
