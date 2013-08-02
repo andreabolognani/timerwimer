@@ -164,8 +164,6 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		super.onSelectionChanged();
 
-		mNavigationFragment = new NavigationFragment();
-
 		if (getSelectionId() == Timer.INVALID_ID) {
 
 			mContentsFragment = new MessageFragment();
@@ -175,9 +173,11 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 			mContentsFragment = new ContentsFragment();
 		}
 
+		// Update the navigation
+		mNavigationFragment.onResume();
+
 		// Update the contents
 		getSupportFragmentManager().beginTransaction()
-			.replace(R.id.navigation_fragment, mNavigationFragment)
 			.replace(R.id.contents_fragment, mContentsFragment)
 		.commit();
 
