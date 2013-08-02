@@ -29,7 +29,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class MainActivity extends BaseFragmentActivity implements ViewTreeObserver.OnGlobalLayoutListener, SlidingPaneLayout.PanelSlideListener {
+public class MainActivity extends BaseFragmentActivity implements ViewTreeObserver.OnGlobalLayoutListener, SlidingPaneLayout.PanelSlideListener, SelectionChangeListener {
 
 	private ActionBar mActionBar;
 	private SlidingPaneLayout mSlidingPane;
@@ -159,10 +159,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		}
 	}
 
-	@Override
 	public void onSelectionChanged() {
-
-		super.onSelectionChanged();
 
 		if (getSelectionId() == Timer.INVALID_ID) {
 

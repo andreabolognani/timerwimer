@@ -124,8 +124,16 @@ public class NavigationFragment extends BaseListFragment {
 		// Give visual feedback
 		mListView.setItemChecked(position, true);
 
-		// Notify the activity
-		mActivity.onSelectionChanged();
+		try {
+
+			// Notify the activity
+			((SelectionChangeListener) mActivity).onSelectionChanged();
+		}
+		catch (ClassCastException e) {
+
+			throw new ClassCastException(mActivity.getClass().getName()
+					+ " must implement SelectionChangeListener");
+		}
 	}
 
 	private int getPositionFromId(long id) {

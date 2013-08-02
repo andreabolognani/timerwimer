@@ -18,32 +18,7 @@
 
 package org.kiyuko.timerrific;
 
-import android.content.SharedPreferences;
+public interface SelectionChangeListener {
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-public class BaseFragmentActivity extends SherlockFragmentActivity {
-
-	private static final String PREFERENCES_FILE = "preferences";
-	private static final String KEY_SELECTION_ID = "selection_id";
-
-	public void setSelectionId(long selectedId) {
-
-		SharedPreferences preferences;
-
-		preferences = getSharedPreferences(PREFERENCES_FILE, MODE_PRIVATE);
-
-		preferences.edit()
-			.putLong(KEY_SELECTION_ID, selectedId)
-		.commit();
-	}
-
-	public long getSelectionId() {
-
-		SharedPreferences preferences;
-
-		preferences = getSharedPreferences(PREFERENCES_FILE, MODE_PRIVATE);
-
-		return preferences.getLong(KEY_SELECTION_ID, Timer.INVALID_ID);
-	}
+	public void onSelectionChanged();
 }
