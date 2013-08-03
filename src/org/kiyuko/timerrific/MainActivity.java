@@ -261,7 +261,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		else {
 
 			// Dual pane: update action bar
-			onPanelClosed(mSlidingPane);
+			onPanelOpened(mSlidingPane);
 		}
 
 		try {
