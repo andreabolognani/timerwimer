@@ -162,9 +162,13 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	}
 
 	@Override
-	public void onSelectionChanged() {
+	public void onSelectionChanged(long oldId, long newId) {
 
-		mContentsFragment = new ContentsFragment();
+		if (oldId != newId) {
+
+			// Replace contents fragment if selection has actually changed
+			mContentsFragment = new ContentsFragment();
+		}
 
 		// Update the contents
 		getSupportFragmentManager().beginTransaction()

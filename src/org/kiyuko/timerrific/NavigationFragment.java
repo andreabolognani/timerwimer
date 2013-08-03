@@ -124,7 +124,13 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
+		long oldId;
+		long newId;
+
 		super.onListItemClick(l, v, position, id);
+
+		oldId = getSelectionId();
+		newId = id;
 
 		setSelectionId(id);
 
@@ -134,7 +140,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		try {
 
 			// Notify the activity
-			((SelectionChangeListener) mActivity).onSelectionChanged();
+			((SelectionChangeListener) mActivity).onSelectionChanged(oldId, newId);
 		}
 		catch (ClassCastException e) {
 
