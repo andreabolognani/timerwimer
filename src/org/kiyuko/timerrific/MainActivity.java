@@ -233,14 +233,12 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		try {
 
-			// Notify fragments
+			// Notify navigation fragment
 			((DatabaseListener) mNavigationFragment).onItemAdded(id);
-			((DatabaseListener) mContentsFragment).onItemAdded(id);
 		}
 		catch (ClassCastException e) {
 
 			throw new ClassCastException(mNavigationFragment.getClass().getName()
-					+ " and " + mContentsFragment.getClass().getName()
 					+ " must implement DatabaseListener");
 		}
 	}
@@ -268,14 +266,12 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		try {
 
-			// Notify fragments
+			// Notify navigation fragment
 			((DatabaseListener) mNavigationFragment).onItemRemoved(id);
-			((DatabaseListener) mContentsFragment).onItemRemoved(id);
 		}
 		catch (ClassCastException e) {
 
 			throw new ClassCastException(mNavigationFragment.getClass().getName()
-					+ " and " + mContentsFragment.getClass().getName()
 					+ " must implement DatabaseListener");
 		}
 	}

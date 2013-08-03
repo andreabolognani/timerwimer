@@ -29,7 +29,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ContentsFragment extends BaseFragment implements DatabaseListener {
+public class ContentsFragment extends BaseFragment {
 
 	private BaseFragmentActivity mActivity;
 	private TextView mCurrentTimeView;
@@ -99,10 +99,4 @@ public class ContentsFragment extends BaseFragment implements DatabaseListener {
 				return super.onOptionsItemSelected(item);
 		}
 	}
-
-	@Override
-	public void onItemAdded(long id) {}
-
-	@Override
-	public void onItemRemoved(long id) {}
 }
