@@ -21,4 +21,5 @@ package org.kiyuko.timerrific;
 public interface DatabaseListener {
 
 	public void onItemAdded(long id);
+	public void onItemRemoved(long id);
 }

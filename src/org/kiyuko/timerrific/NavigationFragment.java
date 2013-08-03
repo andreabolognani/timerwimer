@@ -151,6 +151,13 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		mListView.setSelection(position);
 	}
 
+	@Override
+	public void onItemRemoved(long id) {
+
+		// Refresh data
+		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+	}
+
 	private int getPositionFromId(long id) {
 
 		int position;

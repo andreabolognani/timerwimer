@@ -102,4 +102,7 @@ public class ContentsFragment extends BaseFragment implements DatabaseListener {
 
 	@Override
 	public void onItemAdded(long id) {}
+
+	@Override
+	public void onItemRemoved(long id) {}
 }

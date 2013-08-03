@@ -137,13 +137,15 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 			case R.id.action_remove:
 
+				id = getSelectionId();
+
 				// Remove selected timer from the database
-				mDatabase.remove(getSelectionId());
+				mDatabase.remove(id);
 
 				// Invalidate selection
 				setSelectionId(Timer.INVALID_ID);
 
-				onSelectionChanged();
+				onItemRemoved(id);
 
 				return true;
 
@@ -234,6 +236,41 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 			// Notify fragments
 			((DatabaseListener) mNavigationFragment).onItemAdded(id);
 			((DatabaseListener) mContentsFragment).onItemAdded(id);
+		}
+		catch (ClassCastException e) {
+
+			throw new ClassCastException(mNavigationFragment.getClass().getName()
+					+ " and " + mContentsFragment.getClass().getName()
+					+ " must implement DatabaseListener");
+		}
+	}
+
+	@Override
+	public void onItemRemoved(long id) {
+
+		mContentsFragment = new ContentsFragment();
+
+		// Replace contents
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.contents_fragment, mContentsFragment)
+		.commit();
+
+		if (mSlidingPane.isSlideable()) {
+
+			// Single pane: focus on navigation
+			mSlidingPane.openPane();
+		}
+		else {
+
+			// Dual pane: update action bar
+			onPanelClosed(mSlidingPane);
+		}
+
+		try {
+
+			// Notify fragments
+			((DatabaseListener) mNavigationFragment).onItemRemoved(id);
+			((DatabaseListener) mContentsFragment).onItemRemoved(id);
 		}
 		catch (ClassCastException e) {
 
