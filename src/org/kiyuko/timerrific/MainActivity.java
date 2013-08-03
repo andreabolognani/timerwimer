@@ -143,30 +143,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 				mDatabase.remove(id);
 
 				// Invalidate selection
-				setSelectionId(Timer.INVALID_ID);
-
-				// Look forward for a selection candidate
-				for (long i = id; i <= mDatabase.getHighestId(); i++) {
-
-					if (mDatabase.get(i) != null) {
-
-						setSelectionId(i);
-						break;
-					}
-				}
-
-				if (getSelectionId() == Timer.INVALID_ID) {
-
-					// Look backwards for a selection candidate
-					for (long i = id; i >= mDatabase.getLowestId(); i--) {
-
-						if (mDatabase.get(i) != null) {
-
-							setSelectionId(i);
-							break;
-						}
-					}
-				}
+				setSelectionId(findSelectionCandidate(id));
 
 				onItemRemoved(id);
 
@@ -369,4 +346,35 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 	@Override
 	public void onPanelSlide(View panel, float slideOffset) {}
+
+	private long findSelectionCandidate(long oldSelectionId) {
+
+		long id;
+		long lowestId;
+		long highestId;
+
+		lowestId = mDatabase.getLowestId();
+		highestId = mDatabase.getHighestId();
+
+		// Look forward for a selection candidate
+		for (id = oldSelectionId; id <= highestId; id++) {
+
+			if (mDatabase.get(id) != null) {
+
+				return id;
+			}
+		}
+
+		// Look backwards for a selection candidate
+		for (id = oldSelectionId; id >= lowestId; id--) {
+
+			if (mDatabase.get(id) != null) {
+
+				return id;
+			}
+		}
+
+		// Fall back
+		return Timer.INVALID_ID;
+	}
 }
