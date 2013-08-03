@@ -57,7 +57,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		// Display data taken from the database
 		mAdapter = new SimpleCursorAdapter(mActivity,
 				android.R.layout.simple_list_item_activated_1,
-				null,
+				mDatabase.getAllRowsCursor(),
 				new String[] { TimerDatabase.COLUMN_TIMER_LABEL },
 				new int[] { android.R.id.text1 });
 		setListAdapter(mAdapter);
@@ -71,9 +71,6 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		super.onResume();
 
 		mListView = getListView();
-
-		// Refresh the data every time the fragment is displayed
-		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
 
 		if (getSelectionId() != Timer.INVALID_ID) {
 
@@ -154,8 +151,15 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	@Override
 	public void onItemRemoved(long id) {
 
+		int position;
+
 		// Refresh data
 		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+
+		position = getPositionFromId(getSelectionId());
+
+		// Give visual feedback
+		mListView.setItemChecked(position, true);
 	}
 
 	private int getPositionFromId(long id) {

@@ -145,6 +145,29 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 				// Invalidate selection
 				setSelectionId(Timer.INVALID_ID);
 
+				// Look forward for a selection candidate
+				for (long i = id; i <= mDatabase.getHighestId(); i++) {
+
+					if (mDatabase.get(i) != null) {
+
+						setSelectionId(i);
+						break;
+					}
+				}
+
+				if (getSelectionId() == Timer.INVALID_ID) {
+
+					// Look backwards for a selection candidate
+					for (long i = id; i >= mDatabase.getLowestId(); i--) {
+
+						if (mDatabase.get(i) != null) {
+
+							setSelectionId(i);
+							break;
+						}
+					}
+				}
+
 				onItemRemoved(id);
 
 				return true;
@@ -164,17 +187,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onSelectionChanged() {
 
-		if (getSelectionId() == Timer.INVALID_ID) {
-
-			mContentsFragment = new MessageFragment();
-		}
-		else {
-
-			mContentsFragment = new ContentsFragment();
-		}
-
-		// Update the navigation
-		mNavigationFragment.onResume();
+		mContentsFragment = new ContentsFragment();
 
 		// Update the contents
 		getSupportFragmentManager().beginTransaction()
@@ -246,7 +259,14 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onItemRemoved(long id) {
 
-		mContentsFragment = new ContentsFragment();
+		if (mDatabase.isEmpty()) {
+
+			mContentsFragment = new MessageFragment();
+		}
+		else {
+
+			mContentsFragment = new ContentsFragment();
+		}
 
 		// Replace contents
 		getSupportFragmentManager().beginTransaction()
