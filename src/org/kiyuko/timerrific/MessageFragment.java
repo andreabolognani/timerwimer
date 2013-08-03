@@ -18,7 +18,6 @@
 
 package org.kiyuko.timerrific;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,52 +26,14 @@ import android.widget.TextView;
 
 public class MessageFragment extends BaseFragment {
 
-	private BaseFragmentActivity mActivity;
 	private TextView mMessageView;
-	private TimerDatabase mDatabase;
-
-	@Override
-	public void onAttach(Activity activity) {
-
-		super.onAttach(activity);
-
-		mActivity = (BaseFragmentActivity) activity;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View view;
-
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		mDatabase = new TimerDatabase(mActivity);
-
-		// Display a single message if no timer is selected
-		view = inflater.inflate(R.layout.fragment_message, container, false);
-
-		mMessageView = (TextView) view.findViewById(R.id.message_view);
-
-		if (mDatabase.isEmpty()) {
-
-			// No timers
-			mMessageView.setText(R.string.no_timers);
-		}
-		else {
-
-			// No timer selected
-			mMessageView.setText(R.string.no_timer_selected);
-		}
-
-		return view;
-	}
-
-	@Override
-	public void onDestroy() {
-
-		mDatabase.close();
-
-		super.onDestroy();
+		return inflater.inflate(R.layout.fragment_message, container, false);
 	}
 }
