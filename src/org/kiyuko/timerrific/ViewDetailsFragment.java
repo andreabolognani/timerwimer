@@ -29,7 +29,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ContentsFragment extends BaseFragment {
+public class ViewDetailsFragment extends BaseFragment {
 
 	private BaseFragmentActivity mActivity;
 	private TextView mCurrentTimeView;
@@ -55,7 +55,7 @@ public class ContentsFragment extends BaseFragment {
 		mDatabase = new TimerDatabase(mActivity);
 
 		// Display timer details
-		view = inflater.inflate(R.layout.fragment_contents, container, false);
+		view = inflater.inflate(R.layout.fragment_view_details, container, false);
 
 		mCurrentTimeView = (TextView) view.findViewById(R.id.current_time_view);
 

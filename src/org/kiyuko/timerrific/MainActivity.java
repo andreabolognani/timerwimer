@@ -55,7 +55,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		}
 		else {
 
-			mContentsFragment = new ContentsFragment();
+			mContentsFragment = new ViewDetailsFragment();
 		}
 
 		mDatabase = new TimerDatabase(this);
@@ -167,7 +167,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		if (oldId != newId) {
 
 			// Replace contents fragment if selection has actually changed
-			mContentsFragment = new ContentsFragment();
+			mContentsFragment = new ViewDetailsFragment();
 		}
 
 		// Update the contents
@@ -207,7 +207,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onItemAdded(long id) {
 
-		mContentsFragment = new ContentsFragment();
+		mContentsFragment = new ViewDetailsFragment();
 
 		// Replace contents
 		getSupportFragmentManager().beginTransaction()
@@ -246,7 +246,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		}
 		else {
 
-			mContentsFragment = new ContentsFragment();
+			mContentsFragment = new ViewDetailsFragment();
 		}
 
 		// Replace contents
