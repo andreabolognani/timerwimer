@@ -68,14 +68,24 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	@Override
 	public void onResume() {
 
+		int position;
+
 		super.onResume();
 
 		mListView = getListView();
 
 		if (getSelectionId() != Timer.INVALID_ID) {
 
+			position = getPositionFromId(getSelectionId());
+
 			// Restore visual feedback
-			mListView.setItemChecked(getPositionFromId(getSelectionId()), true);
+			mListView.setItemChecked(position, true);
+
+			if (position < mListView.getFirstVisiblePosition() || position > mListView.getLastVisiblePosition()) {
+
+				// Restore scroll position
+				mListView.setSelection(position);
+			}
 		}
 	}
 
@@ -160,6 +170,12 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 
 		// Give visual feedback
 		mListView.setItemChecked(position, true);
+
+		if (position < mListView.getFirstVisiblePosition() || position > mListView.getLastVisiblePosition()) {
+
+			// Update scroll position
+			mListView.setSelection(position);
+		}
 	}
 
 	private int getPositionFromId(long id) {
