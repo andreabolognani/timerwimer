@@ -23,16 +23,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
-public class ViewDetailsFragment extends BaseFragment {
+public class EditDetailsFragment extends BaseFragment {
 
 	private BaseFragmentActivity mActivity;
-	private TextView mCurrentTimeView;
+	private EditText mTargetTimeEdit;
 	private TimerDatabase mDatabase;
 
 	@Override
@@ -54,16 +50,15 @@ public class ViewDetailsFragment extends BaseFragment {
 
 		mDatabase = new TimerDatabase(mActivity);
 
-		// Display timer details
-		view = inflater.inflate(R.layout.fragment_view_details, container, false);
+		view = inflater.inflate(R.layout.fragment_edit_details, container, false);
 
-		mCurrentTimeView = (TextView) view.findViewById(R.id.current_time_view);
+		mTargetTimeEdit = (EditText) view.findViewById(R.id.target_time_edit);
 
 		timer = mDatabase.get(getSelectionId());
 
 		if (timer != null) {
 
-			mCurrentTimeView.setText(getString(R.string.target_time) + timer.getTargetTime());
+			mTargetTimeEdit.setText("" + timer.getTargetTime());
 		}
 
 		return view;
@@ -75,28 +70,5 @@ public class ViewDetailsFragment extends BaseFragment {
 		mDatabase.close();
 
 		super.onDestroy();
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-		super.onCreateOptionsMenu(menu, inflater);
-
-		mActivity.getSupportMenuInflater().inflate(R.menu.contents, menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-
-			case R.id.action_remove:
-
-				return mActivity.onOptionsItemSelected(item);
-
-			default:
-
-				return super.onOptionsItemSelected(item);
-		}
 	}
 }

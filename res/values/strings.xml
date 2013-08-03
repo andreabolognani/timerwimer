@@ -9,5 +9,6 @@
     <string name="navigation">Navigation</string>
     <string name="no_timer_selected">No timer selected</string>
     <string name="no_timers">No timers</string>
+    <string name="target_time">Target time</string>
 
 </resources>
