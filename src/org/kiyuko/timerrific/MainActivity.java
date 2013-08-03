@@ -151,7 +151,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 			case R.id.action_settings:
 
-				Toast.makeText(this, "Not implemented", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.not_implemented), Toast.LENGTH_SHORT).show();
 
 				return true;
 
