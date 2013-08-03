@@ -22,11 +22,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 public class MessageFragment extends BaseFragment {
-
-	private TextView mMessageView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
