@@ -140,7 +140,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		try {
 
 			// Notify the activity
-			((SelectionChangeListener) mActivity).onSelectionChanged(oldId, newId);
+			((SelectionListener) mActivity).onSelectionChanged(oldId, newId);
 		}
 		catch (ClassCastException e) {
 

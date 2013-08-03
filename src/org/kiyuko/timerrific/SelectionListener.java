@@ -18,7 +18,7 @@
 
 package org.kiyuko.timerrific;
 
-public interface SelectionChangeListener {
+public interface SelectionListener {
 
 	public void onSelectionChanged(long oldId, long newId);
 }
