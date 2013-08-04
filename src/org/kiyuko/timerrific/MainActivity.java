@@ -137,7 +137,20 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 			case R.id.action_edit:
 
-				Toast.makeText(this, getString(R.string.not_implemented), Toast.LENGTH_SHORT).show();
+				mContentsFragment = new EditDetailsFragment();
+
+				getSupportFragmentManager().beginTransaction()
+					.replace(R.id.contents_fragment, mContentsFragment)
+				.commit();
+
+				if (mSlidingPane.isSlideable()) {
+
+					onPanelClosed(mSlidingPane);
+				}
+				else {
+
+					onPanelOpened(mSlidingPane);
+				}
 
 				return true;
 
