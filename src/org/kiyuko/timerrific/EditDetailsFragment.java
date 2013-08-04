@@ -111,6 +111,17 @@ public class EditDetailsFragment extends BaseFragment {
 		}
 
 		mDatabase.put(timer);
+
+		try {
+
+			// Notify activity
+			((DatabaseListener) mActivity).onItemModified(mTimerId);
+		}
+		catch (ClassCastException e) {
+
+			throw new ClassCastException(mActivity.getClass().getName()
+					+ " must implement DatabaseListener");
+		}
 	}
 
 	@Override

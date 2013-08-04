@@ -184,6 +184,13 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		}
 	}
 
+	@Override
+	public void onItemModified(long id) {
+
+		// Refresh data
+		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+	}
+
 	private int getPositionFromId(long id) {
 
 		int position;

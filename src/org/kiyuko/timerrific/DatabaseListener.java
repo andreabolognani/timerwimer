@@ -22,4 +22,5 @@ public interface DatabaseListener {
 
 	public void onItemAdded(long id);
 	public void onItemRemoved(long id);
+	public void onItemModified(long id);
 }

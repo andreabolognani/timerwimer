@@ -297,6 +297,21 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	}
 
 	@Override
+	public void onItemModified(long id) {
+
+		try {
+
+			// Notify navigation fragment
+			((DatabaseListener) mNavigationFragment).onItemModified(id);
+		}
+		catch (ClassCastException e) {
+
+			throw new ClassCastException(mNavigationFragment.getClass().getName()
+					+ " must implement DatabaseListener");
+		}
+	}
+
+	@Override
 	public void onGlobalLayout() {
 
 		if (mSlidingPane.isSlideable() && !mSlidingPane.isOpen()) {
