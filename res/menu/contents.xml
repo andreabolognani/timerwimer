@@ -2,9 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_remove"
+        android:id="@+id/action_edit"
         android:orderInCategory="91"
         android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_edit"
+        android:title="@string/action_edit"/>
+
+    <item
+        android:id="@+id/action_remove"
+        android:orderInCategory="92"
+        android:showAsAction="never"
         android:icon="@drawable/ic_action_remove"
         android:title="@string/action_remove"/>
 

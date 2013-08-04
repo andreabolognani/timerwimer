@@ -63,7 +63,7 @@ public class ViewDetailsFragment extends BaseFragment {
 
 		if (timer != null) {
 
-			mCurrentTimeView.setText(getString(R.string.target_time) + timer.getTargetTime());
+			mCurrentTimeView.setText(getString(R.string.target_time) + " " + timer.getTargetTime());
 		}
 
 		return view;
