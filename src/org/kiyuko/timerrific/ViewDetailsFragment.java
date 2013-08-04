@@ -82,7 +82,7 @@ public class ViewDetailsFragment extends BaseFragment {
 
 		super.onCreateOptionsMenu(menu, inflater);
 
-		mActivity.getSupportMenuInflater().inflate(R.menu.contents, menu);
+		mActivity.getSupportMenuInflater().inflate(R.menu.view_details, menu);
 	}
 
 	@Override
