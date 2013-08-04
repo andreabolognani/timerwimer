@@ -28,6 +28,7 @@ import android.widget.EditText;
 public class EditDetailsFragment extends BaseFragment {
 
 	private BaseFragmentActivity mActivity;
+	private EditText mLabelEdit;
 	private EditText mTargetTimeEdit;
 	private TimerDatabase mDatabase;
 
@@ -52,12 +53,14 @@ public class EditDetailsFragment extends BaseFragment {
 
 		view = inflater.inflate(R.layout.fragment_edit_details, container, false);
 
+		mLabelEdit = (EditText) view.findViewById(R.id.label_edit);
 		mTargetTimeEdit = (EditText) view.findViewById(R.id.target_time_edit);
 
 		timer = mDatabase.get(getSelectionId());
 
 		if (timer != null) {
 
+			mLabelEdit.setText(timer.getLabel());
 			mTargetTimeEdit.setText("" + timer.getTargetTime());
 		}
 
