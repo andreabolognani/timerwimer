@@ -68,6 +68,50 @@ public class EditDetailsFragment extends BaseFragment {
 	}
 
 	@Override
+	public void onPause() {
+
+		Timer timer;
+		String label;
+		int targetTime;
+
+		super.onPause();
+
+		timer = mDatabase.get(getSelectionId());
+
+		if (timer == null) {
+
+			return;
+		}
+
+		// Retrieve new label
+		label = mLabelEdit.getText().toString();
+
+		try {
+
+			// Try to retrieve new target time
+			targetTime = Integer.parseInt(mTargetTimeEdit.getText().toString());
+		}
+		catch (NumberFormatException e) {
+
+			targetTime = -1;
+		}
+
+		if (label.length() > 0) {
+
+			// Set new label if not empty
+			timer.setLabel(label);
+		}
+
+		if (targetTime > 0) {
+
+			// Set new target time if valid
+			timer.setTargetTime(targetTime);
+		}
+
+		mDatabase.put(timer);
+	}
+
+	@Override
 	public void onDestroy() {
 
 		mDatabase.close();
