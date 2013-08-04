@@ -31,6 +31,7 @@ public class EditDetailsFragment extends BaseFragment {
 	private EditText mLabelEdit;
 	private EditText mTargetTimeEdit;
 	private TimerDatabase mDatabase;
+	private long mTimerId;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -50,13 +51,14 @@ public class EditDetailsFragment extends BaseFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 
 		mDatabase = new TimerDatabase(mActivity);
+		mTimerId = getSelectionId();
 
 		view = inflater.inflate(R.layout.fragment_edit_details, container, false);
 
 		mLabelEdit = (EditText) view.findViewById(R.id.label_edit);
 		mTargetTimeEdit = (EditText) view.findViewById(R.id.target_time_edit);
 
-		timer = mDatabase.get(getSelectionId());
+		timer = mDatabase.get(mTimerId);
 
 		if (timer != null) {
 
@@ -76,7 +78,7 @@ public class EditDetailsFragment extends BaseFragment {
 
 		super.onPause();
 
-		timer = mDatabase.get(getSelectionId());
+		timer = mDatabase.get(mTimerId);
 
 		if (timer == null) {
 
