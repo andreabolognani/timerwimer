@@ -299,6 +299,15 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onItemModified(long id) {
 
+		Timer timer;
+
+		if (mSlidingPane.isSlideable() && !mSlidingPane.isOpen()) {
+
+			timer = mDatabase.get(id);
+
+			mActionBar.setTitle(timer.getLabel());
+		}
+
 		try {
 
 			// Notify navigation fragment
