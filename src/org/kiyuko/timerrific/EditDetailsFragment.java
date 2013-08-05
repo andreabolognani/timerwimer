@@ -20,6 +20,8 @@ package org.kiyuko.timerrific;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ public class EditDetailsFragment extends BaseFragment {
 	private BaseFragmentActivity mActivity;
 	private EditText mLabelEdit;
 	private EditText mTargetTimeEdit;
+	private TextWatcher mTextWatcher;
 	private TimerDatabase mDatabase;
 	private long mTimerId;
 
@@ -66,17 +69,58 @@ public class EditDetailsFragment extends BaseFragment {
 			mTargetTimeEdit.setText("" + timer.getTargetTime());
 		}
 
+		// Create text watcher
+		mTextWatcher = new TextWatcher() {
+
+			@Override
+			public void afterTextChanged(Editable s) {
+
+				EditDetailsFragment.this.save();
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {}
+		};
+
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+
+		super.onResume();
+
+		// Add text watchers
+		mLabelEdit.addTextChangedListener(mTextWatcher);
+		mTargetTimeEdit.addTextChangedListener(mTextWatcher);
 	}
 
 	@Override
 	public void onPause() {
 
-		Timer timer;
-		String label;
-		int targetTime;
+		// Remove text watchers
+		mLabelEdit.removeTextChangedListener(mTextWatcher);
+		mTargetTimeEdit.removeTextChangedListener(mTextWatcher);
 
 		super.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+
+		mDatabase.close();
+
+		super.onDestroy();
+	}
+
+	private void save() {
+
+		Timer timer;
+		int targetTime;
 
 		timer = mDatabase.get(mTimerId);
 
@@ -86,7 +130,7 @@ public class EditDetailsFragment extends BaseFragment {
 		}
 
 		// Retrieve new label
-		label = mLabelEdit.getText().toString();
+		timer.setLabel(mLabelEdit.getText().toString());
 
 		try {
 
@@ -96,12 +140,6 @@ public class EditDetailsFragment extends BaseFragment {
 		catch (NumberFormatException e) {
 
 			targetTime = -1;
-		}
-
-		if (label.length() > 0) {
-
-			// Set new label if not empty
-			timer.setLabel(label);
 		}
 
 		if (targetTime > 0) {
@@ -122,13 +160,5 @@ public class EditDetailsFragment extends BaseFragment {
 			throw new ClassCastException(mActivity.getClass().getName()
 					+ " must implement DatabaseListener");
 		}
-	}
-
-	@Override
-	public void onDestroy() {
-
-		mDatabase.close();
-
-		super.onDestroy();
 	}
 }
