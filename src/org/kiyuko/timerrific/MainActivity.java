@@ -18,6 +18,7 @@
 
 package org.kiyuko.timerrific;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SlidingPaneLayout;
@@ -32,6 +33,12 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class MainActivity extends BaseFragmentActivity implements ViewTreeObserver.OnGlobalLayoutListener, SlidingPaneLayout.PanelSlideListener, SelectionListener, DatabaseListener {
 
+	private static final String PREFERENCES_FILE = "preferences";
+	private static final String KEY_MODE = "mode";
+
+	private static final int MODE_VIEW = 1;
+	private static final int MODE_EDIT = 2;
+
 	private ActionBar mActionBar;
 	private SlidingPaneLayout mSlidingPane;
 	private BaseListFragment mNavigationFragment;
@@ -45,21 +52,28 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		setContentView(R.layout.activity_main);
 
+		mDatabase = new TimerDatabase(this);
+
 		mActionBar = getSupportActionBar();
 		mSlidingPane = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
 
 		mNavigationFragment = new NavigationFragment();
 
-		if (getSelectionId() == Timer.INVALID_ID) {
+		if (mDatabase.isEmpty()) {
 
 			mContentsFragment = new MessageFragment();
 		}
 		else {
 
-			mContentsFragment = new ViewDetailsFragment();
-		}
+			if (getMode() == MODE_EDIT) {
 
-		mDatabase = new TimerDatabase(this);
+				mContentsFragment = new EditDetailsFragment();
+			}
+			else {
+
+				mContentsFragment = new ViewDetailsFragment();
+			}
+		}
 
 		// Register listeners for layout changes
 		mSlidingPane.setPanelSlideListener(this);
@@ -69,9 +83,6 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 			.replace(R.id.navigation_fragment, mNavigationFragment)
 			.replace(R.id.contents_fragment, mContentsFragment)
 		.commit();
-
-		// Make sure the navigation is shown on startup
-		mSlidingPane.openPane();
 	}
 
 	@Override
@@ -157,6 +168,8 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onSelectionChanged(long oldId, long newId) {
 
+		setMode(MODE_VIEW);
+
 		if (oldId != newId) {
 
 			// Replace contents fragment if selection has actually changed
@@ -181,6 +194,8 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 	@Override
 	public void onItemAdded(long id) {
+
+		setMode(MODE_EDIT);
 
 		mContentsFragment = new EditDetailsFragment();
 
@@ -214,6 +229,8 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 	@Override
 	public void onItemRemoved(long id) {
+
+		setMode(MODE_VIEW);
 
 		if (mDatabase.isEmpty()) {
 
@@ -272,6 +289,12 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onGlobalLayout() {
 
+		if (getMode() == MODE_EDIT) {
+
+			// Always focus on content in edit mode
+			mSlidingPane.closePane();
+		}
+
 		updateActionBar();
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -292,6 +315,8 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		// Hide soft keyboard
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(mSlidingPane.getWindowToken(), 0);
+
+		setMode(MODE_VIEW);
 
 		if (mContentsFragment instanceof EditDetailsFragment) {
 
@@ -358,6 +383,8 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	 */
 	private void editItem() {
 
+		setMode(MODE_EDIT);
+
 		mContentsFragment = new EditDetailsFragment();
 
 		getSupportFragmentManager().beginTransaction()
@@ -377,6 +404,8 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		// Hide soft keyboard
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(mSlidingPane.getWindowToken(), 0);
+
+		setMode(MODE_VIEW);
 
 		// Switch to view mode
 		mContentsFragment = new ViewDetailsFragment();
@@ -471,5 +500,35 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		// Fall back
 		return Timer.INVALID_ID;
+	}
+
+	/**
+	 * Switch between view and edit mode.
+	 *
+	 * @param mode Either {@link #MODE_VIEW} or {@link #MODE_EDIT}.
+	 */
+	private void setMode(int mode) {
+
+		SharedPreferences preferences;
+
+		preferences = getSharedPreferences(PREFERENCES_FILE, MODE_PRIVATE);
+
+		preferences.edit()
+			.putInt(KEY_MODE, mode)
+		.commit();
+	}
+
+	/**
+	 * Get current mode.
+	 *
+	 * @return Either {@link #MODE_VIEW} or {@link #MODE_EDIT}.
+	 */
+	private int getMode() {
+
+		SharedPreferences preferences;
+
+		preferences = getSharedPreferences(PREFERENCES_FILE, MODE_PRIVATE);
+
+		return preferences.getInt(KEY_MODE, MODE_VIEW);
 	}
 }
