@@ -108,8 +108,6 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		long id;
-
 		switch (item.getItemId()) {
 
 			case android.R.id.home:
@@ -121,43 +119,19 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 			case R.id.action_add:
 
-				id = mDatabase.newId();
-
-				// Insert a new timer into the database
-				mDatabase.put(new Timer(id,
-						"" + (id + 1),
-						((int) id + 1)));
-
-				// Change selection
-				setSelectionId(id);
-
-				onItemAdded(id);
+				addItem();
 
 				return true;
 
 			case R.id.action_edit:
 
-				mContentsFragment = new EditDetailsFragment();
-
-				getSupportFragmentManager().beginTransaction()
-					.replace(R.id.contents_fragment, mContentsFragment)
-				.commit();
-
-				updateActionBar();
+				editItem();
 
 				return true;
 
 			case R.id.action_remove:
 
-				id = getSelectionId();
-
-				// Remove selected timer from the database
-				mDatabase.remove(id);
-
-				// Invalidate selection
-				setSelectionId(findSelectionCandidate(id));
-
-				onItemRemoved(id);
+				removeItem();
 
 				return true;
 
@@ -317,6 +291,58 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 	@Override
 	public void onPanelSlide(View panel, float slideOffset) {}
+
+	/**
+	 * Add a new timer.
+	 */
+	private void addItem() {
+
+		long id;
+
+		id = mDatabase.newId();
+
+		// Insert a new timer into the database
+		mDatabase.put(new Timer(id,
+				"" + (id + 1),
+				((int) id + 1)));
+
+		// Change selection
+		setSelectionId(id);
+
+		onItemAdded(id);
+	}
+
+	/**
+	 * Remove selected timer.
+	 */
+	private void removeItem() {
+
+		long id;
+
+		id = getSelectionId();
+
+		// Remove selected timer from the database
+		mDatabase.remove(id);
+
+		// Invalidate selection
+		setSelectionId(findSelectionCandidate(id));
+
+		onItemRemoved(id);
+	}
+
+	/**
+	 * Edit selected timer.
+	 */
+	private void editItem() {
+
+		mContentsFragment = new EditDetailsFragment();
+
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.contents_fragment, mContentsFragment)
+		.commit();
+
+		updateActionBar();
+	}
 
 	/**
 	 * Update contents of the action bar.
