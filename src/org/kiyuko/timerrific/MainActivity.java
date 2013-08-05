@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -279,6 +280,12 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 	@Override
 	public void onPanelOpened(View panel) {
+
+		InputMethodManager imm;
+
+		// Hide soft keyboard
+		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mSlidingPane.getWindowToken(), 0);
 
 		if (mContentsFragment instanceof EditDetailsFragment) {
 
