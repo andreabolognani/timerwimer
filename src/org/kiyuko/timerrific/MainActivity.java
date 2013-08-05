@@ -175,7 +175,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onItemAdded(long id) {
 
-		mContentsFragment = new ViewDetailsFragment();
+		mContentsFragment = new EditDetailsFragment();
 
 		// Replace contents
 		getSupportFragmentManager().beginTransaction()
