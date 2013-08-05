@@ -280,6 +280,16 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onPanelOpened(View panel) {
 
+		if (mContentsFragment instanceof EditDetailsFragment) {
+
+			// Switch to view mode
+			mContentsFragment = new ViewDetailsFragment();
+
+			getSupportFragmentManager().beginTransaction()
+				.replace(R.id.contents_fragment, mContentsFragment)
+			.commit();
+		}
+
 		updateActionBar();
 	}
 
