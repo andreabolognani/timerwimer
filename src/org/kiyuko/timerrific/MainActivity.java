@@ -303,8 +303,8 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		// Insert a new timer into the database
 		mDatabase.put(new Timer(id,
-				"" + (id + 1),
-				((int) id + 1)));
+				getString(R.string.new_timer),
+				60));
 
 		// Change selection
 		setSelectionId(id);

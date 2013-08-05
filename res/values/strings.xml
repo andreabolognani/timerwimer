@@ -9,6 +9,7 @@
     <string name="no_timers">No timers</string>
     <string name="label">Label</string>
     <string name="target_time">Target time</string>
+    <string name="new_timer">New timer</string>
     <string name="not_implemented">Not implemented</string>
 
 </resources>
