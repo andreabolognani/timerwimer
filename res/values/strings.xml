@@ -2,9 +2,9 @@
 <resources>
 
     <string name="app_name">Timerrific</string>
-    <string name="action_add">Add timer</string>
-    <string name="action_edit">Edit timer</string>
-    <string name="action_remove">Remove timer</string>
+    <string name="action_add">Add</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_remove">Remove</string>
     <string name="action_settings">Settings</string>
     <string name="no_timers">No timers</string>
     <string name="label">Label</string>
