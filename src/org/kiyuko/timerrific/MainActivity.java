@@ -143,14 +143,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 					.replace(R.id.contents_fragment, mContentsFragment)
 				.commit();
 
-				if (mSlidingPane.isSlideable()) {
-
-					onPanelClosed(mSlidingPane);
-				}
-				else {
-
-					onPanelOpened(mSlidingPane);
-				}
+				updateActionBar();
 
 				return true;
 
@@ -194,32 +187,14 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 			.replace(R.id.contents_fragment, mContentsFragment)
 		.commit();
 
-		if (mSlidingPane.isSlideable()) {
+		if (mSlidingPane.isSlideable() && mSlidingPane.isOpen()) {
 
-			if (mSlidingPane.isOpen()) {
-
-				// Close the pane to focus on the contents
-				mSlidingPane.closePane();
-			}
-			else {
-
-				if (getSelectionId() == Timer.INVALID_ID) {
-
-					// No selection: open the pane to allow the user
-					// to make a selection
-					mSlidingPane.openPane();
-				}
-				else {
-
-					// Make sure the options menu is updated
-					onPanelClosed(mSlidingPane);
-				}
-			}
+			// Close the pane to focus on the contents
+			mSlidingPane.closePane();
 		}
 		else {
 
-			// Make sure the options menu is updated
-			onPanelOpened(mSlidingPane);
+			updateActionBar();
 		}
 	}
 
@@ -241,7 +216,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		else {
 
 			// Dual pane: update action bar
-			onPanelOpened(mSlidingPane);
+			updateActionBar();
 		}
 
 		try {
@@ -281,7 +256,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		else {
 
 			// Dual pane: update action bar
-			onPanelOpened(mSlidingPane);
+			updateActionBar();
 		}
 
 		try {
@@ -299,14 +274,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onItemModified(long id) {
 
-		Timer timer;
-
-		if (mSlidingPane.isSlideable() && !mSlidingPane.isOpen()) {
-
-			timer = mDatabase.get(id);
-
-			mActionBar.setTitle(timer.getLabel());
-		}
+		updateActionBar();
 
 		try {
 
@@ -323,16 +291,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onGlobalLayout() {
 
-		if (mSlidingPane.isSlideable() && !mSlidingPane.isOpen()) {
-
-			// If only the contents are shown, the panel is closed
-			onPanelClosed(mSlidingPane);
-		}
-		else {
-
-			// Otherwise, the panel is open
-			onPanelOpened(mSlidingPane);
-		}
+		updateActionBar();
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 
@@ -347,52 +306,71 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	@Override
 	public void onPanelOpened(View panel) {
 
-		mActionBar.setHomeButtonEnabled(false);
-		mActionBar.setDisplayHomeAsUpEnabled(false);
-		mActionBar.setTitle(R.string.app_name);
-
-		if (mSlidingPane.isSlideable()) {
-
-			// Only the navigation is active
-			mNavigationFragment.setHasOptionsMenu(true);
-			mContentsFragment.setHasOptionsMenu(false);
-		}
-		else {
-
-			// Both the navigation and the contents are active
-			mNavigationFragment.setHasOptionsMenu(true);
-			mContentsFragment.setHasOptionsMenu(true);
-		}
+		updateActionBar();
 	}
 
 	@Override
 	public void onPanelClosed(View panel) {
 
-		Timer timer;
-
-		timer = mDatabase.get(getSelectionId());
-
-		mActionBar.setHomeButtonEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-
-		if (timer != null && timer.getLabel() != null) {
-
-			// Display timer label
-			mActionBar.setTitle(timer.getLabel());
-		}
-		else {
-
-			// With no selection, display the application name
-			mActionBar.setTitle(R.string.app_name);
-		}
-
-		// Only the contents are active
-		mNavigationFragment.setHasOptionsMenu(false);
-		mContentsFragment.setHasOptionsMenu(true);
+		updateActionBar();
 	}
 
 	@Override
 	public void onPanelSlide(View panel, float slideOffset) {}
+
+	/**
+	 * Update contents of the action bar.
+	 */
+	private void updateActionBar() {
+
+		Timer timer;
+
+		if (mSlidingPane.isSlideable() && !mSlidingPane.isOpen()) {
+
+			// Enable up navigation
+			mActionBar.setHomeButtonEnabled(true);
+			mActionBar.setDisplayHomeAsUpEnabled(true);
+
+			timer = mDatabase.get(getSelectionId());
+
+			if (timer != null) {
+
+				// Use timer label as window title
+				mActionBar.setTitle(timer.getLabel());
+			}
+		}
+		else {
+
+			// Disable up navigation
+			mActionBar.setHomeButtonEnabled(false);
+			mActionBar.setDisplayHomeAsUpEnabled(false);
+
+			// Use application name as window title
+			mActionBar.setTitle(R.string.app_name);
+		}
+
+		if (mSlidingPane.isSlideable()) {
+
+			if (mSlidingPane.isOpen()) {
+
+				// Single pane, open: navigation menu
+				mNavigationFragment.setHasOptionsMenu(true);
+				mContentsFragment.setHasOptionsMenu(false);
+			}
+			else {
+
+				// Single pane, closed: contents menu
+				mNavigationFragment.setHasOptionsMenu(false);
+				mContentsFragment.setHasOptionsMenu(true);
+			}
+		}
+		else {
+
+			// Dual pane: both navigation and contents menu
+			mNavigationFragment.setHasOptionsMenu(true);
+			mContentsFragment.setHasOptionsMenu(true);
+		}
+	}
 
 	private long findSelectionCandidate(long oldSelectionId) {
 
