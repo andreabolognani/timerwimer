@@ -136,6 +136,12 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 				return true;
 
+			case R.id.action_accept:
+
+				acceptChanges();
+
+				return true;
+
 			case R.id.action_settings:
 
 				Toast.makeText(this, getString(R.string.not_implemented), Toast.LENGTH_SHORT).show();
@@ -353,6 +359,27 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	private void editItem() {
 
 		mContentsFragment = new EditDetailsFragment();
+
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.contents_fragment, mContentsFragment)
+		.commit();
+
+		updateActionBar();
+	}
+
+	/**
+	 * Accept changes and stop editing.
+	 */
+	private void acceptChanges() {
+
+		InputMethodManager imm;
+
+		// Hide soft keyboard
+		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mSlidingPane.getWindowToken(), 0);
+
+		// Switch to view mode
+		mContentsFragment = new ViewDetailsFragment();
 
 		getSupportFragmentManager().beginTransaction()
 			.replace(R.id.contents_fragment, mContentsFragment)

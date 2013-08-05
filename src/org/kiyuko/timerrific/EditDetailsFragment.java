@@ -18,6 +18,10 @@
 
 package org.kiyuko.timerrific;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -115,6 +119,29 @@ public class EditDetailsFragment extends BaseFragment {
 		mDatabase.close();
 
 		super.onDestroy();
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+		super.onCreateOptionsMenu(menu, inflater);
+
+		mActivity.getSupportMenuInflater().inflate(R.menu.edit_details, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+
+			case R.id.action_accept:
+
+				return mActivity.onOptionsItemSelected(item);
+
+			default:
+
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void save() {
