@@ -12,5 +12,6 @@
     <string name="target_time">Target time</string>
     <string name="no_label">No label</string>
     <string name="not_implemented">Not implemented</string>
+    <string name="time_separator">:</string>
 
 </resources>

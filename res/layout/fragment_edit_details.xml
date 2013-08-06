@@ -49,7 +49,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:text="@string/time_separator"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <org.kiyuko.timerrific.NumberPicker
             android:id="@+id/minutes_picker"
