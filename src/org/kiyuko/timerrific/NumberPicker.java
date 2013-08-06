@@ -25,8 +25,14 @@ import android.widget.LinearLayout;
 
 public class NumberPicker extends LinearLayout {
 
+	public interface OnValueChangeListener {
+
+		public void onValueChange(NumberPicker picker, int oldValue, int newValue);
+	}
+
 	private android.widget.NumberPicker mNativePicker;
 	private com.michaelnovakjr.numberpicker.NumberPicker mCompatPicker;
+	private OnValueChangeListener mOnValueChangedListener;
 	private int mMinValue;
 	private int mMaxValue;
 
@@ -61,6 +67,46 @@ public class NumberPicker extends LinearLayout {
 		setMinValue(0);
 		setMaxValue(0);
 		setValue(0);
+	}
+
+	/**
+	 * Set a listener to be called whenever the value changes.
+	 *
+	 * @param onValueChangedListener a new listener, or null to remove an existing listener
+	 */
+	public void setOnValueChangedListener(OnValueChangeListener onValueChangedListener) {
+
+		mOnValueChangedListener = onValueChangedListener;
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+
+			mNativePicker.setOnValueChangedListener(new android.widget.NumberPicker.OnValueChangeListener() {
+
+				@Override
+				public void onValueChange(android.widget.NumberPicker picker, int oldValue, int newValue) {
+
+					if (mOnValueChangedListener != null) {
+
+						mOnValueChangedListener.onValueChange(NumberPicker.this, oldValue, newValue);
+					}
+				}
+			});
+		}
+		else {
+
+			mCompatPicker.setOnChangeListener(new com.michaelnovakjr.numberpicker.NumberPicker.OnChangedListener() {
+
+				@Override
+				public void onChanged(com.michaelnovakjr.numberpicker.NumberPicker picker,
+						int oldValue, int newValue) {
+
+					if (mOnValueChangedListener != null) {
+
+						mOnValueChangedListener.onValueChange(NumberPicker.this, oldValue, newValue);
+					}
+				}
+			});
+		}
 	}
 
 	/**

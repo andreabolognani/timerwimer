@@ -18,11 +18,11 @@
 
 package org.kiyuko.timerrific;
 
+import org.kiyuko.timerrific.NumberPicker.OnValueChangeListener;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-//import com.michaelnovakjr.numberpicker.NumberPicker;
-//import com.michaelnovakjr.numberpicker.NumberPicker.OnChangedListener;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -40,7 +40,7 @@ public class EditDetailsFragment extends BaseFragment {
 	private NumberPicker mMinutesPicker;
 	private NumberPicker mSecondsPicker;
 	private TextWatcher mTextWatcher;
-//	private OnChangedListener mOnChangedListener;
+	private OnValueChangeListener mOnValueChangedListener;
 	private TimerDatabase mDatabase;
 	private long mTimerId;
 
@@ -101,14 +101,14 @@ public class EditDetailsFragment extends BaseFragment {
 					int after) {}
 		};
 
-//		mOnChangedListener = new OnChangedListener() {
-//
-//			@Override
-//			public void onChanged(NumberPicker picker, int oldVal, int newVal) {
-//
-//				EditDetailsFragment.this.save();
-//			}
-//		};
+		mOnValueChangedListener = new OnValueChangeListener() {
+
+			@Override
+			public void onValueChange(NumberPicker picker, int oldValue, int newValue) {
+
+				EditDetailsFragment.this.save();
+			}
+		};
 
 		return view;
 	}
@@ -120,7 +120,7 @@ public class EditDetailsFragment extends BaseFragment {
 
 		// Add listeners
 		mLabelEdit.addTextChangedListener(mTextWatcher);
-//		mSecondsPicker.setOnChangeListener(mOnChangedListener);
+		mSecondsPicker.setOnValueChangedListener(mOnValueChangedListener);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class EditDetailsFragment extends BaseFragment {
 
 		// Remove listeners
 		mLabelEdit.removeTextChangedListener(mTextWatcher);
-//		mSecondsPicker.setOnChangeListener(null);
+		mSecondsPicker.setOnValueChangedListener(null);
 
 		super.onPause();
 	}
