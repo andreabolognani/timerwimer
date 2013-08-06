@@ -21,6 +21,8 @@ package org.kiyuko.timerrific;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.michaelnovakjr.numberpicker.NumberPicker;
+import com.michaelnovakjr.numberpicker.NumberPicker.OnChangedListener;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -30,13 +32,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 public class EditDetailsFragment extends BaseFragment {
 
 	private BaseFragmentActivity mActivity;
 	private EditText mLabelEdit;
-	private EditText mTargetTimeEdit;
+	private NumberPicker mMinutesPicker;
+	private NumberPicker mSecondsPicker;
 	private TextWatcher mTextWatcher;
+	private OnChangedListener mOnChangedListener;
 	private TimerDatabase mDatabase;
 	private long mTimerId;
 
@@ -63,14 +68,19 @@ public class EditDetailsFragment extends BaseFragment {
 		view = inflater.inflate(R.layout.fragment_edit_details, container, false);
 
 		mLabelEdit = (EditText) view.findViewById(R.id.label_edit);
-		mTargetTimeEdit = (EditText) view.findViewById(R.id.target_time_edit);
+		mMinutesPicker = (NumberPicker) view.findViewById(R.id.minutes_picker);
+		mSecondsPicker = (NumberPicker) view.findViewById(R.id.seconds_picker);
+
+		mMinutesPicker.setRange(0, 99);
+		mSecondsPicker.setRange(0, 59);
 
 		timer = mDatabase.get(mTimerId);
 
 		if (timer != null) {
 
 			mLabelEdit.setText(timer.getLabel());
-			mTargetTimeEdit.setText("" + timer.getTargetTime());
+			mMinutesPicker.setCurrent(0);
+			mSecondsPicker.setCurrent(timer.getTargetTime());
 		}
 
 		// Create text watcher
@@ -90,6 +100,15 @@ public class EditDetailsFragment extends BaseFragment {
 					int after) {}
 		};
 
+		mOnChangedListener = new OnChangedListener() {
+
+			@Override
+			public void onChanged(NumberPicker picker, int oldVal, int newVal) {
+
+				EditDetailsFragment.this.save();
+			}
+		};
+
 		return view;
 	}
 
@@ -98,17 +117,17 @@ public class EditDetailsFragment extends BaseFragment {
 
 		super.onResume();
 
-		// Add text watchers
+		// Add listeners
 		mLabelEdit.addTextChangedListener(mTextWatcher);
-		mTargetTimeEdit.addTextChangedListener(mTextWatcher);
+		mSecondsPicker.setOnChangeListener(mOnChangedListener);
 	}
 
 	@Override
 	public void onPause() {
 
-		// Remove text watchers
+		// Remove listeners
 		mLabelEdit.removeTextChangedListener(mTextWatcher);
-		mTargetTimeEdit.removeTextChangedListener(mTextWatcher);
+		mSecondsPicker.setOnChangeListener(null);
 
 		super.onPause();
 	}
@@ -159,15 +178,7 @@ public class EditDetailsFragment extends BaseFragment {
 		// Retrieve new label
 		timer.setLabel(mLabelEdit.getText().toString());
 
-		try {
-
-			// Try to retrieve new target time
-			targetTime = Integer.parseInt(mTargetTimeEdit.getText().toString());
-		}
-		catch (NumberFormatException e) {
-
-			targetTime = -1;
-		}
+		targetTime = mSecondsPicker.getCurrent();
 
 		if (targetTime > 0) {
 
