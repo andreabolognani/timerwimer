@@ -39,7 +39,7 @@ public class EditDetailsFragment extends BaseFragment {
 	private EditText mLabelEdit;
 	private NumberPicker mMinutesPicker;
 	private NumberPicker mSecondsPicker;
-	private TextWatcher mTextWatcher;
+	private TextWatcher mTextChangedListener;
 	private OnValueChangeListener mOnValueChangedListener;
 	private TimerDatabase mDatabase;
 	private long mTimerId;
@@ -85,7 +85,7 @@ public class EditDetailsFragment extends BaseFragment {
 		}
 
 		// Create text watcher
-		mTextWatcher = new TextWatcher() {
+		mTextChangedListener = new TextWatcher() {
 
 			@Override
 			public void afterTextChanged(Editable s) {
@@ -119,7 +119,7 @@ public class EditDetailsFragment extends BaseFragment {
 		super.onResume();
 
 		// Add listeners
-		mLabelEdit.addTextChangedListener(mTextWatcher);
+		mLabelEdit.addTextChangedListener(mTextChangedListener);
 		mSecondsPicker.setOnValueChangedListener(mOnValueChangedListener);
 	}
 
@@ -127,7 +127,7 @@ public class EditDetailsFragment extends BaseFragment {
 	public void onPause() {
 
 		// Remove listeners
-		mLabelEdit.removeTextChangedListener(mTextWatcher);
+		mLabelEdit.removeTextChangedListener(mTextChangedListener);
 		mSecondsPicker.setOnValueChangedListener(null);
 
 		super.onPause();
