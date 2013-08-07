@@ -52,6 +52,12 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		setContentView(R.layout.activity_main);
 
+		if (savedInstanceState == null) {
+
+			// Force view mode on startup
+			setMode(MODE_VIEW);
+		}
+
 		mDatabase = new TimerDatabase(this);
 
 		mActionBar = getSupportActionBar();
