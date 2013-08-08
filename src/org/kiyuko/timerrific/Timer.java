@@ -55,13 +55,59 @@ public class Timer {
 		return mLabel;
 	}
 
+	/**
+	 * Set target time.
+	 *
+	 * @param targetTime target time in seconds
+	 */
 	public void setTargetTime(int targetTime) {
 
 		mTargetTime = targetTime;
 	}
 
+	/**
+	 * Set target time using separate components for minutes and seconds.
+	 *
+	 * @param targetTimeMinutes minutes only
+	 * @param targetTimeSeconds seconds only
+	 */
+	public void setTargetTime(int targetTimeMinutes, int targetTimeSeconds) {
+
+		if (targetTimeMinutes < 0 || targetTimeSeconds < 0) {
+
+			return;
+		}
+
+		mTargetTime = (targetTimeMinutes * 60) + targetTimeSeconds;
+	}
+
+	/**
+	 * Get target time.
+	 *
+	 * @return target time in seconds
+	 */
 	public int getTargetTime() {
 
 		return mTargetTime;
+	}
+
+	/**
+	 * Get minutes component of target time.
+	 *
+	 * @return minutes only
+	 */
+	public int getTargetTimeMinutes() {
+
+		return (mTargetTime - mTargetTime % 60) / 60;
+	}
+
+	/**
+	 * Get seconds component of target time.
+	 *
+	 * @return seconds only (between 0 and 59)
+	 */
+	public int getTargetTimeSeconds() {
+
+		return mTargetTime % 60;
 	}
 }

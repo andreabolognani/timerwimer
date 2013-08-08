@@ -80,8 +80,8 @@ public class EditDetailsFragment extends BaseFragment {
 		if (timer != null) {
 
 			mLabelEdit.setText(timer.getLabel());
-			mMinutesPicker.setValue(0);
-			mSecondsPicker.setValue(timer.getTargetTime());
+			mMinutesPicker.setValue(timer.getTargetTimeMinutes());
+			mSecondsPicker.setValue(timer.getTargetTimeSeconds());
 		}
 
 		// Create text watcher
@@ -120,6 +120,7 @@ public class EditDetailsFragment extends BaseFragment {
 
 		// Add listeners
 		mLabelEdit.addTextChangedListener(mTextChangedListener);
+		mMinutesPicker.setOnValueChangedListener(mOnValueChangedListener);
 		mSecondsPicker.setOnValueChangedListener(mOnValueChangedListener);
 	}
 
@@ -128,6 +129,7 @@ public class EditDetailsFragment extends BaseFragment {
 
 		// Remove listeners
 		mLabelEdit.removeTextChangedListener(mTextChangedListener);
+		mMinutesPicker.setOnValueChangedListener(null);
 		mSecondsPicker.setOnValueChangedListener(null);
 
 		super.onPause();
@@ -167,7 +169,6 @@ public class EditDetailsFragment extends BaseFragment {
 	private void save() {
 
 		Timer timer;
-		int targetTime;
 
 		timer = mDatabase.get(mTimerId);
 
@@ -176,16 +177,11 @@ public class EditDetailsFragment extends BaseFragment {
 			return;
 		}
 
-		// Retrieve new label
+		// Set new label
 		timer.setLabel(mLabelEdit.getText().toString());
 
-		targetTime = mSecondsPicker.getValue();
-
-		if (targetTime > 0) {
-
-			// Set new target time if valid
-			timer.setTargetTime(targetTime);
-		}
+		// Set new target time
+		timer.setTargetTime(mMinutesPicker.getValue(), mSecondsPicker.getValue());
 
 		mDatabase.put(timer);
 
