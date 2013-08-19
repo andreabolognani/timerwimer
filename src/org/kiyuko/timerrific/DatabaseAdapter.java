@@ -19,10 +19,22 @@
 package org.kiyuko.timerrific;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class DatabaseAdapter extends SimpleCursorAdapter {
+
+	private static final String PREFERENCES_FILE = "preferences";
+	private static final String KEY_SELECTION_ID = "selection_id";
+
+	private LayoutInflater mInflater;
+	private Cursor mCursor;
 
 	public DatabaseAdapter(Context context, Cursor c) {
 
@@ -31,5 +43,79 @@ public class DatabaseAdapter extends SimpleCursorAdapter {
 			c,
 			new String[] { TimerDatabase.COLUMN_TIMER_LABEL },
 			new int[] { R.id.label });
+
+		mInflater = LayoutInflater.from(context);
+		mCursor = c;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+
+		View view;
+		TextView labelView;
+		String label;
+		long id;
+
+		if (convertView == null) {
+
+			view = mInflater.inflate(R.layout.timer, null);
+		}
+		else {
+
+			view = convertView;
+		}
+
+		android.util.Log.i(getClass().getName(), "" + position);
+
+		if (!mCursor.isClosed()) {
+
+			mCursor.moveToFirst();
+			mCursor.move(position);
+
+			id = mCursor.getLong(mCursor.getColumnIndex(TimerDatabase.COLUMN_TIMER_ID));
+			label = mCursor.getString(mCursor.getColumnIndex(TimerDatabase.COLUMN_TIMER_LABEL));
+
+			labelView = (TextView) view.findViewById(R.id.label);
+			labelView.setText(label);
+
+			if (id == getSelectionId()) {
+
+				view.setBackgroundColor(mContext.getResources().getColor(R.color.holo_blue_light));
+			}
+			else {
+
+				view.setBackgroundColor(Color.TRANSPARENT);
+			}
+		}
+
+		return view;
+	}
+
+	@Override
+	public void changeCursor(Cursor cursor) {
+
+		super.changeCursor(cursor);
+
+		mCursor = cursor;
+	}
+
+	public void setSelectionId(long selectedId) {
+
+		SharedPreferences preferences;
+
+		preferences = mContext.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+
+		preferences.edit()
+			.putLong(KEY_SELECTION_ID, selectedId)
+		.commit();
+	}
+
+	public long getSelectionId() {
+
+		SharedPreferences preferences;
+
+		preferences = mContext.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+
+		return preferences.getLong(KEY_SELECTION_ID, Timer.INVALID_ID);
 	}
 }
