@@ -21,7 +21,6 @@ package org.kiyuko.timerrific;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		mDatabase = new TimerDatabase(mActivity);
+		mDatabase = TimerDatabase.getInstance(mActivity);
 
 		// Display data taken from the database
 		mAdapter = new DatabaseAdapter(mActivity,
@@ -84,15 +83,6 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 				mListView.setSelection(position);
 			}
 		}
-	}
-
-	@Override
-	public void onDestroy() {
-
-		// Release the database connection
-		mDatabase.close();
-
-		super.onDestroy();
 	}
 
 	@Override

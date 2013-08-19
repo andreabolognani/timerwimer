@@ -52,7 +52,7 @@ public class ViewDetailsFragment extends BaseFragment {
 
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		mDatabase = new TimerDatabase(mActivity);
+		mDatabase = TimerDatabase.getInstance(mActivity);
 
 		// Display timer details
 		view = inflater.inflate(R.layout.fragment_view_details, container, false);
@@ -67,14 +67,6 @@ public class ViewDetailsFragment extends BaseFragment {
 		}
 
 		return view;
-	}
-
-	@Override
-	public void onDestroy() {
-
-		mDatabase.close();
-
-		super.onDestroy();
 	}
 
 	@Override

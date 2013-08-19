@@ -61,7 +61,7 @@ public class EditDetailsFragment extends BaseFragment {
 
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		mDatabase = new TimerDatabase(mActivity);
+		mDatabase = TimerDatabase.getInstance(mActivity);
 		mTimerId = getSelectionId();
 
 		view = inflater.inflate(R.layout.fragment_edit_details, container, false);
@@ -133,14 +133,6 @@ public class EditDetailsFragment extends BaseFragment {
 		mSecondsPicker.setOnValueChangedListener(null);
 
 		super.onPause();
-	}
-
-	@Override
-	public void onDestroy() {
-
-		mDatabase.close();
-
-		super.onDestroy();
 	}
 
 	@Override

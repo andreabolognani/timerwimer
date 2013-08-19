@@ -65,8 +65,6 @@ public class DatabaseAdapter extends SimpleCursorAdapter {
 			view = convertView;
 		}
 
-		android.util.Log.i(getClass().getName(), "" + position);
-
 		if (!mCursor.isClosed()) {
 
 			mCursor.moveToFirst();

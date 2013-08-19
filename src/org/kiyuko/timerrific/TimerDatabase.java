@@ -18,13 +18,15 @@
 
 package org.kiyuko.timerrific;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class TimerDatabase extends SQLiteOpenHelper {
+public class TimerDatabase {
 
 	private static final String DATABASE_NAME = "timerrific";
 	private static final int DATABASE_VERSION = 1;
@@ -37,25 +39,49 @@ public class TimerDatabase extends SQLiteOpenHelper {
 	private static final String[] PROJECTION = new String[] { COLUMN_TIMER_ID, COLUMN_TIMER_LABEL, COLUMN_TIMER_TIME };
 	private static final String SELECTION = "_id = ?";
 
-	public TimerDatabase(Context context) {
+	private class Helper extends SQLiteOpenHelper {
 
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+		public Helper(Context context) {
+
+			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+
+			// Create a table to store items
+	        db.execSQL("CREATE TABLE " + TABLE_TIMER +
+	                " ( " +
+	                COLUMN_TIMER_ID + " INTEGER PRIMARY KEY, " +
+	                COLUMN_TIMER_LABEL + " TEXT, " +
+	                COLUMN_TIMER_TIME + " INTEGET " +
+	                " );");
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 	}
 
-	@Override
-	public void onCreate(SQLiteDatabase db) {
+	private static TimerDatabase instance;
 
-		// Create a table to store items
-        db.execSQL("CREATE TABLE " + TABLE_TIMER +
-                " ( " +
-                COLUMN_TIMER_ID + " INTEGER PRIMARY KEY, " +
-                COLUMN_TIMER_LABEL + " TEXT, " +
-                COLUMN_TIMER_TIME + " INTEGET " +
-                " );");
+	private Helper helper;
+
+	private TimerDatabase(Context context) {
+
+		helper = new Helper(context);
 	}
 
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+	public static TimerDatabase getInstance(Context context) {
+
+		if (instance == null && context != null) {
+
+			instance = new TimerDatabase(context);
+		}
+
+		return instance;
+	}
+
 
 	public long getLowestId() {
 
@@ -63,7 +89,7 @@ public class TimerDatabase extends SQLiteOpenHelper {
 		Cursor cursor;
 		long id;
 
-		db = getReadableDatabase();
+		db = helper.getReadableDatabase();
 
 		if (db == null) {
 			return Timer.INVALID_ID;
@@ -95,7 +121,7 @@ public class TimerDatabase extends SQLiteOpenHelper {
 		Cursor cursor;
 		long id;
 
-		db = getReadableDatabase();
+		db = helper.getReadableDatabase();
 
 		if (db == null) {
 			return Timer.INVALID_ID;
@@ -136,7 +162,7 @@ public class TimerDatabase extends SQLiteOpenHelper {
 		SQLiteDatabase db;
 		Cursor cursor;
 
-		db = getReadableDatabase();
+		db = helper.getReadableDatabase();
 
 		if (db == null) {
 			return null;
@@ -162,7 +188,7 @@ public class TimerDatabase extends SQLiteOpenHelper {
 			return;
 		}
 
-		db = getWritableDatabase();
+		db = helper.getWritableDatabase();
 
 		if (db == null) {
 			return;
@@ -196,7 +222,7 @@ public class TimerDatabase extends SQLiteOpenHelper {
 		Cursor cursor;
 		Timer timer;
 
-		db = getReadableDatabase();
+		db = helper.getReadableDatabase();
 
 		if (db == null) {
 			return null;
@@ -229,7 +255,7 @@ public class TimerDatabase extends SQLiteOpenHelper {
 
 		SQLiteDatabase db;
 
-		db = getWritableDatabase();
+		db = helper.getWritableDatabase();
 
 		if (db == null) {
 			return;

@@ -58,7 +58,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 			setMode(MODE_VIEW);
 		}
 
-		mDatabase = new TimerDatabase(this);
+		mDatabase = TimerDatabase.getInstance(this);
 
 		mActionBar = getSupportActionBar();
 		mSlidingPane = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
@@ -89,14 +89,6 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 			.replace(R.id.navigation_fragment, mNavigationFragment)
 			.replace(R.id.contents_fragment, mContentsFragment)
 		.commit();
-	}
-
-	@Override
-	protected void onDestroy() {
-
-		mDatabase.close();
-
-		super.onDestroy();
 	}
 
 	@Override
