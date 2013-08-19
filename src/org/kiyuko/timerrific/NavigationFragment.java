@@ -55,11 +55,8 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		mDatabase = new TimerDatabase(mActivity);
 
 		// Display data taken from the database
-		mAdapter = new SimpleCursorAdapter(mActivity,
-				R.layout.timer,
-				mDatabase.getAllRowsCursor(),
-				new String[] { TimerDatabase.COLUMN_TIMER_LABEL },
-				new int[] { R.id.label });
+		mAdapter = new DatabaseAdapter(mActivity,
+				mDatabase.getAllRowsCursor());
 		setListAdapter(mAdapter);
 
 		return inflater.inflate(R.layout.fragment_navigation, container, false);
