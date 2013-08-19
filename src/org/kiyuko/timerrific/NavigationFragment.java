@@ -56,10 +56,10 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 
 		// Display data taken from the database
 		mAdapter = new SimpleCursorAdapter(mActivity,
-				android.R.layout.simple_list_item_activated_1,
+				R.layout.timer,
 				mDatabase.getAllRowsCursor(),
 				new String[] { TimerDatabase.COLUMN_TIMER_LABEL },
-				new int[] { android.R.id.text1 });
+				new int[] { R.id.label });
 		setListAdapter(mAdapter);
 
 		return inflater.inflate(R.layout.fragment_navigation, container, false);
