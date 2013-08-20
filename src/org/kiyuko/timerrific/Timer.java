@@ -110,4 +110,10 @@ public class Timer {
 
 		return mTargetTime % 60;
 	}
+
+	@Override
+	public String toString() {
+
+		return "(" + mId + " \"" + mLabel + "\" " + mTargetTime + ")";
+	}
 }
