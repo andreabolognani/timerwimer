@@ -55,7 +55,7 @@ public class TimerDatabase {
 	                " ( " +
 	                COLUMN_TIMER_ID + " INTEGER PRIMARY KEY, " +
 	                COLUMN_TIMER_LABEL + " TEXT, " +
-	                COLUMN_TIMER_TIME + " INTEGET " +
+	                COLUMN_TIMER_TIME + " INTEGER " +
 	                " );");
 		}
 
