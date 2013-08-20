@@ -36,9 +36,6 @@ public class TimerDatabase {
 	public static final String COLUMN_TIMER_LABEL = "label";
 	public static final String COLUMN_TIMER_TARGET_TIME = "target_time";
 
-	private static final String[] PROJECTION = new String[] { COLUMN_TIMER_ID, COLUMN_TIMER_LABEL, COLUMN_TIMER_TARGET_TIME };
-	private static final String SELECTION = "_id = ?";
-
 	private class Helper extends SQLiteOpenHelper {
 
 
@@ -107,9 +104,11 @@ public class TimerDatabase {
 
 		cursor.moveToFirst();
 
+		id = -1;
+
 		while (!cursor.isAfterLast()) {
 
-			id = cursor.getLong(0);
+			id++;
 			label = cursor.getString(1);
 			targetTime = cursor.getInt(2);
 
@@ -146,7 +145,7 @@ public class TimerDatabase {
 			android.util.Log.i(getClass().getName(), "W " + timer);
 
 			values = new ContentValues();
-			values.put(COLUMN_TIMER_ID, timer.getId());
+			values.put(COLUMN_TIMER_ID, i);
 			values.put(COLUMN_TIMER_LABEL, timer.getLabel());
 			values.put(COLUMN_TIMER_TARGET_TIME, timer.getTargetTime());
 
@@ -200,188 +199,5 @@ public class TimerDatabase {
 		mCache.remove(position);
 
 		writeCache();
-	}
-
-	public long getLowestId() {
-
-		SQLiteDatabase db;
-		Cursor cursor;
-		long id;
-
-		db = mHelper.getReadableDatabase();
-
-		if (db == null) {
-			return Timer.INVALID_ID;
-		}
-
-		cursor = db.query(TABLE_TIMER,
-				new String[] { COLUMN_TIMER_ID },
-				"_id > " + Timer.INVALID_ID,
-				null,
-				null,
-				null,
-				COLUMN_TIMER_ID);
-
-		if (!cursor.moveToFirst()) {
-
-			cursor.close();
-
-			return Timer.INVALID_ID;
-		}
-
-		id = cursor.getLong(cursor.getColumnIndex(COLUMN_TIMER_ID));
-
-		return id;
-	}
-
-	public long getHighestId() {
-
-		SQLiteDatabase db;
-		Cursor cursor;
-		long id;
-
-		db = mHelper.getReadableDatabase();
-
-		if (db == null) {
-			return Timer.INVALID_ID;
-		}
-
-		cursor = db.query(TABLE_TIMER,
-				new String[] { COLUMN_TIMER_ID },
-				"_id > " + Timer.INVALID_ID,
-				null,
-				null,
-				null,
-				COLUMN_TIMER_ID);
-
-		if (!cursor.moveToLast()) {
-
-			cursor.close();
-
-			return Timer.INVALID_ID;
-		}
-
-		id = cursor.getLong(cursor.getColumnIndex(COLUMN_TIMER_ID));
-
-		return id;
-	}
-
-	public long newId() {
-
-		return getHighestId() + 1;
-	}
-
-	public boolean isEmpty() {
-
-		return getHighestId() == Timer.INVALID_ID;
-	}
-
-	public Cursor getAllRowsCursor() {
-
-		SQLiteDatabase db;
-		Cursor cursor;
-
-		db = mHelper.getReadableDatabase();
-
-		if (db == null) {
-			return null;
-		}
-
-		cursor = db.query(TABLE_TIMER,
-				PROJECTION,
-				"_id >= 0",
-				null,
-				null,
-				null,
-				COLUMN_TIMER_ID);
-
-		return cursor;
-	}
-
-	public void put(Timer timer) {
-
-		SQLiteDatabase db;
-		ContentValues values;
-
-		if (timer == null) {
-			return;
-		}
-
-		db = mHelper.getWritableDatabase();
-
-		if (db == null) {
-			return;
-		}
-
-		values = new ContentValues();
-		values.put(COLUMN_TIMER_ID, timer.getId());
-		values.put(COLUMN_TIMER_LABEL, timer.getLabel());
-		values.put(COLUMN_TIMER_TARGET_TIME, timer.getTargetTime());
-
-		if (get(timer.getId()) != null) {
-
-			// Update an existing timer
-			db.update(TABLE_TIMER,
-					values,
-					SELECTION,
-					new String[] { "" + timer.getId() });
-		}
-		else {
-
-			// Add a new timer
-			db.insert(TABLE_TIMER,
-					null,
-					values);
-		}
-	}
-
-	public Timer get(long id) {
-
-		SQLiteDatabase db;
-		Cursor cursor;
-		Timer timer;
-
-		db = mHelper.getReadableDatabase();
-
-		if (db == null) {
-			return null;
-		}
-
-		// Look for an existing timer with the correct id
-		cursor = db.query(TABLE_TIMER,
-				PROJECTION,
-				SELECTION,
-				new String[] { "" + id },
-				null,
-				null,
-				null);
-
-		if (!cursor.moveToFirst()) {
-
-			cursor.close();
-
-			return null;
-		}
-
-		timer = new Timer(id,
-				cursor.getString(cursor.getColumnIndex(COLUMN_TIMER_LABEL)),
-				cursor.getInt(cursor.getColumnIndex(COLUMN_TIMER_TARGET_TIME)));
-
-		return timer;
-	}
-
-	public void remove(long id) {
-
-		SQLiteDatabase db;
-
-		db = mHelper.getWritableDatabase();
-
-		if (db == null) {
-			return;
-		}
-
-		db.delete(TABLE_TIMER,
-				SELECTION,
-				new String[] { "" + id });
 	}
 }

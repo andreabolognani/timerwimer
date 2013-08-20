@@ -65,7 +65,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 		mNavigationFragment = new NavigationFragment();
 
-		if (mDatabase.isEmpty()) {
+		if (mDatabase.size() < 1) {
 
 			mContentsFragment = new MessageFragment();
 		}
@@ -164,11 +164,11 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	}
 
 	@Override
-	public void onSelectionChanged(long oldId, long newId) {
+	public void onSelectionChanged(int oldPosition, int newPosition) {
 
 		setMode(MODE_VIEW);
 
-		if (oldId != newId) {
+		if (oldPosition != newPosition) {
 
 			// Replace contents fragment if selection has actually changed
 			mContentsFragment = new ViewDetailsFragment();
@@ -191,7 +191,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	}
 
 	@Override
-	public void onItemAdded(long id) {
+	public void onItemAdded(int position) {
 
 		setMode(MODE_EDIT);
 
@@ -216,7 +216,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		try {
 
 			// Notify navigation fragment
-			((DatabaseListener) mNavigationFragment).onItemAdded(id);
+			((DatabaseListener) mNavigationFragment).onItemAdded(position);
 		}
 		catch (ClassCastException e) {
 
@@ -226,11 +226,11 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	}
 
 	@Override
-	public void onItemRemoved(long id) {
+	public void onItemRemoved(int position) {
 
 		setMode(MODE_VIEW);
 
-		if (mDatabase.isEmpty()) {
+		if (mDatabase.size() < 1) {
 
 			mContentsFragment = new MessageFragment();
 		}
@@ -258,7 +258,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		try {
 
 			// Notify navigation fragment
-			((DatabaseListener) mNavigationFragment).onItemRemoved(id);
+			((DatabaseListener) mNavigationFragment).onItemRemoved(position);
 		}
 		catch (ClassCastException e) {
 
@@ -268,14 +268,14 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	}
 
 	@Override
-	public void onItemModified(long id) {
+	public void onItemModified(int position) {
 
 		updateActionBar();
 
 		try {
 
 			// Notify navigation fragment
-			((DatabaseListener) mNavigationFragment).onItemModified(id);
+			((DatabaseListener) mNavigationFragment).onItemModified(position);
 		}
 		catch (ClassCastException e) {
 
@@ -343,19 +343,19 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	 */
 	private void addItem() {
 
-		long id;
+		int position;
 
-		id = mDatabase.newId();
+		position = mDatabase.size();
 
 		// Insert a new timer into the database
-		mDatabase.put(new Timer(id,
+		mDatabase.add(new Timer(position,
 				getString(R.string.no_label),
 				30));
 
 		// Change selection
-		setSelectionId(id);
+		setSelectedPosition(mDatabase.size() - 1);
 
-		onItemAdded(id);
+		onItemAdded(position);
 	}
 
 	/**
@@ -363,17 +363,17 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 	 */
 	private void removeItem() {
 
-		long id;
+		int position;
 
-		id = getSelectionId();
+		position = getSelectedPosition();
 
 		// Remove selected timer from the database
-		mDatabase.remove(id);
+		mDatabase.remove(position);
 
 		// Invalidate selection
-		setSelectionId(findSelectionCandidate(id));
+		setSelectedPosition(findSelectionCandidate(position));
 
-		onItemRemoved(id);
+		onItemRemoved(position);
 	}
 
 	/**
@@ -428,7 +428,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 			mActionBar.setHomeButtonEnabled(true);
 			mActionBar.setDisplayHomeAsUpEnabled(true);
 
-			timer = mDatabase.get(getSelectionId());
+			timer = mDatabase.get(getSelectedPosition());
 
 			if (timer != null) {
 
@@ -469,35 +469,35 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		}
 	}
 
-	private long findSelectionCandidate(long oldSelectionId) {
+	private int findSelectionCandidate(int oldSelectedPosition) {
 
-		long id;
-		long lowestId;
-		long highestId;
+		int position;
+		int lowestPosition;
+		int highestPosition;
 
-		lowestId = mDatabase.getLowestId();
-		highestId = mDatabase.getHighestId();
+		lowestPosition = 0;
+		highestPosition = mDatabase.size() - 1;
 
 		// Look forward for a selection candidate
-		for (id = oldSelectionId; id <= highestId; id++) {
+		for (position = oldSelectedPosition; position <= highestPosition; position++) {
 
-			if (mDatabase.get(id) != null) {
+			if (mDatabase.get(position) != null) {
 
-				return id;
+				return position;
 			}
 		}
 
 		// Look backwards for a selection candidate
-		for (id = oldSelectionId; id >= lowestId; id--) {
+		for (position = oldSelectedPosition; position >= lowestPosition; position--) {
 
-			if (mDatabase.get(id) != null) {
+			if (mDatabase.get(position) != null) {
 
-				return id;
+				return position;
 			}
 		}
 
 		// Fall back
-		return Timer.INVALID_ID;
+		return 0;
 	}
 
 	/**

@@ -42,7 +42,7 @@ public class EditDetailsFragment extends BaseFragment {
 	private TextWatcher mTextChangedListener;
 	private OnValueChangeListener mOnValueChangedListener;
 	private TimerDatabase mDatabase;
-	private long mTimerId;
+	private int mTimerPosition;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -62,7 +62,7 @@ public class EditDetailsFragment extends BaseFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 
 		mDatabase = TimerDatabase.getInstance(mActivity);
-		mTimerId = getSelectionId();
+		mTimerPosition = getSelectedPosition();
 
 		view = inflater.inflate(R.layout.fragment_edit_details, container, false);
 
@@ -75,7 +75,7 @@ public class EditDetailsFragment extends BaseFragment {
 		mSecondsPicker.setMinValue(0);
 		mSecondsPicker.setMaxValue(59);
 
-		timer = mDatabase.get(mTimerId);
+		timer = mDatabase.get(mTimerPosition);
 
 		if (timer != null) {
 
@@ -162,7 +162,7 @@ public class EditDetailsFragment extends BaseFragment {
 
 		Timer timer;
 
-		timer = mDatabase.get(mTimerId);
+		timer = mDatabase.get(mTimerPosition);
 
 		if (timer == null) {
 
@@ -175,12 +175,12 @@ public class EditDetailsFragment extends BaseFragment {
 		// Set new target time
 		timer.setTargetTime(mMinutesPicker.getValue(), mSecondsPicker.getValue());
 
-		mDatabase.put(timer);
+		mDatabase.set(mTimerPosition, timer);
 
 		try {
 
 			// Notify activity
-			((DatabaseListener) mActivity).onItemModified(mTimerId);
+			((DatabaseListener) mActivity).onItemModified(mTimerPosition);
 		}
 		catch (ClassCastException e) {
 

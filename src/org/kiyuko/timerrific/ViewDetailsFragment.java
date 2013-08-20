@@ -59,7 +59,7 @@ public class ViewDetailsFragment extends BaseFragment {
 
 		mCurrentTimeView = (TextView) view.findViewById(R.id.current_time_view);
 
-		timer = mDatabase.get(getSelectionId());
+		timer = mDatabase.get(getSelectedPosition());
 
 		if (timer != null) {
 

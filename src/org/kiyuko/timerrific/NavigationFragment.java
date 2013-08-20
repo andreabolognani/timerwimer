@@ -20,7 +20,6 @@ package org.kiyuko.timerrific;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 
 	private BaseFragmentActivity mActivity;
 	private ListView mListView;
-	private TimerDatabase mDatabase;
 	private DatabaseAdapter mAdapter;
 
 	@Override
@@ -50,8 +48,6 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 			Bundle savedInstanceState) {
 
 		super.onCreateView(inflater, container, savedInstanceState);
-
-		mDatabase = TimerDatabase.getInstance(mActivity);
 
 		// Display data taken from the database
 		mAdapter = new DatabaseAdapter(mActivity);
@@ -69,9 +65,9 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 
 		mListView = getListView();
 
-		if (getSelectionId() != Timer.INVALID_ID) {
+		position = getSelectedPosition();
 
-			position = getPositionFromId(getSelectionId());
+		if (position >= 0) {
 
 			// Restore visual feedback
 			mListView.setItemChecked(position, true);
@@ -110,15 +106,15 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
-		long oldId;
-		long newId;
+		int oldPosition;
+		int newPosition;
 
 		super.onListItemClick(l, v, position, id);
 
-		oldId = getSelectionId();
-		newId = id;
+		oldPosition = getSelectedPosition();
+		newPosition = position;
 
-		setSelectionId(id);
+		setSelectedPosition(position);
 
 		// Give visual feedback
 		mListView.setItemChecked(position, true);
@@ -126,7 +122,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		try {
 
 			// Notify the activity
-			((SelectionListener) mActivity).onSelectionChanged(oldId, newId);
+			((SelectionListener) mActivity).onSelectionChanged(oldPosition, newPosition);
 		}
 		catch (ClassCastException e) {
 
@@ -136,14 +132,10 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	}
 
 	@Override
-	public void onItemAdded(long id) {
-
-		int position;
+	public void onItemAdded(int position) {
 
 		// Refresh data
 //		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
-
-		position = getPositionFromId(id);
 
 		// Update scroll position and visual feedback
 		mListView.setItemChecked(position, true);
@@ -151,14 +143,10 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	}
 
 	@Override
-	public void onItemRemoved(long id) {
-
-		int position;
+	public void onItemRemoved(int position) {
 
 		// Refresh data
 //		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
-
-		position = getPositionFromId(getSelectionId());
 
 		// Give visual feedback
 		mListView.setItemChecked(position, true);
@@ -171,29 +159,9 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	}
 
 	@Override
-	public void onItemModified(long id) {
+	public void onItemModified(int position) {
 
 		// Refresh data
 //		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
-	}
-
-	private int getPositionFromId(long id) {
-
-		int position;
-		int count;
-
-		position = -1;
-		count = mListView.getCount();
-
-		for (int i = 0; i < count; i++) {
-
-			if (mListView.getItemIdAtPosition(i) == id) {
-
-				position = i;
-				break;
-			}
-		}
-
-		return position;
 	}
 }

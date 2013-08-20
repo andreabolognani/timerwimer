@@ -30,7 +30,7 @@ import android.widget.TextView;
 public class DatabaseAdapter extends BaseAdapter {
 
 	private static final String PREFERENCES_FILE = "preferences";
-	private static final String KEY_SELECTION_ID = "selection_id";
+	private static final String KEY_SELECTED_POSITION = "selected_position";
 
 	private Context mContext;
 	private TimerDatabase mDatabase;
@@ -72,7 +72,7 @@ public class DatabaseAdapter extends BaseAdapter {
 		labelView = (TextView) view.findViewById(R.id.label);
 		labelView.setText(timer.getLabel());
 
-		if (timer.getId() == getSelectionId()) {
+		if (position == getSelectedPosition()) {
 
 			view.setBackgroundColor(mContext.getResources().getColor(R.color.holo_blue_light));
 		}
@@ -82,26 +82,6 @@ public class DatabaseAdapter extends BaseAdapter {
 		}
 
 		return view;
-	}
-
-	public void setSelectionId(long selectedId) {
-
-		SharedPreferences preferences;
-
-		preferences = mContext.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
-
-		preferences.edit()
-			.putLong(KEY_SELECTION_ID, selectedId)
-		.commit();
-	}
-
-	public long getSelectionId() {
-
-		SharedPreferences preferences;
-
-		preferences = mContext.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
-
-		return preferences.getLong(KEY_SELECTION_ID, Timer.INVALID_ID);
 	}
 
 	@Override
@@ -114,5 +94,25 @@ public class DatabaseAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 
 		return mDatabase.get(position).getId();
+	}
+
+	public void setSelectedPosition(int selectedPosition) {
+
+		SharedPreferences preferences;
+
+		preferences = mContext.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+
+		preferences.edit()
+			.putInt(KEY_SELECTED_POSITION, selectedPosition)
+		.commit();
+	}
+
+	public int getSelectedPosition() {
+
+		SharedPreferences preferences;
+
+		preferences = mContext.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+
+		return preferences.getInt(KEY_SELECTED_POSITION, -1);
 	}
 }

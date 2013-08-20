@@ -26,25 +26,25 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class BaseFragment extends SherlockFragment {
 
 	private static final String PREFERENCES_FILE = "preferences";
-	private static final String KEY_SELECTION_ID = "selection_id";
+	private static final String KEY_SELECTED_POSITION = "selected_position";
 
-	public void setSelectionId(long selectedId) {
+	public void setSelectedPosition(int selectedPosition) {
 
 		SharedPreferences preferences;
 
 		preferences = getSherlockActivity().getSharedPreferences(PREFERENCES_FILE, SherlockActivity.MODE_PRIVATE);
 
 		preferences.edit()
-			.putLong(KEY_SELECTION_ID, selectedId)
+			.putInt(KEY_SELECTED_POSITION, selectedPosition)
 		.commit();
 	}
 
-	public long getSelectionId() {
+	public int getSelectedPosition() {
 
 		SharedPreferences preferences;
 
 		preferences = getSherlockActivity().getSharedPreferences(PREFERENCES_FILE, SherlockActivity.MODE_PRIVATE);
 
-		return preferences.getLong(KEY_SELECTION_ID, Timer.INVALID_ID);
+		return preferences.getInt(KEY_SELECTED_POSITION, -1);
 	}
 }
