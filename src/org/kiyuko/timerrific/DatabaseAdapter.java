@@ -20,32 +20,35 @@ package org.kiyuko.timerrific;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class DatabaseAdapter extends SimpleCursorAdapter {
+public class DatabaseAdapter extends BaseAdapter {
 
 	private static final String PREFERENCES_FILE = "preferences";
 	private static final String KEY_SELECTION_ID = "selection_id";
 
+	private Context mContext;
+	private TimerDatabase mDatabase;
 	private LayoutInflater mInflater;
-	private Cursor mCursor;
 
-	public DatabaseAdapter(Context context, Cursor c) {
+	public DatabaseAdapter(Context context) {
 
-		super(context,
-			R.layout.timer,
-			c,
-			new String[] { TimerDatabase.COLUMN_TIMER_LABEL },
-			new int[] { R.id.label });
+		super();
 
+		mContext = context;
+		mDatabase = TimerDatabase.getInstance(context);
 		mInflater = LayoutInflater.from(context);
-		mCursor = c;
+	}
+
+	@Override
+	public int getCount() {
+
+		return mDatabase.size();
 	}
 
 	@Override
@@ -53,8 +56,7 @@ public class DatabaseAdapter extends SimpleCursorAdapter {
 
 		View view;
 		TextView labelView;
-		String label;
-		long id;
+		Timer timer;
 
 		if (convertView == null) {
 
@@ -65,36 +67,21 @@ public class DatabaseAdapter extends SimpleCursorAdapter {
 			view = convertView;
 		}
 
-		if (!mCursor.isClosed()) {
+		timer = mDatabase.get(position);
 
-			mCursor.moveToFirst();
-			mCursor.move(position);
+		labelView = (TextView) view.findViewById(R.id.label);
+		labelView.setText(timer.getLabel());
 
-			id = mCursor.getLong(mCursor.getColumnIndex(TimerDatabase.COLUMN_TIMER_ID));
-			label = mCursor.getString(mCursor.getColumnIndex(TimerDatabase.COLUMN_TIMER_LABEL));
+		if (timer.getId() == getSelectionId()) {
 
-			labelView = (TextView) view.findViewById(R.id.label);
-			labelView.setText(label);
+			view.setBackgroundColor(mContext.getResources().getColor(R.color.holo_blue_light));
+		}
+		else {
 
-			if (id == getSelectionId()) {
-
-				view.setBackgroundColor(mContext.getResources().getColor(R.color.holo_blue_light));
-			}
-			else {
-
-				view.setBackgroundColor(Color.TRANSPARENT);
-			}
+			view.setBackgroundColor(Color.TRANSPARENT);
 		}
 
 		return view;
-	}
-
-	@Override
-	public void changeCursor(Cursor cursor) {
-
-		super.changeCursor(cursor);
-
-		mCursor = cursor;
 	}
 
 	public void setSelectionId(long selectedId) {
@@ -115,5 +102,17 @@ public class DatabaseAdapter extends SimpleCursorAdapter {
 		preferences = mContext.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
 
 		return preferences.getLong(KEY_SELECTION_ID, Timer.INVALID_ID);
+	}
+
+	@Override
+	public Object getItem(int position) {
+
+		return mDatabase.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+
+		return mDatabase.get(position).getId();
 	}
 }

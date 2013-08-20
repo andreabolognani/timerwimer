@@ -35,7 +35,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	private BaseFragmentActivity mActivity;
 	private ListView mListView;
 	private TimerDatabase mDatabase;
-	private CursorAdapter mAdapter;
+	private DatabaseAdapter mAdapter;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -54,8 +54,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		mDatabase = TimerDatabase.getInstance(mActivity);
 
 		// Display data taken from the database
-		mAdapter = new DatabaseAdapter(mActivity,
-				mDatabase.getAllRowsCursor());
+		mAdapter = new DatabaseAdapter(mActivity);
 		setListAdapter(mAdapter);
 
 		return inflater.inflate(R.layout.fragment_navigation, container, false);
@@ -142,7 +141,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		int position;
 
 		// Refresh data
-		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+//		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
 
 		position = getPositionFromId(id);
 
@@ -157,7 +156,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 		int position;
 
 		// Refresh data
-		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+//		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
 
 		position = getPositionFromId(getSelectionId());
 
@@ -175,7 +174,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	public void onItemModified(long id) {
 
 		// Refresh data
-		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+//		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
 	}
 
 	private int getPositionFromId(long id) {
