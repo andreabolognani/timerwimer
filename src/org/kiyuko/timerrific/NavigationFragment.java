@@ -135,7 +135,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	public void onItemAdded(int position) {
 
 		// Refresh data
-//		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+		mAdapter.notifyDataSetChanged();
 
 		// Update scroll position and visual feedback
 		mListView.setItemChecked(position, true);
@@ -146,7 +146,7 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	public void onItemRemoved(int position) {
 
 		// Refresh data
-//		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+		mAdapter.notifyDataSetChanged();
 
 		// Give visual feedback
 		mListView.setItemChecked(position, true);
@@ -162,6 +162,6 @@ public class NavigationFragment extends BaseListFragment implements DatabaseList
 	public void onItemModified(int position) {
 
 		// Refresh data
-//		mAdapter.changeCursor(mDatabase.getAllRowsCursor());
+		mAdapter.notifyDataSetChanged();
 	}
 }
