@@ -10,6 +10,8 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:minHeight="48dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
