@@ -20,29 +20,19 @@ package org.kiyuko.timerrific;
 
 public class Timer {
 
-	public static final long INVALID_ID = -1;
-
-	private long mId;
 	private String mLabel;
 	private int mTargetTime;
 
 	public Timer() {
 
-		mId = INVALID_ID;
 		mLabel = "";
 		mTargetTime = 0;
 	}
 
-	public Timer(long id, String label, int targetTime) {
+	public Timer(String label, int targetTime) {
 
-		mId = id;
 		mLabel = label;
 		mTargetTime = targetTime;
-	}
-
-	public long getId() {
-
-		return mId;
 	}
 
 	public void setLabel(String label) {
@@ -114,6 +104,6 @@ public class Timer {
 	@Override
 	public String toString() {
 
-		return "(" + mId + " \"" + mLabel + "\" " + mTargetTime + ")";
+		return "(\"" + mLabel + "\" " + mTargetTime + ")";
 	}
 }

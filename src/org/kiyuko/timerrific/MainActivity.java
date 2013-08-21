@@ -348,9 +348,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		position = mDatabase.size();
 
 		// Insert a new timer into the database
-		mDatabase.add(new Timer(position,
-				getString(R.string.no_label),
-				30));
+		mDatabase.add(new Timer(getString(R.string.no_label), 30));
 
 		// Change selection
 		setSelectedPosition(mDatabase.size() - 1);

@@ -32,7 +32,7 @@ public class TimerDatabase {
 	private static final int DATABASE_VERSION = 1;
 
 	public static final String TABLE_TIMER = "timer";
-	public static final String COLUMN_TIMER_ID = "_id";
+	public static final String COLUMN_TIMER_POSITION = "position";
 	public static final String COLUMN_TIMER_LABEL = "label";
 	public static final String COLUMN_TIMER_TARGET_TIME = "target_time";
 
@@ -50,7 +50,7 @@ public class TimerDatabase {
 			// Create a table to store items
 	        db.execSQL("CREATE TABLE " + TABLE_TIMER +
 	                " ( " +
-	                COLUMN_TIMER_ID + " INTEGER PRIMARY KEY, " +
+	                COLUMN_TIMER_POSITION + " INTEGER PRIMARY KEY, " +
 	                COLUMN_TIMER_LABEL + " TEXT, " +
 	                COLUMN_TIMER_TARGET_TIME + " INTEGER " +
 	                " );");
@@ -86,7 +86,6 @@ public class TimerDatabase {
 		SQLiteDatabase db;
 		Cursor cursor;
 		Timer timer;
-		long id;
 		String label;
 		int targetTime;
 
@@ -95,24 +94,21 @@ public class TimerDatabase {
 		db = mHelper.getReadableDatabase();
 
 		cursor = db.query(TABLE_TIMER,
-				new String[] { COLUMN_TIMER_ID, COLUMN_TIMER_LABEL, COLUMN_TIMER_TARGET_TIME },
-				"_id > " + Timer.INVALID_ID,
+				new String[] { COLUMN_TIMER_POSITION, COLUMN_TIMER_LABEL, COLUMN_TIMER_TARGET_TIME },
 				null,
 				null,
 				null,
-				COLUMN_TIMER_ID);
+				null,
+				COLUMN_TIMER_POSITION);
 
 		cursor.moveToFirst();
 
-		id = -1;
-
 		while (!cursor.isAfterLast()) {
 
-			id++;
 			label = cursor.getString(1);
 			targetTime = cursor.getInt(2);
 
-			timer = new Timer(id, label, targetTime);
+			timer = new Timer(label, targetTime);
 
 			android.util.Log.i(getClass().getName(), "R " + timer);
 
@@ -145,7 +141,7 @@ public class TimerDatabase {
 			android.util.Log.i(getClass().getName(), "W " + timer);
 
 			values = new ContentValues();
-			values.put(COLUMN_TIMER_ID, i);
+			values.put(COLUMN_TIMER_POSITION, i);
 			values.put(COLUMN_TIMER_LABEL, timer.getLabel());
 			values.put(COLUMN_TIMER_TARGET_TIME, timer.getTargetTime());
 

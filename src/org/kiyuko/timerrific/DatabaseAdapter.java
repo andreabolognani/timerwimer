@@ -93,7 +93,7 @@ public class DatabaseAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 
-		return mDatabase.get(position).getId();
+		return position;
 	}
 
 	public void setSelectedPosition(int selectedPosition) {
