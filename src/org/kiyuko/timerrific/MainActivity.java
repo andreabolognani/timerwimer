@@ -101,8 +101,18 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		}
 		else {
 
+			mDatabase.commit();
+
 			finish();
 		}
+	}
+
+	@Override
+	protected void onPause() {
+
+		mDatabase.commit();
+
+		super.onPause();
 	}
 
 	@Override

@@ -175,8 +175,6 @@ public class EditDetailsFragment extends BaseFragment {
 		// Set new target time
 		timer.setTargetTime(mMinutesPicker.getValue(), mSecondsPicker.getValue());
 
-		mDatabase.set(mTimerPosition, timer);
-
 		try {
 
 			// Notify activity

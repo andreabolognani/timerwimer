@@ -110,8 +110,6 @@ public class TimerDatabase {
 
 			timer = new Timer(label, targetTime);
 
-			android.util.Log.i(getClass().getName(), "R " + timer);
-
 			mCache.add(timer);
 
 			cursor.move(1);
@@ -137,8 +135,6 @@ public class TimerDatabase {
 		for (int i = 0; i < mCache.size(); i++) {
 
 			timer = mCache.get(i);
-
-			android.util.Log.i(getClass().getName(), "W " + timer);
 
 			values = new ContentValues();
 			values.put(COLUMN_TIMER_POSITION, i);
@@ -176,8 +172,6 @@ public class TimerDatabase {
 	public void add(Timer timer) {
 
 		mCache.add(timer);
-
-		writeCache();
 	}
 
 	public void set(int position, Timer timer) {
@@ -185,14 +179,15 @@ public class TimerDatabase {
 		if (position >= 0 && position < mCache.size()) {
 
 			mCache.set(position, timer);
-
-			writeCache();
 		}
 	}
 
 	public void remove(int position) {
 
 		mCache.remove(position);
+	}
+
+	public void commit() {
 
 		writeCache();
 	}
