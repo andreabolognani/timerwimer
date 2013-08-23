@@ -32,7 +32,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class ViewDetailsFragment extends BaseFragment {
 
 	private BaseFragmentActivity mActivity;
-	private TextView mCurrentTimeView;
+	private TextView mRemainingTimeView;
 	private TimerDatabase mDatabase;
 
 	@Override
@@ -57,13 +57,13 @@ public class ViewDetailsFragment extends BaseFragment {
 		// Display timer details
 		view = inflater.inflate(R.layout.fragment_view_details, container, false);
 
-		mCurrentTimeView = (TextView) view.findViewById(R.id.current_time_view);
+		mRemainingTimeView = (TextView) view.findViewById(R.id.remaining_time_view);
 
 		timer = mDatabase.get(getSelectedPosition());
 
 		if (timer != null) {
 
-			mCurrentTimeView.setText(getString(R.string.target_time) + " " + timer.getTargetTime());
+			mRemainingTimeView.setText("" + timer.getRemainingTimeMinutes() + " : " + timer.getRemainingTimeSeconds());
 		}
 
 		return view;

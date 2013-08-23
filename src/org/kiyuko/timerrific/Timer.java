@@ -22,17 +22,20 @@ public class Timer {
 
 	private String mLabel;
 	private int mTargetTime;
+	private int mRemainingTime;
 
 	public Timer() {
 
 		mLabel = "";
 		mTargetTime = 0;
+		mRemainingTime = 0;
 	}
 
 	public Timer(String label, int targetTime) {
 
 		mLabel = label;
 		mTargetTime = targetTime;
+		mRemainingTime = mTargetTime;
 	}
 
 	public void setLabel(String label) {
@@ -53,6 +56,7 @@ public class Timer {
 	public void setTargetTime(int targetTime) {
 
 		mTargetTime = targetTime;
+		mRemainingTime = mTargetTime;
 	}
 
 	/**
@@ -69,6 +73,7 @@ public class Timer {
 		}
 
 		mTargetTime = (targetTimeMinutes * 60) + targetTimeSeconds;
+		mRemainingTime = mTargetTime;
 	}
 
 	/**
@@ -99,6 +104,55 @@ public class Timer {
 	public int getTargetTimeSeconds() {
 
 		return mTargetTime % 60;
+	}
+
+	/**
+	 * Set remaining time.
+	 *
+	 * @param remainingTime remaining time in seconds
+	 */
+	public void setRemainingTime(int remainingTime) {
+
+		mRemainingTime = remainingTime;
+
+		if (mRemainingTime > mTargetTime) {
+
+			mRemainingTime = mTargetTime;
+		}
+		else if (mRemainingTime < 0) {
+
+			mRemainingTime = 0;
+		}
+	}
+
+	/**
+	 * Get remaining time.
+	 *
+	 * @return remaining time in seconds
+	 */
+	public int getRemainingTime() {
+
+		return mRemainingTime;
+	}
+
+	/**
+	 * Get minutes component of remaining time.
+	 *
+	 * @return minutes only
+	 */
+	public int getRemainingTimeMinutes() {
+
+		return (mRemainingTime - mRemainingTime % 60) / 60;
+	}
+
+	/**
+	 * Get seconds component of remaining time.
+	 *
+	 * @return seconds only (between 0 and 59)
+	 */
+	public int getRemainingTimeSeconds() {
+
+		return mRemainingTime % 60;
 	}
 
 	@Override
