@@ -18,6 +18,8 @@
 
 package org.kiyuko.timerrific;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -151,7 +153,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 
 			case R.id.action_remove:
 
-				removeItem();
+				promptRemoveItem();
 
 				return true;
 
@@ -364,6 +366,35 @@ public class MainActivity extends BaseFragmentActivity implements ViewTreeObserv
 		setSelectedPosition(mDatabase.size() - 1);
 
 		onItemAdded(position);
+	}
+
+	/**
+	 * Prompt the user to confirm timer removal.
+	 */
+	private void promptRemoveItem() {
+
+		AlertDialog.Builder builder;
+
+		builder = new AlertDialog.Builder(this);
+
+		builder.setTitle(R.string.question_remove_timer);
+		builder.setMessage(R.string.warning_action_cannot_be_undone);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				// Actually remove the timer
+				removeItem();
+			}
+		});
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {}
+		});
+
+		builder.create().show();
 	}
 
 	/**

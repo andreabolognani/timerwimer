@@ -11,6 +11,10 @@
     <string name="label">Label</string>
     <string name="target_time">Target time</string>
     <string name="no_label">No label</string>
+    <string name="question_remove_timer">Remove timer?</string>
+    <string name="warning_action_cannot_be_undone">This action cannot be undone</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="not_implemented">Not implemented</string>
     <string name="time_separator">:</string>
 
