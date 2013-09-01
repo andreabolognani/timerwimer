@@ -155,6 +155,64 @@ public class Timer {
 		return mRemainingTime % 60;
 	}
 
+	/**
+	 * Get minutes component of remaining time for display.
+	 *
+	 * @return minutes only
+	 */
+	public String getRemainingTimeMinutesForDisplay() {
+
+		String result;
+		int minutes;
+
+		minutes = getRemainingTimeMinutes();
+
+		if (minutes < 10) {
+
+			result = "0" + minutes;
+		}
+		else {
+
+			result = "" + minutes;
+		}
+
+		return result;
+	}
+
+	/**
+	 * Get seconds component of remaining time for display.
+	 *
+	 * @return seconds only (between 0 and 59)
+	 */
+	public String getRemainingTimeSecondsForDisplay() {
+
+		String result;
+		int seconds;
+
+		seconds = getRemainingTimeSeconds();
+
+		if (seconds < 10) {
+
+			result = "0" + seconds;
+		}
+		else {
+
+			result = "" + seconds;
+		}
+
+		return result;
+	}
+
+	/**
+	 * Get remaining time for display.
+	 *
+	 * @return remaining time
+	 */
+	public String getRemainingTimeForDisplay() {
+
+		return getRemainingTimeMinutesForDisplay() + ":" + getRemainingTimeSecondsForDisplay();
+	}
+
 	@Override
 	public String toString() {
 

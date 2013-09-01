@@ -74,7 +74,7 @@ public class DatabaseAdapter extends BaseAdapter {
 		remainingTimeView = (TextView) view.findViewById(R.id.remaining_time);
 
 		labelView.setText(timer.getLabel());
-		remainingTimeView.setText("" + timer.getRemainingTimeMinutes() + ":" + timer.getRemainingTimeSeconds());
+		remainingTimeView.setText(timer.getRemainingTimeForDisplay());
 
 		if (position == getSelectedPosition()) {
 

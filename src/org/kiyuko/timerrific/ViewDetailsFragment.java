@@ -63,7 +63,7 @@ public class ViewDetailsFragment extends BaseFragment {
 
 		if (timer != null) {
 
-			mRemainingTimeView.setText("" + timer.getRemainingTimeMinutes() + " : " + timer.getRemainingTimeSeconds());
+			mRemainingTimeView.setText(timer.getRemainingTimeForDisplay());
 		}
 
 		return view;
