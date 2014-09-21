@@ -16,7 +16,17 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-var Timer = function() {};
+var Timer = function() {
+
+	this._state = Timer.State.STOPPED;
+};
+
+Timer.State = {
+	STOPPED:  "STOPPED",
+	RUNNING:  "RUNNING",
+	PAUSED:   "PAUSED",
+	FINISHED: "FINISHED"
+};
 
 Timer.now = function() {
 
@@ -25,12 +35,20 @@ Timer.now = function() {
 
 Timer.prototype.start = function() {
 
+	this._state = Timer.State.RUNNING;
+
 	this._startTime = Timer.now();
+
 	this._update();
 	this._interval = setInterval(this._update.bind(this), 100);
 };
 
 Timer.prototype.stop = function() {
+
+	this._state = Timer.State.STOPPED;
+
+	this._elapsedSeconds = 0;
+	this._remainingSeconds = this._targetSeconds;
 
 	clearInterval(this._interval);
 };
@@ -41,6 +59,7 @@ Timer.prototype._update = function() {
 	this._remainingSeconds = this._targetSeconds - this._elapsedSeconds;
 
 	document.getElementById("label").innerHTML = this.getLabel();
+	document.getElementById("state").innerHTML = this.getState();
 	document.getElementById("targetSeconds").innerHTML = this.getTargetSeconds();
 	document.getElementById("elapsedSeconds").innerHTML = this.getElapsedSeconds();
 	document.getElementById("remainingSeconds").innerHTML = this.getRemainingSeconds();
@@ -64,6 +83,11 @@ Timer.prototype.setTargetSeconds = function(targetSeconds) {
 Timer.prototype.getTargetSeconds = function() {
 
 	return this._targetSeconds;
+};
+
+Timer.prototype.getState = function() {
+
+	return this._state;
 };
 
 Timer.prototype.getElapsedSeconds = function() {
