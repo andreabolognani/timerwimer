@@ -18,7 +18,12 @@
 
 var Timer = function()
 {
+	this._label = "";
 	this._state = Timer.State.STOPPED;
+
+	this._targetSeconds = 0;
+	this._elapsedSeconds = 0;
+	this._remainingSeconds = 0;
 };
 
 Timer.State =
@@ -43,20 +48,16 @@ Timer.prototype.start = function()
 
 		this._startTime = Timer.now();
 
-		this._update();
 		this._interval = setInterval(this._update.bind(this), 100);
 	}
 };
 
 Timer.prototype._finish = function()
 {
-	if (this.getState() == Timer.State.RUNNING)
-	{
-		this._state = Timer.State.FINISHED;
+	this._state = Timer.State.FINISHED;
 
-		clearInterval(this._interval);
-		this._interval = null;
-	}
+	clearInterval(this._interval);
+	this._interval = null;
 };
 
 Timer.prototype.stop = function()
@@ -79,12 +80,6 @@ Timer.prototype._update = function()
 	{
 		this._finish();
 	}
-
-	document.getElementById("label").innerHTML = this.getLabel();
-	document.getElementById("state").innerHTML = this.getState();
-	document.getElementById("targetSeconds").innerHTML = this.getTargetSeconds();
-	document.getElementById("elapsedSeconds").innerHTML = this.getElapsedSeconds();
-	document.getElementById("remainingSeconds").innerHTML = this.getRemainingSeconds();
 };
 
 Timer.prototype.setLabel = function(label)
@@ -127,8 +122,8 @@ function main()
 	var timer;
 
 	timer = new Timer();
-	timer.setLabel("Test");
-	timer.setTargetSeconds(10);
+	//timer.setLabel("Test");
+	//timer.setTargetSeconds(10);
 
 	document.getElementById("start")
 	        .addEventListener("click",
@@ -136,6 +131,15 @@ function main()
 	document.getElementById("stop")
 	        .addEventListener("click",
 		                  timer.stop.bind(timer));
+
+	setInterval(function()
+	{
+		document.getElementById("label").innerHTML = timer.getLabel();
+		document.getElementById("state").innerHTML = timer.getState();
+		document.getElementById("targetSeconds").innerHTML = timer.getTargetSeconds();
+		document.getElementById("elapsedSeconds").innerHTML = timer.getElapsedSeconds();
+		document.getElementById("remainingSeconds").innerHTML = timer.getRemainingSeconds();
+	}, 100);
 }
 
 document.addEventListener("DOMContentLoaded", main);
