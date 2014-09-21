@@ -25,17 +25,17 @@ Timer.now = function() {
 
 Timer.prototype.start = function() {
 
-	this.startTime = Timer.now();
-	this.update();
-	this.interval = setInterval(this.update.bind(this), 100);
+	this._startTime = Timer.now();
+	this._update();
+	this._interval = setInterval(this._update.bind(this), 100);
 };
 
 Timer.prototype.stop = function() {
 
-	clearInterval(this.interval);
+	clearInterval(this._interval);
 };
 
-Timer.prototype.update = function() {
+Timer.prototype._update = function() {
 
 	document.getElementById("label").innerHTML = this.getLabel();
 	document.getElementById("elapsed").innerHTML = this.getElapsedSeconds();
@@ -43,27 +43,27 @@ Timer.prototype.update = function() {
 
 Timer.prototype.setLabel = function(label) {
 
-	this.label = label;
+	this._label = label;
 };
 
 Timer.prototype.getLabel = function() {
 
-	return this.label;
+	return this._label;
 };
 
 Timer.prototype.setTargetSeconds = function(targetSeconds) {
 
-	this.targetSeconds = targetSeconds;
+	this._targetSeconds = targetSeconds;
 };
 
 Timer.prototype.getTargetSeconds = function() {
 
-	return this.targetSeconds;
+	return this._targetSeconds;
 };
 
 Timer.prototype.getElapsedSeconds = function() {
 
-	return Math.floor((Timer.now() - this.startTime) / 1000);
+	return Math.floor((Timer.now() - this._startTime) / 1000);
 };
 
 function main() {
