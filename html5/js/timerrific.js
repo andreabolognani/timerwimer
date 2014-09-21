@@ -18,10 +18,32 @@
 
 var Timer = function() {};
 
+Timer.now = function() {
+
+	return Math.floor(new Date().getTime() / 1000);
+};
+
+Timer.prototype.start = function() {
+
+	this.startTime = Timer.now();
+	this.interval = setInterval(this.update.bind(this), 100);
+};
+
+Timer.prototype.stop = function() {
+
+	clearInterval(this.interval);
+};
+
+Timer.prototype.update = function() {
+
+	document.getElementById("label").innerHTML = this.getLabel();
+	document.getElementById("elapsed").innerHTML = this.getElapsedSeconds();
+};
+
 Timer.prototype.setLabel = function(label) {
 
 	this.label = label;
-}
+};
 
 Timer.prototype.getLabel = function() {
 
@@ -31,11 +53,16 @@ Timer.prototype.getLabel = function() {
 Timer.prototype.setTargetSeconds = function(targetSeconds) {
 
 	this.targetSeconds = targetSeconds;
-}
+};
 
 Timer.prototype.getTargetSeconds = function() {
 
 	return this.targetSeconds;
+};
+
+Timer.prototype.getElapsedSeconds = function() {
+
+	return Timer.now() - this.startTime;
 };
 
 function main() {
@@ -45,9 +72,7 @@ function main() {
 	timer = new Timer();
 	timer.setLabel("Test");
 	timer.setTargetSeconds(60);
-
-	document.getElementById("label").innerHTML = timer.getLabel();
-	document.getElementById("remaining").innerHTML = timer.getTargetSeconds();
-};
+	timer.start();
+}
 
 document.addEventListener("DOMContentLoaded", main);
