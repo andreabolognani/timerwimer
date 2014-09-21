@@ -16,28 +16,29 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-var Timer = function() {
-
+var Timer = function()
+{
 	this._state = Timer.State.STOPPED;
 };
 
-Timer.State = {
+Timer.State =
+{
 	STOPPED:  "STOPPED",
 	RUNNING:  "RUNNING",
 	PAUSED:   "PAUSED",
 	FINISHED: "FINISHED"
 };
 
-Timer.now = function() {
-
+Timer.now = function()
+{
 	return new Date().getTime();
 };
 
-Timer.prototype.start = function() {
-
+Timer.prototype.start = function()
+{
 	if (this.getState() == Timer.State.STOPPED ||
-	    this.getState() == Timer.State.FINISHED) {
-
+	    this.getState() == Timer.State.FINISHED)
+	{
 		this._state = Timer.State.RUNNING;
 
 		this._startTime = Timer.now();
@@ -47,10 +48,10 @@ Timer.prototype.start = function() {
 	}
 };
 
-Timer.prototype._finish = function() {
-
-	if (this.getState() == Timer.State.RUNNING) {
-
+Timer.prototype._finish = function()
+{
+	if (this.getState() == Timer.State.RUNNING)
+	{
 		this._state = Timer.State.FINISHED;
 
 		clearInterval(this._interval);
@@ -58,8 +59,8 @@ Timer.prototype._finish = function() {
 	}
 };
 
-Timer.prototype.stop = function() {
-
+Timer.prototype.stop = function()
+{
 	this._state = Timer.State.STOPPED;
 
 	this._elapsedSeconds = 0;
@@ -69,13 +70,13 @@ Timer.prototype.stop = function() {
 	this._interval = null;
 };
 
-Timer.prototype._update = function() {
-
+Timer.prototype._update = function()
+{
 	this._elapsedSeconds = Math.floor((Timer.now() - this._startTime) / 1000);
 	this._remainingSeconds = this.getTargetSeconds() - this.getElapsedSeconds();
 
-	if (this.getElapsedSeconds() >= this.getTargetSeconds()) {
-
+	if (this.getElapsedSeconds() >= this.getTargetSeconds())
+	{
 		this._finish();
 	}
 
@@ -86,43 +87,43 @@ Timer.prototype._update = function() {
 	document.getElementById("remainingSeconds").innerHTML = this.getRemainingSeconds();
 };
 
-Timer.prototype.setLabel = function(label) {
-
+Timer.prototype.setLabel = function(label)
+{
 	this._label = label;
 };
 
-Timer.prototype.getLabel = function() {
-
+Timer.prototype.getLabel = function()
+{
 	return this._label;
 };
 
-Timer.prototype.setTargetSeconds = function(targetSeconds) {
-
+Timer.prototype.setTargetSeconds = function(targetSeconds)
+{
 	this._targetSeconds = targetSeconds;
 };
 
-Timer.prototype.getTargetSeconds = function() {
-
+Timer.prototype.getTargetSeconds = function()
+{
 	return this._targetSeconds;
 };
 
-Timer.prototype.getState = function() {
-
+Timer.prototype.getState = function()
+{
 	return this._state;
 };
 
-Timer.prototype.getElapsedSeconds = function() {
-
+Timer.prototype.getElapsedSeconds = function()
+{
 	return this._elapsedSeconds;
 };
 
-Timer.prototype.getRemainingSeconds = function() {
-
+Timer.prototype.getRemainingSeconds = function()
+{
 	return this._remainingSeconds;
 };
 
-function main() {
-
+function main()
+{
 	var timer;
 
 	timer = new Timer();
