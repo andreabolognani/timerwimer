@@ -20,7 +20,7 @@ var Timer = function() {};
 
 Timer.now = function() {
 
-	return Math.floor(new Date().getTime() / 1000);
+	return new Date().getTime();
 };
 
 Timer.prototype.start = function() {
@@ -62,7 +62,7 @@ Timer.prototype.getTargetSeconds = function() {
 
 Timer.prototype.getElapsedSeconds = function() {
 
-	return Timer.now() - this.startTime;
+	return Math.floor((Timer.now() - this.startTime) / 1000);
 };
 
 function main() {
