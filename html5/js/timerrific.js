@@ -37,9 +37,13 @@ Timer.prototype.stop = function() {
 
 Timer.prototype._update = function() {
 
+	this._elapsedSeconds = Math.floor((Timer.now() - this._startTime) / 1000);
+	this._remainingSeconds = this._targetSeconds - this._elapsedSeconds;
+
 	document.getElementById("label").innerHTML = this.getLabel();
 	document.getElementById("targetSeconds").innerHTML = this.getTargetSeconds();
 	document.getElementById("elapsedSeconds").innerHTML = this.getElapsedSeconds();
+	document.getElementById("remainingSeconds").innerHTML = this.getRemainingSeconds();
 };
 
 Timer.prototype.setLabel = function(label) {
@@ -64,7 +68,12 @@ Timer.prototype.getTargetSeconds = function() {
 
 Timer.prototype.getElapsedSeconds = function() {
 
-	return Math.floor((Timer.now() - this._startTime) / 1000);
+	return this._elapsedSeconds;
+};
+
+Timer.prototype.getRemainingSeconds = function() {
+
+	return this._remainingSeconds;
 };
 
 function main() {
