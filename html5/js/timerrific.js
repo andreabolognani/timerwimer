@@ -35,20 +35,27 @@ Timer.now = function() {
 
 Timer.prototype.start = function() {
 
-	this._state = Timer.State.RUNNING;
+	if (this.getState() == Timer.State.STOPPED ||
+	    this.getState() == Timer.State.FINISHED) {
 
-	this._startTime = Timer.now();
+		this._state = Timer.State.RUNNING;
 
-	this._update();
-	this._interval = setInterval(this._update.bind(this), 100);
+		this._startTime = Timer.now();
+
+		this._update();
+		this._interval = setInterval(this._update.bind(this), 100);
+	}
 };
 
 Timer.prototype._finish = function() {
 
-	this._state = Timer.State.FINISHED;
+	if (this.getState() == Timer.State.RUNNING) {
 
-	clearInterval(this._interval);
-	this._interval = null;
+		this._state = Timer.State.FINISHED;
+
+		clearInterval(this._interval);
+		this._interval = null;
+	}
 };
 
 Timer.prototype.stop = function() {
