@@ -73,7 +73,10 @@ function main() {
 	timer = new Timer();
 	timer.setLabel("Test");
 	timer.setTargetSeconds(60);
-	timer.start();
+
+	document.getElementById("action")
+	        .addEventListener("click",
+		                  timer.start.bind(timer));
 }
 
 document.addEventListener("DOMContentLoaded", main);
