@@ -42,13 +42,24 @@ Timer.now = function()
 Timer.prototype.start = function()
 {
 	if (this.getState() == Timer.State.STOPPED ||
-	    this.getState() == Timer.State.FINISHED)
+	    this.getState() == Timer.State.PAUSED)
 	{
 		this._state = Timer.State.RUNNING;
 
-		this._startTime = Timer.now();
+		this._lastUpdateTime = Timer.now();
 
 		this._interval = setInterval(this._update.bind(this), 100);
+	}
+};
+
+Timer.prototype.pause = function()
+{
+	if (this.getState() == Timer.State.RUNNING)
+	{
+		this._state = Timer.State.PAUSED;
+
+		clearInterval(this._interval);
+		this._interval = null;
 	}
 };
 
@@ -73,8 +84,16 @@ Timer.prototype.stop = function()
 
 Timer.prototype._update = function()
 {
-	this._elapsedSeconds = Math.floor((Timer.now() - this._startTime) / 1000);
-	this._remainingSeconds = this.getTargetSeconds() - this.getElapsedSeconds();
+	// If the timer has been last updated a second ago, update it again
+	if (Math.floor((Timer.now() - this._lastUpdateTime) / 1000) > 0)
+	{
+		this._elapsedSeconds += 1;
+		this._remainingSeconds = this.getTargetSeconds() - this.getElapsedSeconds();
+
+		// Increase by a full second instead of using the current
+		// time to compensate for JavaScript timer drift
+		this._lastUpdateTime += 1000;
+	}
 
 	if (this.getElapsedSeconds() >= this.getTargetSeconds())
 	{
@@ -96,8 +115,7 @@ Timer.prototype.setTargetSeconds = function(targetSeconds)
 {
 	this._targetSeconds = targetSeconds;
 
-	// Changing the target seconds causes the timer
-	// to be stopped
+	// Changing the target time causes the timer to stop
 	this.stop();
 };
 
@@ -132,6 +150,9 @@ function main()
 	document.getElementById("start")
 	        .addEventListener("click",
 		                  timer.start.bind(timer));
+	document.getElementById("pause")
+	        .addEventListener("click",
+		                  timer.pause.bind(timer));
 	document.getElementById("stop")
 	        .addEventListener("click",
 		                  timer.stop.bind(timer));
