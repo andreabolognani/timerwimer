@@ -26,6 +26,7 @@ Timer.now = function() {
 Timer.prototype.start = function() {
 
 	this.startTime = Timer.now();
+	this.update();
 	this.interval = setInterval(this.update.bind(this), 100);
 };
 
