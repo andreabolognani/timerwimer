@@ -48,7 +48,7 @@ Timer.prototype.stop = function() {
 	this._state = Timer.State.STOPPED;
 
 	this._elapsedSeconds = 0;
-	this._remainingSeconds = this._targetSeconds;
+	this._remainingSeconds = this.getTargetSeconds();
 
 	clearInterval(this._interval);
 };
@@ -56,7 +56,7 @@ Timer.prototype.stop = function() {
 Timer.prototype._update = function() {
 
 	this._elapsedSeconds = Math.floor((Timer.now() - this._startTime) / 1000);
-	this._remainingSeconds = this._targetSeconds - this._elapsedSeconds;
+	this._remainingSeconds = this.getTargetSeconds() - this.getElapsedSeconds();
 
 	document.getElementById("label").innerHTML = this.getLabel();
 	document.getElementById("state").innerHTML = this.getState();
