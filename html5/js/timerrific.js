@@ -95,6 +95,10 @@ Timer.prototype.getLabel = function()
 Timer.prototype.setTargetSeconds = function(targetSeconds)
 {
 	this._targetSeconds = targetSeconds;
+
+	// Changing the target seconds causes the timer
+	// to be stopped
+	this.stop();
 };
 
 Timer.prototype.getTargetSeconds = function()
@@ -122,8 +126,8 @@ function main()
 	var timer;
 
 	timer = new Timer();
-	//timer.setLabel("Test");
-	//timer.setTargetSeconds(10);
+	timer.setLabel("Test");
+	timer.setTargetSeconds(10);
 
 	document.getElementById("start")
 	        .addEventListener("click",
