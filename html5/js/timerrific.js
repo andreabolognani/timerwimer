@@ -43,6 +43,13 @@ Timer.prototype.start = function() {
 	this._interval = setInterval(this._update.bind(this), 100);
 };
 
+Timer.prototype._finish = function() {
+
+	this._state = Timer.State.FINISHED;
+
+	clearInterval(this._interval);
+};
+
 Timer.prototype.stop = function() {
 
 	this._state = Timer.State.STOPPED;
@@ -57,6 +64,11 @@ Timer.prototype._update = function() {
 
 	this._elapsedSeconds = Math.floor((Timer.now() - this._startTime) / 1000);
 	this._remainingSeconds = this.getTargetSeconds() - this.getElapsedSeconds();
+
+	if (this.getElapsedSeconds() >= this.getTargetSeconds()) {
+
+		this._finish();
+	}
 
 	document.getElementById("label").innerHTML = this.getLabel();
 	document.getElementById("state").innerHTML = this.getState();
@@ -106,7 +118,7 @@ function main() {
 
 	timer = new Timer();
 	timer.setLabel("Test");
-	timer.setTargetSeconds(60);
+	timer.setTargetSeconds(10);
 
 	document.getElementById("action")
 	        .addEventListener("click",
