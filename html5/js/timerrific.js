@@ -38,7 +38,8 @@ Timer.prototype.stop = function() {
 Timer.prototype._update = function() {
 
 	document.getElementById("label").innerHTML = this.getLabel();
-	document.getElementById("elapsed").innerHTML = this.getElapsedSeconds();
+	document.getElementById("targetSeconds").innerHTML = this.getTargetSeconds();
+	document.getElementById("elapsedSeconds").innerHTML = this.getElapsedSeconds();
 };
 
 Timer.prototype.setLabel = function(label) {
