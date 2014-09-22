@@ -139,6 +139,74 @@ Timer.prototype.getRemainingSeconds = function()
 	return this._remainingSeconds;
 };
 
+function createInterface()
+{
+	var timer;
+	var text;
+	var span;
+	var br;
+
+	timer = document.createElement("div");
+	timer.setAttribute("id", "timer");
+	document.getElementById("container")
+	        .appendChild(timer);
+
+	text = document.createTextNode("Label: ");
+	span = document.createElement("span");
+	span.id = "label"
+	br = document.createElement("br");
+	timer.appendChild(text);
+	timer.appendChild(span);
+	timer.appendChild(br);
+
+	text = document.createTextNode("State: ");
+	span = document.createElement("span");
+	span.id = "state";
+	br = document.createElement("br");
+	timer.appendChild(text);
+	timer.appendChild(span);
+	timer.appendChild(br);
+
+	text = document.createTextNode("Target seconds: ");
+	span = document.createElement("span");
+	span.id = "targetSeconds";
+	br = document.createElement("br");
+	timer.appendChild(text);
+	timer.appendChild(span);
+	timer.appendChild(br);
+
+	text = document.createTextNode("Elapsed seconds: ");
+	span = document.createElement("span");
+	span.id = "elapsedSeconds";
+	br = document.createElement("br");
+	timer.appendChild(text);
+	timer.appendChild(span);
+	timer.appendChild(br);
+
+	text = document.createTextNode("Remaining seconds: ");
+	span = document.createElement("span");
+	span.id = "remainingSeconds";
+	br = document.createElement("br");
+	timer.appendChild(text);
+	timer.appendChild(span);
+	timer.appendChild(br);
+
+	span = document.createElement("span");
+	span.id = "start";
+	span.innerHTML = "[start]";
+	timer.appendChild(span);
+
+	span = document.createElement("span");
+	span.id = "pause";
+	span.innerHTML = "[pause]";
+	timer.appendChild(span);
+
+	span = document.createElement("span");
+	span.id = "stop";
+	span.innerHTML = "[stop]";
+	timer.appendChild(span);
+}
+
 function main()
 {
 	var timer;
@@ -146,6 +214,8 @@ function main()
 	timer = new Timer();
 	timer.setLabel("Test");
 	timer.setTargetSeconds(10);
+
+	createInterface();
 
 	document.getElementById("start")
 	        .addEventListener("click",
