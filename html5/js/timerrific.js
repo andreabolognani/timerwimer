@@ -18,6 +18,7 @@
 
 var Timer = function()
 {
+	this._id = 0;
 	this._label = "";
 	this._state = Timer.State.STOPPED;
 
@@ -101,6 +102,16 @@ Timer.prototype._update = function()
 	}
 };
 
+Timer.prototype.setId = function(id)
+{
+	this._id = id;
+};
+
+Timer.prototype.getId = function()
+{
+	return this._id;
+};
+
 Timer.prototype.setLabel = function(label)
 {
 	this._label = label;
@@ -139,102 +150,155 @@ Timer.prototype.getRemainingSeconds = function()
 	return this._remainingSeconds;
 };
 
-function createInterface()
+function setupInterface(timers)
 {
-	var timer;
+	var box;
 	var text;
 	var span;
 	var br;
 
-	timer = document.createElement("div");
-	timer.setAttribute("id", "timer");
-	document.getElementById("container")
-	        .appendChild(timer);
+	for (var i = 0; i < timers.length; i++)
+	{
+		var timer;
+		var id;
 
-	text = document.createTextNode("Label: ");
-	span = document.createElement("span");
-	span.id = "label"
-	br = document.createElement("br");
-	timer.appendChild(text);
-	timer.appendChild(span);
-	timer.appendChild(br);
+		timer = timers[i];
+		id = timer.getId();
 
-	text = document.createTextNode("State: ");
-	span = document.createElement("span");
-	span.id = "state";
-	br = document.createElement("br");
-	timer.appendChild(text);
-	timer.appendChild(span);
-	timer.appendChild(br);
+		box = document.createElement("div");
+		box.setAttribute("id", "timer:" + id);
+		document.getElementById("container")
+			.appendChild(box);
 
-	text = document.createTextNode("Target seconds: ");
-	span = document.createElement("span");
-	span.id = "targetSeconds";
-	br = document.createElement("br");
-	timer.appendChild(text);
-	timer.appendChild(span);
-	timer.appendChild(br);
+		text = document.createTextNode("Id: ");
+		span = document.createElement("span");
+		span.id = "id:" + id;
+		br = document.createElement("br");
+		box.appendChild(text);
+		box.appendChild(span);
+		box.appendChild(br);
 
-	text = document.createTextNode("Elapsed seconds: ");
-	span = document.createElement("span");
-	span.id = "elapsedSeconds";
-	br = document.createElement("br");
-	timer.appendChild(text);
-	timer.appendChild(span);
-	timer.appendChild(br);
+		text = document.createTextNode("Label: ");
+		span = document.createElement("span");
+		span.id = "label:" + id;
+		br = document.createElement("br");
+		box.appendChild(text);
+		box.appendChild(span);
+		box.appendChild(br);
 
-	text = document.createTextNode("Remaining seconds: ");
-	span = document.createElement("span");
-	span.id = "remainingSeconds";
-	br = document.createElement("br");
-	timer.appendChild(text);
-	timer.appendChild(span);
-	timer.appendChild(br);
+		text = document.createTextNode("State: ");
+		span = document.createElement("span");
+		span.id = "state:" + id;
+		br = document.createElement("br");
+		box.appendChild(text);
+		box.appendChild(span);
+		box.appendChild(br);
 
-	span = document.createElement("span");
-	span.id = "start";
-	span.innerHTML = "[start]";
-	timer.appendChild(span);
+		text = document.createTextNode("Target seconds: ");
+		span = document.createElement("span");
+		span.id = "targetSeconds:" + id;
+		br = document.createElement("br");
+		box.appendChild(text);
+		box.appendChild(span);
+		box.appendChild(br);
 
-	span = document.createElement("span");
-	span.id = "pause";
-	span.innerHTML = "[pause]";
-	timer.appendChild(span);
+		text = document.createTextNode("Elapsed seconds: ");
+		span = document.createElement("span");
+		span.id = "elapsedSeconds:" + id;
+		br = document.createElement("br");
+		box.appendChild(text);
+		box.appendChild(span);
+		box.appendChild(br);
 
-	span = document.createElement("span");
-	span.id = "stop";
-	span.innerHTML = "[stop]";
-	timer.appendChild(span);
+		text = document.createTextNode("Remaining seconds: ");
+		span = document.createElement("span");
+		span.id = "remainingSeconds:" + id;
+		br = document.createElement("br");
+		box.appendChild(text);
+		box.appendChild(span);
+		box.appendChild(br);
+
+		span = document.createElement("span");
+		span.id = "start:" + id;
+		span.innerHTML = "[start]";
+		box.appendChild(span);
+
+		span = document.createElement("span");
+		span.id = "pause:" + id;
+		span.innerHTML = "[pause]";
+		box.appendChild(span);
+
+		span = document.createElement("span");
+		span.id = "stop:" + id;
+		span.innerHTML = "[stop]";
+		box.appendChild(span);
+	}
+}
+
+function setupUpdates(timers)
+{
+	setInterval(function()
+	{
+		for (var i = 0; i < timers.length; i++)
+		{
+			var timer;
+			var id;
+
+			timer = timers[i];
+			id = timer.getId();
+
+			document.getElementById("id:" + id).innerHTML = timer.getId();
+			document.getElementById("label:" + id).innerHTML = timer.getLabel();
+			document.getElementById("state:" + id).innerHTML = timer.getState();
+			document.getElementById("targetSeconds:" + id).innerHTML = timer.getTargetSeconds();
+			document.getElementById("elapsedSeconds:" + id).innerHTML = timer.getElapsedSeconds();
+			document.getElementById("remainingSeconds:" + id).innerHTML = timer.getRemainingSeconds();
+		}
+	}, 100);
+}
+
+function setupListeners(timers)
+{
+	var timer;
+
+	for (var i = 0; i < timers.length; i++)
+	{
+		timer = timers[i];
+
+		document.getElementById("start:" + timer.getId())
+			.addEventListener("click",
+					  timer.start.bind(timer));
+		document.getElementById("pause:" + timer.getId())
+			.addEventListener("click",
+					  timer.pause.bind(timer));
+		document.getElementById("stop:" + timer.getId())
+			.addEventListener("click",
+					  timer.stop.bind(timer));
+	}
 }
 
 function main()
 {
+	var timers;
 	var timer;
 
+	timers = [];
+
 	timer = new Timer();
-	timer.setLabel("Test");
+	timer.setId(10);
+	timer.setLabel("10 seconds");
 	timer.setTargetSeconds(10);
+	timers.push(timer);
 
-	createInterface();
+	timer = new Timer();
+	timer.setId(30);
+	timer.setLabel("30 seconds");
+	timer.setTargetSeconds(30);
+	timers.push(timer);
 
-	document.getElementById("start")
-	        .addEventListener("click",
-		                  timer.start.bind(timer));
-	document.getElementById("pause")
-	        .addEventListener("click",
-		                  timer.pause.bind(timer));
-	document.getElementById("stop")
-	        .addEventListener("click",
-		                  timer.stop.bind(timer));
-
-	setInterval(function()
-	{
-		document.getElementById("label").innerHTML = timer.getLabel();
-		document.getElementById("state").innerHTML = timer.getState();
-		document.getElementById("targetSeconds").innerHTML = timer.getTargetSeconds();
-		document.getElementById("elapsedSeconds").innerHTML = timer.getElapsedSeconds();
-		document.getElementById("remainingSeconds").innerHTML = timer.getRemainingSeconds();
-	}, 100);
+	setupInterface(timers);
+	setupUpdates(timers);
+	setupListeners(timers);
 }
 
 document.addEventListener("DOMContentLoaded", main);
