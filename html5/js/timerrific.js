@@ -250,65 +250,20 @@ var timerrific = {};
 		var id;
 		var el;
 		var span;
-		var text;
 		var br;
 
 		id = this._timer.getId();
 
 		el = document.createElement("div");
+		el.className = "timer";
 		el.id = "timer:" + id;
 
-		// First line: label (id)
+		// First line: start pause stop
 
 		span = document.createElement("span");
-		span.id = "label:" + id;
-		el.appendChild(span);
-
-		this._label = span;
-
-		text = document.createTextNode(" (");
-		el.appendChild(text);
-
-		span = document.createElement("span");
-		span.id = "id:" + id;
-		el.appendChild(span);
-
-		this._id = span;
-
-		text = document.createTextNode(")");
-		el.appendChild(text);
-
-		br = document.createElement("br")
-		el.appendChild(br);
-
-		// Second line: remaining (state)
-
-		span = document.createElement("span");
-		span.id = "remaining:" + id;
-		el.appendChild(span);
-
-		this._remaining = span;
-
-		text = document.createTextNode(" (");
-		el.appendChild(text);
-
-		span = document.createElement("span");
-		span.id = "state:" + id;
-		el.appendChild(span);
-
-		this._state = span;
-
-		text = document.createTextNode(")");
-		el.appendChild(text);
-
-		br = document.createElement("br")
-		el.appendChild(br);
-
-		// Third line: start pause stop
-
-		span = document.createElement("span");
+		span.className = "start";
 		span.id = "start:" + id;
-		span.innerHTML = "[start]";
+		span.innerHTML = "start";
 		el.appendChild(span);
 
 		span.addEventListener("click", this._timer.start.bind(this._timer));
@@ -317,8 +272,9 @@ var timerrific = {};
 		el.appendChild(text);
 
 		span = document.createElement("span");
+		span.className = "pause";
 		span.id = "pause:" + id;
-		span.innerHTML = "[pause]";
+		span.innerHTML = "pause";
 		el.appendChild(span);
 
 		span.addEventListener("click", this._timer.pause.bind(this._timer));
@@ -327,11 +283,50 @@ var timerrific = {};
 		el.appendChild(text);
 
 		span = document.createElement("span");
+		span.className = "stop";
 		span.id = "stop:" + id;
-		span.innerHTML = "[stop]";
+		span.innerHTML = "stop";
 		el.appendChild(span);
 
 		span.addEventListener("click", this._timer.stop.bind(this._timer));
+
+		br = document.createElement("br")
+		el.appendChild(br);
+
+		// Second line: remaining (state)
+
+		span = document.createElement("span");
+		span.className = "remaining";
+		span.id = "remaining:" + id;
+		el.appendChild(span);
+
+		this._remaining = span;
+
+		span = document.createElement("span");
+		span.className = "state";
+		span.id = "state:" + id;
+		el.appendChild(span);
+
+		this._state = span;
+
+		br = document.createElement("br")
+		el.appendChild(br);
+
+		// Third line: label (id)
+
+		span = document.createElement("span");
+		span.className = "label";
+		span.id = "label:" + id;
+		el.appendChild(span);
+
+		this._label = span;
+
+		span = document.createElement("span");
+		span.className = "id";
+		span.id = "id:" + id;
+		el.appendChild(span);
+
+		this._id = span;
 
 		this._element = el;
 	};
@@ -339,9 +334,9 @@ var timerrific = {};
 	TimerWidget.prototype._update = function()
 	{
 		this._label.innerHTML = this._timer.getLabel();
-		this._id.innerHTML = this._timer.getId();
+		this._id.innerHTML = " (" + this._timer.getId() + ")";
 		this._remaining.innerHTML = Util.secondsToDisplayString(this._timer.getRemainingSeconds());
-		this._state.innerHTML = this._timer.getState();
+		this._state.innerHTML = " (" + this._timer.getState() + ")";
 	};
 
 	TimerWidget.prototype.setTimer = function(timer)

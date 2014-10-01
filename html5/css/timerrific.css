@@ -1,0 +1,69 @@
+body
+{
+	margin: 0;
+	padding: 0;
+}
+
+br
+{
+	clear: both;
+}
+
+.timer
+{
+	margin: 1em;
+	padding: 1em;
+	border: 1px solid black;
+	width: 15em;
+}
+
+.start
+{
+	margin: 0 0 1em 0;
+	padding: 0.5em 0.7em;
+	display: block;
+	float: left;
+	color: white;
+	background-color: #2ca71f;
+}
+
+.pause
+{
+	margin: 0 1em 1em 1em;
+	padding: 0.5em 0.7em;
+	display: block;
+	float: left;
+	color: white;
+	background-color: #f3951c;
+}
+
+.stop
+{
+	margin: 0 0 1em 0;
+	padding: 0.5em 0.7em;
+	display: block;
+	float: left;
+	color: white;
+	background-color: #ff3737;
+}
+
+.label
+{
+	font-size: 1em;
+}
+
+.id
+{
+	font-size: 0.8em;
+}
+
+.remaining
+{
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.state
+{
+	font-size: 0.8em;
+}
