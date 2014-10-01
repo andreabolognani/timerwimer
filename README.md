@@ -1,15 +1,19 @@
-Timerrific - Countdown timers for your device
-=============================================
+Timerrific
+==========
 
-Simple application to create and manage several independent
-countdown timers on your device.
+Simple application to manage several independent countdown timers
+on your device.
+
+Very much a work in progress.
 
 
 Installation
 ------------
 
-Just open `index.html` in any modern browser. Expect installable
-apps for at least Android and Firefox OS once the code is mature.
+Just open `index.html` in any modern browser.
+
+Expect installable apps for at least Android and Firefox OS once the
+code is mature.
 
 
 License
