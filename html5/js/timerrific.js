@@ -227,6 +227,9 @@ var timerrific = {};
 			this._prepare();
 		}
 
+		// Update immediately to prevent flashing
+		this._update();
+
 		if (!this._interval)
 		{
 			this._interval = setInterval(this._update.bind(this), 250);
