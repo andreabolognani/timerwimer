@@ -111,12 +111,18 @@ var timerrific = {};
 		}
 	};
 
-	Timer.prototype._finish = function()
+	Timer.prototype.toggle = function()
 	{
-		clearInterval(this._interval);
-		this._interval = null;
+		switch (this.getState())
+		{
+			case Timer.State.RUNNING:
+				this.pause();
+				break;
 
-		this._state = Timer.State.FINISHED;
+			case Timer.State.PAUSED:
+				this.start();
+				break;
+		}
 	};
 
 	Timer.prototype.stop = function()
@@ -127,6 +133,14 @@ var timerrific = {};
 		this._state = Timer.State.STOPPED;
 		this._elapsedTime = 0;
 		this._lastUpdateTime = 0;
+	};
+
+	Timer.prototype._finish = function()
+	{
+		clearInterval(this._interval);
+		this._interval = null;
+
+		this._state = Timer.State.FINISHED;
 	};
 
 	Timer.prototype._update = function()
@@ -262,6 +276,11 @@ var timerrific = {};
 			box.appendChild(span);
 
 			span = document.createElement("span");
+			span.id = "toggle:" + id;
+			span.innerHTML = "[toggle]";
+			box.appendChild(span);
+
+			span = document.createElement("span");
 			span.id = "stop:" + id;
 			span.innerHTML = "[stop]";
 			box.appendChild(span);
@@ -305,6 +324,9 @@ var timerrific = {};
 			document.getElementById("pause:" + timer.getId())
 				.addEventListener("click",
 						  timer.pause.bind(timer));
+			document.getElementById("toggle:" + timer.getId())
+				.addEventListener("click",
+						  timer.toggle.bind(timer));
 			document.getElementById("stop:" + timer.getId())
 				.addEventListener("click",
 						  timer.stop.bind(timer));
