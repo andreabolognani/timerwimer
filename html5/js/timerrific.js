@@ -20,6 +20,40 @@ var timerrific = {};
 
 (function() {
 
+	// Utility functions
+
+	var Util;
+
+	Util = {};
+
+	Util.secondsToDisplayString = function(time)
+	{
+		var display;
+		var minutes;
+		var seconds;
+
+		seconds = time % 60;
+		minutes = (time - seconds) / 60;
+
+		display = "";
+
+		if (minutes < 10)
+		{
+			display += "0";
+		}
+		display += minutes + ":";
+
+		if (seconds < 10)
+		{
+			display += "0";
+		}
+		display += seconds;
+
+		return display;
+	};
+
+	timerrific.Util = Util;
+
 	// Timer class
 
 	var Timer;
@@ -262,9 +296,12 @@ var timerrific = {};
 				document.getElementById("id:" + id).innerHTML = timer.getId();
 				document.getElementById("label:" + id).innerHTML = timer.getLabel();
 				document.getElementById("state:" + id).innerHTML = timer.getState();
-				document.getElementById("targetSeconds:" + id).innerHTML = timer.getTargetSeconds();
-				document.getElementById("elapsedSeconds:" + id).innerHTML = timer.getElapsedSeconds();
-				document.getElementById("remainingSeconds:" + id).innerHTML = timer.getRemainingSeconds();
+				document.getElementById("targetSeconds:" + id)
+				        .innerHTML = Util.secondsToDisplayString(timer.getTargetSeconds());
+				document.getElementById("elapsedSeconds:" + id)
+				        .innerHTML = Util.secondsToDisplayString(timer.getElapsedSeconds());
+				document.getElementById("remainingSeconds:" + id)
+				        .innerHTML = Util.secondsToDisplayString(timer.getRemainingSeconds());
 			}
 		}, 100);
 	};
