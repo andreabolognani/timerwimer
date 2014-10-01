@@ -20,16 +20,21 @@ var timerrific = {};
 
 (function() {
 
+	// Date.now() polyfill
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now
+	if (!Date.now)
+	{
+		Date.now = function now()
+		{
+			return new Date().getTime();
+		};
+	}
+
 	// Utility functions
 
 	var Util;
 
 	Util = {};
-
-	Util.now = function()
-	{
-		return new Date().getTime();
-	};
 
 	Util.secondsToDisplayString = function(time)
 	{
@@ -88,7 +93,7 @@ var timerrific = {};
 		    this.getState() == Timer.State.PAUSED)
 		{
 			this._state = Timer.State.RUNNING;
-			this._lastUpdateTime = Util.now();
+			this._lastUpdateTime = Date.now();
 
 			this._interval = setInterval(this._update.bind(this), 100);
 		}
@@ -102,7 +107,7 @@ var timerrific = {};
 			this._interval = null;
 
 			this._state = Timer.State.PAUSED;
-			this._lastUpdateTime = Util.now();
+			this._lastUpdateTime = Date.now();
 		}
 	};
 
@@ -128,7 +133,7 @@ var timerrific = {};
 	{
 		var now;
 
-		now = Util.now();
+		now = Date.now();
 
 		this._elapsedTime += now - this._lastUpdateTime;
 		this._lastUpdateTime = now;
