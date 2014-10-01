@@ -26,6 +26,11 @@ var timerrific = {};
 
 	Util = {};
 
+	Util.now = function()
+	{
+		return new Date().getTime();
+	};
+
 	Util.secondsToDisplayString = function(time)
 	{
 		var display;
@@ -62,11 +67,11 @@ var timerrific = {};
 	{
 		this._id = 0;
 		this._label = "";
-		this._state = Timer.State.STOPPED;
+		this._targetTime = 0;
 
-		this._targetSeconds = 0;
-		this._elapsedSeconds = 0;
-		this._remainingSeconds = 0;
+		this._state = Timer.State.STOPPED;
+		this._elapsedTime = 0;
+		this._lastUpdateTime = 0;
 	};
 
 	Timer.State =
@@ -77,19 +82,13 @@ var timerrific = {};
 		FINISHED: "FINISHED"
 	};
 
-	Timer.now = function()
-	{
-		return new Date().getTime();
-	};
-
 	Timer.prototype.start = function()
 	{
 		if (this.getState() == Timer.State.STOPPED ||
 		    this.getState() == Timer.State.PAUSED)
 		{
 			this._state = Timer.State.RUNNING;
-
-			this._lastUpdateTime = Timer.now();
+			this._lastUpdateTime = Util.now();
 
 			this._interval = setInterval(this._update.bind(this), 100);
 		}
@@ -99,46 +98,42 @@ var timerrific = {};
 	{
 		if (this.getState() == Timer.State.RUNNING)
 		{
-			this._state = Timer.State.PAUSED;
-
 			clearInterval(this._interval);
 			this._interval = null;
+
+			this._state = Timer.State.PAUSED;
+			this._lastUpdateTime = Util.now();
 		}
 	};
 
 	Timer.prototype._finish = function()
 	{
-		this._state = Timer.State.FINISHED;
-
 		clearInterval(this._interval);
 		this._interval = null;
+
+		this._state = Timer.State.FINISHED;
 	};
 
 	Timer.prototype.stop = function()
 	{
-		this._state = Timer.State.STOPPED;
-
-		this._elapsedSeconds = 0;
-		this._remainingSeconds = this.getTargetSeconds();
-
 		clearInterval(this._interval);
 		this._interval = null;
+
+		this._state = Timer.State.STOPPED;
+		this._elapsedTime = 0;
+		this._lastUpdateTime = 0;
 	};
 
 	Timer.prototype._update = function()
 	{
-		// If the timer has been last updated a second ago, update it again
-		if (Math.floor((Timer.now() - this._lastUpdateTime) / 1000) > 0)
-		{
-			this._elapsedSeconds += 1;
-			this._remainingSeconds = this.getTargetSeconds() - this.getElapsedSeconds();
+		var now;
 
-			// Increase by a full second instead of using the current
-			// time to compensate for JavaScript timer drift
-			this._lastUpdateTime += 1000;
-		}
+		now = Util.now();
 
-		if (this.getElapsedSeconds() >= this.getTargetSeconds())
+		this._elapsedTime += now - this._lastUpdateTime;
+		this._lastUpdateTime = now;
+
+		if (this._elapsedTime >= this._targetTime)
 		{
 			this._finish();
 		}
@@ -166,15 +161,15 @@ var timerrific = {};
 
 	Timer.prototype.setTargetSeconds = function(targetSeconds)
 	{
-		this._targetSeconds = targetSeconds;
-
 		// Changing the target time causes the timer to stop
 		this.stop();
+
+		this._targetTime = targetSeconds * 1000;
 	};
 
 	Timer.prototype.getTargetSeconds = function()
 	{
-		return this._targetSeconds;
+		return this._targetTime / 1000;
 	};
 
 	Timer.prototype.getState = function()
@@ -182,14 +177,9 @@ var timerrific = {};
 		return this._state;
 	};
 
-	Timer.prototype.getElapsedSeconds = function()
-	{
-		return this._elapsedSeconds;
-	};
-
 	Timer.prototype.getRemainingSeconds = function()
 	{
-		return this._remainingSeconds;
+		return Math.ceil((this._targetTime - this._elapsedTime) / 1000);
 	};
 
 	timerrific.Timer = Timer;
@@ -248,14 +238,6 @@ var timerrific = {};
 			box.appendChild(span);
 			box.appendChild(br);
 
-			text = document.createTextNode("Elapsed seconds: ");
-			span = document.createElement("span");
-			span.id = "elapsedSeconds:" + id;
-			br = document.createElement("br");
-			box.appendChild(text);
-			box.appendChild(span);
-			box.appendChild(br);
-
 			text = document.createTextNode("Remaining seconds: ");
 			span = document.createElement("span");
 			span.id = "remainingSeconds:" + id;
@@ -298,8 +280,6 @@ var timerrific = {};
 				document.getElementById("state:" + id).innerHTML = timer.getState();
 				document.getElementById("targetSeconds:" + id)
 				        .innerHTML = Util.secondsToDisplayString(timer.getTargetSeconds());
-				document.getElementById("elapsedSeconds:" + id)
-				        .innerHTML = Util.secondsToDisplayString(timer.getElapsedSeconds());
 				document.getElementById("remainingSeconds:" + id)
 				        .innerHTML = Util.secondsToDisplayString(timer.getRemainingSeconds());
 			}
