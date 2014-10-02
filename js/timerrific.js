@@ -96,6 +96,7 @@ var timerrific = {};
 			this._state = Timer.State.RUNNING;
 			this._lastUpdateTime = Date.now();
 
+			this._update();
 			this._interval = setInterval(this._update.bind(this), 100);
 		}
 	};
