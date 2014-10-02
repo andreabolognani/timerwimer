@@ -233,7 +233,7 @@ var timerrific = {};
 
 		if (!this._interval)
 		{
-			this._interval = setInterval(this._update.bind(this), 250);
+			this._interval = setInterval(this._update.bind(this), 100);
 		}
 
 		this._element.style.display = "";
