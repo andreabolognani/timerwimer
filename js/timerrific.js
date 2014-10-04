@@ -137,6 +137,25 @@ var timerrific = {};
 		this._lastUpdateTime = 0;
 	};
 
+	Timer.prototype.action = function()
+	{
+		switch (this.getState())
+		{
+			case Timer.State.STOPPED:
+				this.start();
+				break;
+			case Timer.State.RUNNING:
+				this.pause();
+				break;
+			case Timer.State.PAUSED:
+				this.start();
+				break;
+			case Timer.State.FINISHED:
+				this.stop();
+				break;
+		}
+	};
+
 	Timer.prototype._finish = function()
 	{
 		clearInterval(this._interval);
@@ -260,37 +279,15 @@ var timerrific = {};
 		el.className = "timer";
 		el.id = "timer:" + id;
 
-		// First line: start pause stop
+		// First line: action
 
 		span = document.createElement("span");
-		span.className = "start";
-		span.id = "start:" + id;
-		span.innerHTML = "start";
+		span.className = "action";
+		span.id = "action:" + id;
+		span.innerHTML = "action";
 		el.appendChild(span);
 
-		span.addEventListener("click", this._timer.start.bind(this._timer));
-
-		text = document.createTextNode(" ");
-		el.appendChild(text);
-
-		span = document.createElement("span");
-		span.className = "pause";
-		span.id = "pause:" + id;
-		span.innerHTML = "pause";
-		el.appendChild(span);
-
-		span.addEventListener("click", this._timer.pause.bind(this._timer));
-
-		text = document.createTextNode(" ");
-		el.appendChild(text);
-
-		span = document.createElement("span");
-		span.className = "stop";
-		span.id = "stop:" + id;
-		span.innerHTML = "stop";
-		el.appendChild(span);
-
-		span.addEventListener("click", this._timer.stop.bind(this._timer));
+		span.addEventListener("click", this._timer.action.bind(this._timer));
 
 		br = document.createElement("br")
 		el.appendChild(br);
