@@ -75,7 +75,7 @@ var timerrific = {};
 		this._targetTime = 0;
 
 		this._state = Timer.State.STOPPED;
-		this._elapsedTime = 0;
+		this._remainingTime = 0;
 		this._lastUpdateTime = 0;
 		this._interval = null;
 	};
@@ -133,7 +133,7 @@ var timerrific = {};
 		this._interval = null;
 
 		this._state = Timer.State.STOPPED;
-		this._elapsedTime = 0;
+		this._remainingTime = this._targetTime;
 		this._lastUpdateTime = 0;
 	};
 
@@ -151,10 +151,10 @@ var timerrific = {};
 
 		now = Date.now();
 
-		this._elapsedTime += now - this._lastUpdateTime;
+		this._remainingTime -= now - this._lastUpdateTime;
 		this._lastUpdateTime = now;
 
-		if (this._elapsedTime >= this._targetTime)
+		if (this._remainingTime <= 0)
 		{
 			this._finish();
 		}
@@ -186,6 +186,7 @@ var timerrific = {};
 		this.stop();
 
 		this._targetTime = targetSeconds * 1000;
+		this._remainingTime = this._targetTime;
 	};
 
 	Timer.prototype.getTargetSeconds = function()
@@ -200,7 +201,7 @@ var timerrific = {};
 
 	Timer.prototype.getRemainingSeconds = function()
 	{
-		return Math.ceil((this._targetTime - this._elapsedTime) / 1000);
+		return Math.ceil(this._remainingTime / 1000);
 	};
 
 	timerrific.Timer = Timer;
