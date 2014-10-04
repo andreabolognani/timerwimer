@@ -14,18 +14,20 @@ br
 	margin: 1em;
 	padding: 1em;
 	border: 1px solid black;
-	width: 10em;
+	width: 25em;
 	float: left;
 }
 
 .button
 {
-	margin: 0 0 1em 0;
+	margin: 0 0.1em 1em 0;
 	padding: 0.5em 0.7em;
 	width: 6em;
 	display: block;
 	float: left;
 	text-align: center;
+	color: white;
+	background-color: #918a8a;
 }
 
 .start

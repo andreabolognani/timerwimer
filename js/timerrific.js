@@ -156,6 +156,34 @@ var timerrific = {};
 		}
 	};
 
+	Timer.prototype.increaseTargetTime = function()
+	{
+		var remaining;
+
+		remaining = this.getRemainingSeconds();
+		remaining -= (remaining % 60);
+		remaining += 60;
+
+		this.setTargetSeconds(remaining);
+	};
+
+	Timer.prototype.decreaseTargetTime = function()
+	{
+		var remaining;
+		var mod;
+
+		remaining = this.getRemainingSeconds();
+		mod = remaining % 60;
+		remaining -= mod;
+
+		if (mod == 0)
+		{
+			remaining -= 60;
+		}
+
+		this.setTargetSeconds(remaining);
+	};
+
 	Timer.prototype._finish = function()
 	{
 		clearInterval(this._interval);
@@ -235,6 +263,8 @@ var timerrific = {};
 
 		this._element = null;
 		this._action = null;
+		this._decrease = null;
+		this._increase = null;
 		this._label = null;
 		this._id = null;
 		this._remaining = null;
@@ -291,6 +321,26 @@ var timerrific = {};
 		this._action = span;
 		this._action.addEventListener("click",
 		                              this._timer.action.bind(this._timer));
+
+		span = document.createElement("span");
+		span.className = "button";
+		span.id = "decrease:" + id;
+		span.innerHTML = "down";
+		el.appendChild(span);
+
+		this._decrease = span;
+		this._decrease.addEventListener("click",
+		                                this._timer.decreaseTargetTime.bind(this._timer));
+
+		span = document.createElement("span");
+		span.className = "button";
+		span.id = "increase:" + id;
+		span.innerHTML = "up";
+		el.appendChild(span);
+
+		this._increase = span;
+		this._increase.addEventListener("click",
+		                                this._timer.increaseTargetTime.bind(this._timer));
 
 		br = document.createElement("br")
 		el.appendChild(br);
