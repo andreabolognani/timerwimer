@@ -234,6 +234,7 @@ var timerrific = {};
 		this._timer = new Timer();
 
 		this._element = null;
+		this._action = null;
 		this._label = null;
 		this._id = null;
 		this._remaining = null;
@@ -287,7 +288,9 @@ var timerrific = {};
 		span.innerHTML = "action";
 		el.appendChild(span);
 
-		span.addEventListener("click", this._timer.action.bind(this._timer));
+		this._action = span;
+		this._action.addEventListener("click",
+		                              this._timer.action.bind(this._timer));
 
 		br = document.createElement("br")
 		el.appendChild(br);
@@ -332,6 +335,21 @@ var timerrific = {};
 
 	TimerWidget.prototype._update = function()
 	{
+		switch (this._timer.getState())
+		{
+			case Timer.State.STOPPED:
+			case Timer.State.PAUSED:
+				this._action.innerHTML = "start";
+				break;
+
+			case Timer.State.RUNNING:
+				this._action.innerHTML = "pause";
+				break;
+
+			case Timer.State.FINISHED:
+				this._action.innerHTML = "reset";
+				break;
+		}
 		this._label.innerHTML = this._timer.getLabel();
 		this._id.innerHTML = " (" + this._timer.getId() + ")";
 		this._remaining.innerHTML = Util.secondsToDisplayString(this._timer.getRemainingSeconds());
