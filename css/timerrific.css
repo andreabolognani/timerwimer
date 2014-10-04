@@ -14,15 +14,18 @@ br
 	margin: 1em;
 	padding: 1em;
 	border: 1px solid black;
-	width: 15em;
+	width: 10em;
+	float: left;
 }
 
 .button
 {
 	margin: 0 0 1em 0;
 	padding: 0.5em 0.7em;
+	width: 6em;
 	display: block;
 	float: left;
+	text-align: center;
 }
 
 .start
