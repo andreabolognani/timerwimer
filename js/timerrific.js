@@ -340,14 +340,17 @@ var timerrific = {};
 			case Timer.State.STOPPED:
 			case Timer.State.PAUSED:
 				this._action.innerHTML = "start";
+				this._action.className = "start";
 				break;
 
 			case Timer.State.RUNNING:
 				this._action.innerHTML = "pause";
+				this._action.className = "pause";
 				break;
 
 			case Timer.State.FINISHED:
 				this._action.innerHTML = "reset";
+				this._action.className = "reset";
 				break;
 		}
 		this._label.innerHTML = this._timer.getLabel();

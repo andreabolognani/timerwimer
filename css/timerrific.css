@@ -17,7 +17,7 @@ br
 	width: 15em;
 }
 
-.action
+.start
 {
 	margin: 0 0 1em 0;
 	padding: 0.5em 0.7em;
@@ -27,9 +27,9 @@ br
 	background-color: #2ca71f;
 }
 
-.orange-button
+.pause
 {
-	margin: 0 1em 1em 1em;
+	margin: 0 0 1em 0;
 	padding: 0.5em 0.7em;
 	display: block;
 	float: left;
@@ -37,7 +37,7 @@ br
 	background-color: #f3951c;
 }
 
-.red-button
+.reset
 {
 	margin: 0 0 1em 0;
 	padding: 0.5em 0.7em;
