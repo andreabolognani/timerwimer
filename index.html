@@ -56,12 +56,17 @@
 			<div role="main" class="ui-content">
 
 				<form>
-					<label for="timer-settings-label" class="ui-hidden-accessible">Label:</label>
+					<label for="timer-settings-label"><strong>Label</strong></label>
 					<input type="text" name="timer-settings-label" id="timer-settings-label" value="" placeholder="Label" />
-						<label for="timer-settings-minutes">Minutes:</label>
-						<input type="range" name="timer-settings-minutes" id="timer-settings-minutes" min="0" max="99" value="10" />
-						<label for="timer-settings-seconds">Seconds:</label>
-						<input type="range" name="timer-settings-seconds" id="timer-settings-seconds" min="0" max="59" value="0" />
+					<div>&nbsp;</div>
+
+					<label for="timer-settings-minutes"><strong>Minutes</strong></label>
+					<input type="range" name="timer-settings-minutes" id="timer-settings-minutes" min="0" max="99" value="10" />
+
+					<label for="timer-settings-seconds"><strong>Seconds</strong></label>
+					<input type="range" name="timer-settings-seconds" id="timer-settings-seconds" min="0" max="59" value="0" />
+
+					<div>&nbsp;</div>
 				</form>
 
 				<a href="#" class="ui-btn ui-btn-b">Delete timer</a>
