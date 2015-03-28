@@ -13,14 +13,14 @@
 $(document).on("pageinit", "#main", function() {
 	$("#timer-settings-1").on("click", function() {
 		$("#timer-settings-label").val("One");
-		$("#timer-settings-minutes").val(1);
-		$("#timer-settings-seconds").val(0);
+		$("#timer-settings-minutes").val(1).slider("refresh");
+		$("#timer-settings-seconds").val(0).slider("refresh");
 		$.mobile.changePage("#timer-settings");
 	});
 	$("#timer-settings-2").on("click", function() {
 		$("#timer-settings-label").val("Two");
-		$("#timer-settings-minutes").val(2);
-		$("#timer-settings-seconds").val(0);
+		$("#timer-settings-minutes").val(2).slider("refresh");
+		$("#timer-settings-seconds").val(0).slider("refresh");
 		$.mobile.changePage("#timer-settings");
 	});
 });
