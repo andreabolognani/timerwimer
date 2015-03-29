@@ -32,7 +32,7 @@ $(document).on("pageinit", "#main", function() {
 
 			<div data-role="header" data-position="fixed">
 				<h1>Timerrific</h1>
-				<a href="#menu" class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+				<a href="#menu" class="ui-btn ui-btn-right ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 			</div><!-- /header -->
 
 			<div role="main" class="ui-content">
@@ -54,12 +54,12 @@ $(document).on("pageinit", "#main", function() {
 				</ul>
 			</div><!-- /content -->
 
-			<div data-role="panel" data-position="left" data-display="slide" data-position-fixed="true" id="menu">
+			<div data-role="panel" data-position="right" data-display="overlay" data-position-fixed="true" id="menu">
 
 				<ul data-role="listview">
-					<li><a href="#">Add Timer</a></li>
-					<li><a href="#">Settings</a></li>
-					<li><a href="#">About</a></li>
+					<li data-icon="plus"><a href="#">Add Timer</a></li>
+					<li data-icon="gear"><a href="#">Settings</a></li>
+					<li data-icon="info"><a href="#">About</a></li>
 				</ul>
 			</div><!-- /panel -->
 
