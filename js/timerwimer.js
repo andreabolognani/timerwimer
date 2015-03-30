@@ -442,6 +442,7 @@ var timerwimer = {};
 
 	timerwimer.main = function()
 	{
+/*
 		var timer;
 		var widget;
 		var el;
@@ -469,8 +470,32 @@ var timerwimer = {};
 		document.getElementById("container")
 		        .appendChild(el);
 		widget.show();
+*/
+
+		$(document).on("pageinit", "#main", function() {
+			$("#edit-1").on("click", function() {
+				$("#edit-label").val("One");
+				$("#edit-minutes").val(1);
+				$("#edit-seconds").val(0);
+				$.mobile.changePage("#edit",
+						    { transition: "slide" });
+			});
+			$("#edit-2").on("click", function() {
+				$("#edit-label").val("Two");
+				$("#edit-minutes").val(2);
+				$("#edit-seconds").val(0);
+				$.mobile.changePage("#edit",
+						    { transition: "slide" });
+			});
+
+			$("#add").on("click", function() {
+				$("#timers").append("<li><a href=\"#\"><div class=\"timer-remaining\">00:00</div><div class=\"timer-label\"></div></a><a href=\"#\"></a></li>");
+				$("#timers").listview("refresh");
+				$("#menu").panel("close");
+			});
+		});
 	};
 
 }());
 
-document.addEventListener("DOMContentLoaded", timerwimer.main);
+timerwimer.main();
