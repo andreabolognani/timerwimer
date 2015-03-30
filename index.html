@@ -27,7 +27,7 @@ $(document).on("pageinit", "#main", function() {
 	});
 
 	$("#add").on("click", function() {
-		$("#timers").append("<li><a href=\"#\"><h2>00:00</h2><p>Dummy</p></a><a href=\"#\"></a></li>");
+		$("#timers").append("<li><a href=\"#\"><div class=\"timer-remaining\">00:00</div><div class=\"timer-label\"></div></a><a href=\"#\"></a></li>");
 		$("#timers").listview("refresh");
 		$("#menu").panel("close");
 	});
@@ -47,23 +47,15 @@ $(document).on("pageinit", "#main", function() {
 				<ul data-role="listview" data-split-icon="edit" data-split-theme="a" id="timers">
 					<li>
 						<a href="#">
-							<div style="width: 25%; float: left">
-								01:00
-							</div>
-							<div style="width: 75%; float: right; text-overflow: ellipsis; overflow: hidden; white-space: nowrap">
-								<span style="font-weight: normal">One</small>
-							</div>
+							<div class="timer-remaining">01:00</div>
+							<div class="timer-label">One</div>
 						</a>
 						<a href="#" id="edit-1"></a>
 					</li>
 					<li>
 						<a href="#">
-							<div style="width: 25%; float: left">
-								02:00
-							</div>
-							<div style="width: 75%; float: right; text-overflow: ellipsis; overflow: hidden; white-space: nowrap">
-								<span style="font-weight: normal">Two. Oh boy, this is a really long label, isn't it?</span>
-							</div>
+							<div class="timer-remaining">02:00</div>
+							<div class="timer-label">Two. Oh boy, this is a really long label, isn't it?</div>
 						</a>
 						<a href="#" id="edit-2"></a>
 					</li>
