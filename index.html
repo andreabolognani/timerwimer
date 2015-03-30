@@ -47,15 +47,23 @@ $(document).on("pageinit", "#main", function() {
 				<ul data-role="listview" data-split-icon="edit" data-split-theme="a" id="timers">
 					<li>
 						<a href="#">
-							<h2>01:00</h2>
-							<p>One</p>
+							<div style="width: 25%; float: left">
+								01:00
+							</div>
+							<div style="width: 75%; float: right; font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap">
+								<small>One</small>
+							</div>
 						</a>
 						<a href="#" id="edit-1"></a>
 					</li>
 					<li>
 						<a href="#">
-							<h2>02:00</h2>
-							<p>Two</p>
+							<div style="width: 25%; float: left">
+								02:00
+							</div>
+							<div style="width: 75%; float: right; font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap">
+								<small>Two. Oh boy, this is a really long label, isn't it?</small>
+							</div>
 						</a>
 						<a href="#" id="edit-2"></a>
 					</li>
