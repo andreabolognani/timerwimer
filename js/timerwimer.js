@@ -262,160 +262,76 @@ var timerwimer = {};
 		this._timer = new Timer();
 
 		this._element = null;
-		this._action = null;
-		this._decrease = null;
-		this._increase = null;
 		this._label = null;
-		this._id = null;
 		this._remaining = null;
-		this._state = null;
-		this._interval = null;
-	};
-
-	TimerWidget.prototype.show = function()
-	{
-		if (!this._element)
-		{
-			this._prepare();
-		}
-
-		// Update immediately to prevent flashing
-		this._update();
-
-		if (!this._interval)
-		{
-			this._interval = setInterval(this._update.bind(this), 100);
-		}
-
-		this._element.style.display = "";
-	};
-
-	TimerWidget.prototype.hide = function()
-	{
-		this._element.style.display = "none";
-
-		clearInterval(this._interval);
 	};
 
 	TimerWidget.prototype._prepare = function()
 	{
-		var id;
-		var el;
-		var span;
-		var br;
+		// <li>
+		//   <a href="#">
+		//     <div class="timer-remaining"></div>
+		//     <div class="timer-label"></div>
+		//   </a>
+		//   <a href="#"></a>
+		// </li>
 
-		id = this._timer.getId();
+		var li;
+		var div;
+		var a;
 
-		el = document.createElement("div");
-		el.className = "timer";
-		el.id = "timer:" + id;
+		li = document.createElement("li");
 
-		// First line: action
+		this._element = li;
 
-		span = document.createElement("span");
-		span.className = "button";
-		span.id = "action:" + id;
-		span.innerHTML = "action";
-		el.appendChild(span);
+		// Action button
 
-		this._action = span;
-		this._action.addEventListener("click",
-		                              this._timer.action.bind(this._timer));
+		a = document.createElement("a");
+		li.appendChild(a);
 
-		span = document.createElement("span");
-		span.className = "button";
-		span.id = "decrease:" + id;
-		span.innerHTML = "down";
-		el.appendChild(span);
+		$(a).on("click", function() {
+			console.log("action()");
+		});
 
-		this._decrease = span;
-		this._decrease.addEventListener("click",
-		                                this._timer.decreaseTargetTime.bind(this._timer));
+		// Remaining time
 
-		span = document.createElement("span");
-		span.className = "button";
-		span.id = "increase:" + id;
-		span.innerHTML = "up";
-		el.appendChild(span);
+		div = document.createElement("div");
+		div.className = "timer-remaining";
+		div.innerHTML = "00:00";
+		a.appendChild(div);
 
-		this._increase = span;
-		this._increase.addEventListener("click",
-		                                this._timer.increaseTargetTime.bind(this._timer));
+		this._remaining = div;
 
-		br = document.createElement("br")
-		el.appendChild(br);
+		// Label
 
-		// Second line: remaining (state)
+		div = document.createElement("div");
+		div.className = "timer-label";
+		div.innerHTML = "test";
+		a.appendChild(div);
 
-		span = document.createElement("span");
-		span.className = "remaining";
-		span.id = "remaining:" + id;
-		el.appendChild(span);
+		this._label = div;
 
-		this._remaining = span;
+		// Edit button
 
-		span = document.createElement("span");
-		span.className = "state";
-		span.id = "state:" + id;
-		el.appendChild(span);
+		a = document.createElement("a");
+		li.appendChild(a);
 
-		this._state = span;
-
-		br = document.createElement("br")
-		el.appendChild(br);
-
-		// Third line: label (id)
-
-		span = document.createElement("span");
-		span.className = "label";
-		span.id = "label:" + id;
-		el.appendChild(span);
-
-		this._label = span;
-
-		span = document.createElement("span");
-		span.className = "id";
-		span.id = "id:" + id;
-		el.appendChild(span);
-
-		this._id = span;
-
-		this._element = el;
+		$(a).on("click", function() {
+			console.log("edit()");
+		});
 	};
 
-	TimerWidget.prototype._update = function()
+	TimerWidget.prototype.update = function()
 	{
-		switch (this._timer.getState())
-		{
-			case Timer.State.STOPPED:
-			case Timer.State.PAUSED:
-				this._action.innerHTML = "start";
-				this._action.className = "start button";
-				break;
-
-			case Timer.State.RUNNING:
-				this._action.innerHTML = "pause";
-				this._action.className = "pause button";
-				break;
-
-			case Timer.State.FINISHED:
-				this._action.innerHTML = "reset";
-				this._action.className = "reset button";
-				break;
-		}
 		this._label.innerHTML = this._timer.getLabel();
-		this._id.innerHTML = " (" + this._timer.getId() + ")";
 		this._remaining.innerHTML = Util.secondsToDisplayString(this._timer.getRemainingSeconds());
-		this._state.innerHTML = " (" + this._timer.getState() + ")";
 	};
 
 	TimerWidget.prototype.setTimer = function(timer)
 	{
 		if (this._timer)
 		{
-			clearInterval(this._interval);
 			this._timer.stop();
-			this._element = null;
 		}
 
 		this._timer = timer;
@@ -428,7 +344,7 @@ var timerwimer = {};
 
 	TimerWidget.prototype.getElement = function()
 	{
-		if (!this._element)
+		if (this._element == null)
 		{
 			this._prepare();
 		}
@@ -442,38 +358,23 @@ var timerwimer = {};
 
 	timerwimer.main = function()
 	{
-/*
-		var timer;
-		var widget;
-		var el;
-
-		timer = new Timer();
-		timer.setId(10);
-		timer.setLabel("10 seconds");
-		timer.setTargetSeconds(10);
-
-		widget = new TimerWidget();
-		widget.setTimer(timer);
-		el = widget.getElement();
-		document.getElementById("container")
-		        .appendChild(el);
-		widget.show();
-
-		timer = new Timer();
-		timer.setId(30);
-		timer.setLabel("30 seconds");
-		timer.setTargetSeconds(30);
-
-		widget = new TimerWidget();
-		widget.setTimer(timer);
-		el = widget.getElement();
-		document.getElementById("container")
-		        .appendChild(el);
-		widget.show();
-*/
-
-/*
 		$(document).on("pageinit", "#main", function() {
+
+			var timer;
+			var widget;
+
+			timer = new Timer();
+			timer.setId(10);
+			timer.setLabel("10 seconds");
+			timer.setTargetSeconds(10);
+
+			widget = new TimerWidget();
+			widget.setTimer(timer);
+			$("#timers").append(widget.getElement());
+
+			$("#timers").listview("refresh");
+		});
+/*
 
 			$("#edit-1").on("click", function() {
 				$("#edit-label").val("One");
