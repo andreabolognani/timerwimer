@@ -60,8 +60,8 @@ $(document).on("pageinit", "#main", function() {
 
 				<ul data-role="listview">
 					<li data-icon="plus"><a href="#">Add Timer</a></li>
-					<li data-icon="gear"><a href="#">Settings</a></li>
-					<li data-icon="info"><a href="#">About</a></li>
+					<li data-icon="gear"><a href="#settings" data-transition="slide">Settings</a></li>
+					<li data-icon="info"><a href="#about" data-transition="slide">About</a></li>
 				</ul>
 			</div><!-- /panel -->
 
@@ -91,6 +91,30 @@ $(document).on("pageinit", "#main", function() {
 				</form>
 
 				<a href="#" class="ui-btn ui-btn-b">Delete timer</a>
+			</div><!-- /content -->
+
+		</div><!-- /page -->
+
+		<div data-role="page" id="settings">
+
+			<div data-role="header" data-position="fixed">
+				<h1>Settings</h1>
+				<a href="#main" class="ui-btn ui-corner-all ui-icon-carat-l ui-btn-icon-notext" data-transition="slide" data-direction="reverse">Back</a>
+			</div><!-- /header -->
+
+			<div role="main" class="ui-content">
+			</div><!-- /content -->
+
+		</div><!-- /page -->
+
+		<div data-role="page" id="about">
+
+			<div data-role="header" data-position="fixed">
+				<h1>About</h1>
+				<a href="#main" class="ui-btn ui-corner-all ui-icon-carat-l ui-btn-icon-notext" data-transition="slide" data-direction="reverse">Back</a>
+			</div><!-- /header -->
+
+			<div role="main" class="ui-content">
 			</div><!-- /content -->
 
 		</div><!-- /page -->
