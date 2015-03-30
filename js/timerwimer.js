@@ -1,4 +1,4 @@
-/* Timerrific - Countdown timers for your device
+/* Timer Wimer - Countdown timers for your device
  * Copyright (C) 2013-2014  Andrea Bolognani <eof@kiyuko.org>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-var timerrific = {};
+var timerwimer = {};
 
 (function() {
 
@@ -62,7 +62,7 @@ var timerrific = {};
 		return display;
 	};
 
-	timerrific.Util = Util;
+	timerwimer.Util = Util;
 
 	// Timer class
 
@@ -251,7 +251,7 @@ var timerrific = {};
 		return Math.ceil(this._remainingTime / 1000);
 	};
 
-	timerrific.Timer = Timer;
+	timerwimer.Timer = Timer;
 
 	// TimerWidget class
 
@@ -436,11 +436,11 @@ var timerrific = {};
 		return this._element;
 	};
 
-	timerrific.TimerWidget = TimerWidget;
+	timerwimer.TimerWidget = TimerWidget;
 
 	// Exported functions
 
-	timerrific.main = function()
+	timerwimer.main = function()
 	{
 		var timer;
 		var widget;
@@ -473,4 +473,4 @@ var timerrific = {};
 
 }());
 
-document.addEventListener("DOMContentLoaded", timerrific.main);
+document.addEventListener("DOMContentLoaded", timerwimer.main);

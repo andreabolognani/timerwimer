@@ -1,5 +1,5 @@
-Timerrific
-==========
+Timer Wimer
+===========
 
 Simple application to manage several independent countdown timers
 on your device.
