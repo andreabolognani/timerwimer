@@ -472,7 +472,9 @@ var timerwimer = {};
 		widget.show();
 */
 
+/*
 		$(document).on("pageinit", "#main", function() {
+
 			$("#edit-1").on("click", function() {
 				$("#edit-label").val("One");
 				$("#edit-minutes").val(1);
@@ -494,6 +496,7 @@ var timerwimer = {};
 				$("#menu").panel("close");
 			});
 		});
+*/
 	};
 
 }());
