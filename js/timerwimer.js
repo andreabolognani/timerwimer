@@ -70,7 +70,6 @@ var timerwimer = {};
 
 	Timer = function()
 	{
-		this._id = 0;
 		this._label = "";
 		this._targetTime = 0;
 
@@ -205,16 +204,6 @@ var timerwimer = {};
 		{
 			this._finish();
 		}
-	};
-
-	Timer.prototype.setId = function(id)
-	{
-		this._id = id;
-	};
-
-	Timer.prototype.getId = function()
-	{
-		return this._id;
 	};
 
 	Timer.prototype.setLabel = function(label)
@@ -364,7 +353,6 @@ var timerwimer = {};
 			var widget;
 
 			timer = new Timer();
-			timer.setId(10);
 			timer.setLabel("10 seconds");
 			timer.setTargetSeconds(10);
 
