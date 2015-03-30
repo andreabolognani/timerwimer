@@ -278,9 +278,7 @@ var timerwimer = {};
 		a = document.createElement("a");
 		li.appendChild(a);
 
-		$(a).on("click", function() {
-			console.log("action()");
-		});
+		$(a).on("click", this._timer.start.bind(this._timer));
 
 		// Remaining time
 
