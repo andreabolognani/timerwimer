@@ -11,18 +11,18 @@
 		<script src="js/timerrific.js"></script>
 		<script>
 $(document).on("pageinit", "#main", function() {
-	$("#timer-settings-1").on("click", function() {
-		$("#timer-settings-label").val("One");
-		$("#timer-settings-minutes").val(1);
-		$("#timer-settings-seconds").val(0);
-		$.mobile.changePage("#timer-settings",
+	$("#edit-1").on("click", function() {
+		$("#edit-label").val("One");
+		$("#edit-minutes").val(1);
+		$("#edit-seconds").val(0);
+		$.mobile.changePage("#edit",
 		                    { transition: "slide" });
 	});
-	$("#timer-settings-2").on("click", function() {
-		$("#timer-settings-label").val("Two");
-		$("#timer-settings-minutes").val(2);
-		$("#timer-settings-seconds").val(0);
-		$.mobile.changePage("#timer-settings",
+	$("#edit-2").on("click", function() {
+		$("#edit-label").val("Two");
+		$("#edit-minutes").val(2);
+		$("#edit-seconds").val(0);
+		$.mobile.changePage("#edit",
 		                    { transition: "slide" });
 	});
 });
@@ -38,20 +38,20 @@ $(document).on("pageinit", "#main", function() {
 			</div><!-- /header -->
 
 			<div role="main" class="ui-content">
-				<ul data-role="listview" data-split-icon="gear" data-split-theme="a">
+				<ul data-role="listview" data-split-icon="edit" data-split-theme="a">
 					<li>
 						<a href="#">
 							<h2>01:00</h2>
 							<p>One</p>
 						</a>
-						<a href="#" id="timer-settings-1"></a>
+						<a href="#" id="edit-1"></a>
 					</li>
 					<li>
 						<a href="#">
 							<h2>02:00</h2>
 							<p>Two</p>
 						</a>
-						<a href="#" id="timer-settings-2"></a>
+						<a href="#" id="edit-2"></a>
 					</li>
 				</ul>
 			</div><!-- /content -->
@@ -67,25 +67,25 @@ $(document).on("pageinit", "#main", function() {
 
 		</div><!-- /page -->
 
-		<div data-role="page" id="timer-settings">
+		<div data-role="page" id="edit">
 
 			<div data-role="header" data-position="fixed">
-				<h1>Timer Settings</h1>
+				<h1>Edit</h1>
 				<a href="#main" class="ui-btn ui-corner-all ui-icon-carat-l ui-btn-icon-notext" data-transition="slide" data-direction="reverse">Back</a>
 			</div><!-- /header -->
 
 			<div role="main" class="ui-content">
 
 				<form>
-					<label for="timer-settings-label"><strong>Label</strong></label>
-					<input type="text" name="timer-settings-label" id="timer-settings-label" value="" placeholder="Label" />
+					<label for="edit-label"><strong>Label</strong></label>
+					<input type="text" name="edit-label" id="edit-label" value="" placeholder="Label" />
 					<div>&nbsp;</div>
 
-					<label for="timer-settings-minutes"><strong>Minutes</strong></label>
-					<input type="range" name="timer-settings-minutes" id="timer-settings-minutes" min="0" max="99" value="10" />
+					<label for="edit-minutes"><strong>Minutes</strong></label>
+					<input type="range" name="edit-minutes" id="edit-minutes" min="0" max="99" value="10" />
 
-					<label for="timer-settings-seconds"><strong>Seconds</strong></label>
-					<input type="range" name="timer-settings-seconds" id="timer-settings-seconds" min="0" max="59" value="0" />
+					<label for="edit-seconds"><strong>Seconds</strong></label>
+					<input type="range" name="edit-seconds" id="edit-seconds" min="0" max="59" value="0" />
 
 					<div>&nbsp;</div>
 				</form>
