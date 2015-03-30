@@ -286,7 +286,7 @@ var timerwimer = {};
 
 		div = document.createElement("div");
 		div.className = "timer-remaining";
-		div.innerHTML = this._timer.getRemainingSeconds();
+		div.innerHTML = Util.secondsToDisplayString(this._timer.getRemainingSeconds());
 		a.appendChild(div);
 
 		this._remaining = div;
@@ -343,6 +343,49 @@ var timerwimer = {};
 
 	timerwimer.TimerWidget = TimerWidget;
 
+	// TimerWidgetList class
+
+	var TimerWidgetList;
+
+	TimerWidgetList = function(element)
+	{
+		this._list = [];
+		this._interval = null;
+
+		this._element = element;
+	};
+
+	TimerWidgetList.prototype.add = function(timer)
+	{
+		this._list.push(timer);
+
+		this._element.append(timer.getElement());
+		this._element.listview("refresh");
+	};
+
+	TimerWidgetList.prototype.each = function(f)
+	{
+		for (var i = 0; i < this._list.length; i++)
+		{
+			f(this._list[i]);
+		}
+	};
+
+	TimerWidgetList.prototype.update = function()
+	{
+		this.each(function(timerWidget) {
+			timerWidget.update();
+		});
+		this._element.listview("refresh");
+	};
+
+	TimerWidgetList.prototype.show = function()
+	{
+		this._interval = setInterval(this.update.bind(this), 100);
+	};
+
+	timerwimer.TimerWidgetList = TimerWidgetList;
+
 	// Exported functions
 
 	timerwimer.main = function()
@@ -351,16 +394,28 @@ var timerwimer = {};
 
 			var timer;
 			var widget;
+			var widgetList;
+
+			widgetList = new TimerWidgetList($("#timers"));
+			widgetList.show();
 
 			timer = new Timer();
-			timer.setLabel("10 seconds");
-			timer.setTargetSeconds(10);
+			timer.setLabel("Eleven seconds");
+			timer.setTargetSeconds(11);
 
 			widget = new TimerWidget();
 			widget.setTimer(timer);
-			$("#timers").append(widget.getElement());
 
-			$("#timers").listview("refresh");
+			widgetList.add(widget);
+
+			timer = new Timer();
+			timer.setLabel("Ten minutes");
+			timer.setTargetSeconds(600);
+
+			widget = new TimerWidget();
+			widget.setTimer(timer);
+
+			widgetList.add(widget);
 		});
 /*
 
