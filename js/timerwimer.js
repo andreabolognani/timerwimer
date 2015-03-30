@@ -286,7 +286,7 @@ var timerwimer = {};
 
 		div = document.createElement("div");
 		div.className = "timer-remaining";
-		div.innerHTML = "00:00";
+		div.innerHTML = this._timer.getRemainingSeconds();
 		a.appendChild(div);
 
 		this._remaining = div;
@@ -295,7 +295,7 @@ var timerwimer = {};
 
 		div = document.createElement("div");
 		div.className = "timer-label";
-		div.innerHTML = "test";
+		div.innerHTML = this._timer.getLabel();
 		a.appendChild(div);
 
 		this._label = div;
