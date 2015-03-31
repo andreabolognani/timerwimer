@@ -277,7 +277,14 @@ var timerwimer = {};
 		li.appendChild(a);
 
 		$(a).on("tap", function() {
+
+			// Perform a state-sensitive operation on tap
 			timer.action();
+		});
+		$(a).on("taphold", function() {
+
+			// Stop the timer on long press
+			timer.stop();
 		});
 
 		// Remaining time
@@ -405,6 +412,9 @@ var timerwimer = {};
 
 	timerwimer.main = function()
 	{
+		// Don't emit a tap event right after a taphold event
+		$.event.special.tap.emitTapOnTaphold = false;
+
 		$(document).on("pageinit", "#main", function() {
 
 			var timer;
