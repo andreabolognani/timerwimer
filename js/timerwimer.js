@@ -311,11 +311,20 @@ var timerwimer = {};
 		li.appendChild(a);
 
 		$(a).on("click", function() {
+
+			// Load and enhance page in advance.
+			// This is required to ensure sliders are properly set
+			// when the page is displayed to the user
+			$.mobile.loadPage("#edit");
+
+			// Set values
 			$("#edit-label").val(timer.getLabel());
 			$("#edit-minutes").val(timer.getTargetMinutes());
 			$("#edit-seconds").val(timer.getTargetSeconds());
+
+			// Change page
 			$.mobile.changePage("#edit",
-					    { transition: "slide" });
+			                    { transition: "slide" });
 		});
 	};
 
