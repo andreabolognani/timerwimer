@@ -344,6 +344,9 @@ var timerwimer = {};
 
 	TimerWidgetList.prototype._prepare = function()
 	{
+		// <ul>
+		// </ul>
+
 		var ul;
 
 		// Root element
