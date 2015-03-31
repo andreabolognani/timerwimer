@@ -71,9 +71,11 @@ var timerwimer = {};
 	Timer = function()
 	{
 		this._label = "";
-		this._targetTime = 0;
+		this._targetMinutes = 0;
+		this._targetSeconds = 0;
 
 		this._state = Timer.State.STOPPED;
+		this._targetTime = 0;
 		this._remainingTime = 0;
 		this._lastUpdateTime = 0;
 		this._interval = null;
@@ -155,34 +157,6 @@ var timerwimer = {};
 		}
 	};
 
-	Timer.prototype.increaseTargetTime = function()
-	{
-		var remaining;
-
-		remaining = this.getRemainingSeconds();
-		remaining -= (remaining % 60);
-		remaining += 60;
-
-		this.setTargetSeconds(remaining);
-	};
-
-	Timer.prototype.decreaseTargetTime = function()
-	{
-		var remaining;
-		var mod;
-
-		remaining = this.getRemainingSeconds();
-		mod = remaining % 60;
-		remaining -= mod;
-
-		if (mod == 0)
-		{
-			remaining -= 60;
-		}
-
-		this.setTargetSeconds(remaining);
-	};
-
 	Timer.prototype._finish = function()
 	{
 		clearInterval(this._interval);
@@ -202,6 +176,7 @@ var timerwimer = {};
 
 		if (this._remainingTime <= 0)
 		{
+			this._remainingTime = 0;
 			this._finish();
 		}
 	};
@@ -216,18 +191,36 @@ var timerwimer = {};
 		return this._label;
 	};
 
+	Timer.prototype.setTargetMinutes = function(targetMinutes)
+	{
+		// Changing the target time causes the timer to stop
+		this.stop();
+
+		this._targetMinutes = targetMinutes;
+
+		this._targetTime = ((this._targetMinutes * 60) + this._targetSeconds) * 1000;
+		this._remainingTime = this._targetTime;
+	};
+
+	Timer.prototype.getTargetMinutes = function()
+	{
+		return this._targetMinutes;
+	};
+
 	Timer.prototype.setTargetSeconds = function(targetSeconds)
 	{
 		// Changing the target time causes the timer to stop
 		this.stop();
 
-		this._targetTime = targetSeconds * 1000;
+		this._targetSeconds = targetSeconds;
+
+		this._targetTime = ((this._targetMinutes * 60) + this._targetSeconds) * 1000;
 		this._remainingTime = this._targetTime;
 	};
 
 	Timer.prototype.getTargetSeconds = function()
 	{
-		return this._targetTime / 1000;
+		return this._targetSeconds;
 	};
 
 	Timer.prototype.getState = function()
@@ -235,9 +228,14 @@ var timerwimer = {};
 		return this._state;
 	};
 
+	Timer.prototype.getRemainingMinutes = function()
+	{
+		return Math.floor(Math.ceil(this._remainingTime / 1000) / 60);
+	};
+
 	Timer.prototype.getRemainingSeconds = function()
 	{
-		return Math.ceil(this._remainingTime / 1000);
+		return Math.ceil(this._remainingTime / 1000) % 60;
 	};
 
 	timerwimer.Timer = Timer;
@@ -314,7 +312,7 @@ var timerwimer = {};
 
 		$(a).on("click", function() {
 			$("#edit-label").val(timer.getLabel());
-			$("#edit-minutes").val(0);
+			$("#edit-minutes").val(timer.getTargetMinutes());
 			$("#edit-seconds").val(timer.getTargetSeconds());
 			$.mobile.changePage("#edit",
 					    { transition: "slide" });
@@ -324,7 +322,7 @@ var timerwimer = {};
 	TimerWidget.prototype.update = function()
 	{
 		this._label.innerHTML = this._timer.getLabel();
-		this._remaining.innerHTML = Util.secondsToDisplayString(this._timer.getRemainingSeconds());
+		this._remaining.innerHTML = this._timer.getRemainingMinutes() + ":" + this._timer.getRemainingSeconds();
 	};
 
 	TimerWidget.prototype.getTimer = function()
@@ -414,15 +412,25 @@ var timerwimer = {};
 			widgetList = new TimerWidgetList();
 
 			timer = new Timer();
+			timer.setLabel("Nine minutes");
+			timer.setTargetMinutes(9);
+			timer.setTargetSeconds(0);
+
+			widget = new TimerWidget(timer);
+			widgetList.add(widget);
+
+			timer = new Timer();
 			timer.setLabel("Eleven seconds");
+			timer.setTargetMinutes(0);
 			timer.setTargetSeconds(11);
 
 			widget = new TimerWidget(timer);
 			widgetList.add(widget);
 
 			timer = new Timer();
-			timer.setLabel("Ten minutes");
-			timer.setTargetSeconds(600);
+			timer.setLabel("One minute");
+			timer.setTargetMinutes(1);
+			timer.setTargetSeconds(0);
 
 			widget = new TimerWidget(timer);
 			widgetList.add(widget);
