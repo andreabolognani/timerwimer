@@ -268,9 +268,13 @@ var timerwimer = {};
 		//   <a href="#"></a>
 		// </li>
 
+		var timer;
+
 		var li;
 		var div;
 		var a;
+
+		timer = this._timer;
 
 		// Root element
 
@@ -283,7 +287,9 @@ var timerwimer = {};
 		a = document.createElement("a");
 		li.appendChild(a);
 
-		$(a).on("click", this._timer.start.bind(this._timer));
+		$(a).on("click", function() {
+			timer.action();
+		});
 
 		// Remaining time
 
@@ -307,7 +313,11 @@ var timerwimer = {};
 		li.appendChild(a);
 
 		$(a).on("click", function() {
-			console.log("edit()");
+			$("#edit-label").val(timer.getLabel());
+			$("#edit-minutes").val(0);
+			$("#edit-seconds").val(timer.getTargetSeconds());
+			$.mobile.changePage("#edit",
+					    { transition: "slide" });
 		});
 	};
 
@@ -419,32 +429,7 @@ var timerwimer = {};
 
 			$("#timerlist").append(widgetList.getElement());
 		});
-/*
-
-			$("#edit-1").on("click", function() {
-				$("#edit-label").val("One");
-				$("#edit-minutes").val(1);
-				$("#edit-seconds").val(0);
-				$.mobile.changePage("#edit",
-						    { transition: "slide" });
-			});
-			$("#edit-2").on("click", function() {
-				$("#edit-label").val("Two");
-				$("#edit-minutes").val(2);
-				$("#edit-seconds").val(0);
-				$.mobile.changePage("#edit",
-						    { transition: "slide" });
-			});
-
-			$("#add").on("click", function() {
-				$("#timers").append("<li><a href=\"#\"><div class=\"timer-remaining\">00:00</div><div class=\"timer-label\"></div></a><a href=\"#\"></a></li>");
-				$("#timers").listview("refresh");
-				$("#menu").panel("close");
-			});
-		});
-*/
 	};
-
 }());
 
 timerwimer.main();
