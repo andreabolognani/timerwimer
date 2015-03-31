@@ -36,28 +36,19 @@ var timerwimer = {};
 
 	Util = {};
 
-	Util.secondsToDisplayString = function(time)
+	Util.numberToDisplayString = function(number)
 	{
 		var display;
-		var minutes;
-		var seconds;
 
-		seconds = time % 60;
-		minutes = (time - seconds) / 60;
-
-		display = "";
-
-		if (minutes < 10)
+		if (number < 10)
 		{
-			display += "0";
+			display = "0";
 		}
-		display += minutes + ":";
-
-		if (seconds < 10)
+		else
 		{
-			display += "0";
+			display = "";
 		}
-		display += seconds;
+		display += number;
 
 		return display;
 	};
@@ -331,7 +322,9 @@ var timerwimer = {};
 	TimerWidget.prototype.update = function()
 	{
 		this._label.innerHTML = this._timer.getLabel();
-		this._remaining.innerHTML = this._timer.getRemainingMinutes() + ":" + this._timer.getRemainingSeconds();
+		this._remaining.innerHTML = Util.numberToDisplayString(this._timer.getRemainingMinutes()) +
+		                            ":" +
+		                            Util.numberToDisplayString(this._timer.getRemainingSeconds());
 	};
 
 	TimerWidget.prototype.getTimer = function()
