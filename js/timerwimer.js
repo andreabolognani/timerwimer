@@ -276,7 +276,7 @@ var timerwimer = {};
 		a = document.createElement("a");
 		li.appendChild(a);
 
-		$(a).on("click", function() {
+		$(a).on("tap", function() {
 			timer.action();
 		});
 
@@ -301,7 +301,7 @@ var timerwimer = {};
 		a = document.createElement("a");
 		li.appendChild(a);
 
-		$(a).on("click", function() {
+		$(a).on("tap", function() {
 
 			// Load and enhance page in advance.
 			// This is required to ensure sliders are properly set
