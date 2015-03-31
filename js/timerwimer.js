@@ -276,7 +276,7 @@ var timerwimer = {};
 
 		li = document.createElement("li");
 
-		this._element = li;
+		this._element = $(li);
 
 		// Action button
 
@@ -333,12 +333,28 @@ var timerwimer = {};
 
 	var TimerWidgetList;
 
-	TimerWidgetList = function(element)
+	TimerWidgetList = function()
 	{
 		this._list = [];
 		this._interval = null;
+		this._element = null;
 
-		this._element = element;
+		this._prepare();
+	};
+
+	TimerWidgetList.prototype._prepare = function()
+	{
+		var ul;
+
+		// Root element
+
+		ul = document.createElement("ul");
+
+		$(ul).listview({ splitIcon: "gear" });
+
+		this._element = $(ul);
+
+		this._interval = setInterval(this.update.bind(this), 100);
 	};
 
 	TimerWidgetList.prototype.add = function(timer)
@@ -365,9 +381,9 @@ var timerwimer = {};
 		this._element.listview("refresh");
 	};
 
-	TimerWidgetList.prototype.show = function()
+	TimerWidgetList.prototype.getElement = function()
 	{
-		this._interval = setInterval(this.update.bind(this), 100);
+		return this._element;
 	};
 
 	timerwimer.TimerWidgetList = TimerWidgetList;
@@ -382,8 +398,7 @@ var timerwimer = {};
 			var widget;
 			var widgetList;
 
-			widgetList = new TimerWidgetList($("#timers"));
-			widgetList.show();
+			widgetList = new TimerWidgetList();
 
 			timer = new Timer();
 			timer.setLabel("Eleven seconds");
@@ -398,6 +413,8 @@ var timerwimer = {};
 
 			widget = new TimerWidget(timer);
 			widgetList.add(widget);
+
+			$("#timerlist").append(widgetList.getElement());
 		});
 /*
 
