@@ -310,15 +310,39 @@ var timerwimer = {};
 
 		$(a).on("tap", function() {
 
+			var editLabel;
+			var editMinutes;
+			var editSeconds;
+
 			// Load and enhance page in advance.
 			// This is required to ensure sliders are properly set
 			// when the page is displayed to the user
 			$.mobile.loadPage("#edit");
 
+			editLabel = $("#edit-label");
+			editMinutes = $("#edit-minutes");
+			editSeconds = $("#edit-seconds");
+
 			// Set values
-			$("#edit-label").val(timer.getLabel());
-			$("#edit-minutes").val(timer.getTargetMinutes());
-			$("#edit-seconds").val(timer.getTargetSeconds());
+			editLabel.val(timer.getLabel());
+			editMinutes.val(timer.getTargetMinutes());
+			editSeconds.val(timer.getTargetSeconds());
+
+			// Remove previous event handlers
+			editLabel.off("change");
+			editMinutes.off("change");
+			editSeconds.off("change");
+
+			// Install new event handlers
+			editLabel.on("change", function() {
+				timer.setLabel(editLabel.val());
+			});
+			editMinutes.on("change", function() {
+				timer.setTargetMinutes(editMinutes.val());
+			});
+			editSeconds.on("change", function() {
+				timer.setTargetSeconds(editSeconds.val());
+			});
 
 			// Change page
 			$.mobile.changePage("#edit",
