@@ -370,11 +370,11 @@ var timerwimer = {};
 
 	timerwimer.TimerWidget = TimerWidget;
 
-	// TimerWidgetList class
+	// TimerListWidget class
 
-	var TimerWidgetList;
+	var TimerListWidget;
 
-	TimerWidgetList = function()
+	TimerListWidget = function()
 	{
 		this._list = [];
 		this._interval = null;
@@ -383,7 +383,7 @@ var timerwimer = {};
 		this._prepare();
 	};
 
-	TimerWidgetList.prototype._prepare = function()
+	TimerListWidget.prototype._prepare = function()
 	{
 		// <ul>
 		// </ul>
@@ -401,7 +401,7 @@ var timerwimer = {};
 		this._interval = setInterval(this.update.bind(this), 100);
 	};
 
-	TimerWidgetList.prototype.add = function(timer)
+	TimerListWidget.prototype.add = function(timer)
 	{
 		this._list.push(timer);
 
@@ -409,7 +409,7 @@ var timerwimer = {};
 		this._element.listview("refresh");
 	};
 
-	TimerWidgetList.prototype.each = function(f)
+	TimerListWidget.prototype.each = function(f)
 	{
 		for (var i = 0; i < this._list.length; i++)
 		{
@@ -417,7 +417,7 @@ var timerwimer = {};
 		}
 	};
 
-	TimerWidgetList.prototype.update = function()
+	TimerListWidget.prototype.update = function()
 	{
 		this.each(function(timerWidget) {
 			timerWidget.update();
@@ -425,12 +425,12 @@ var timerwimer = {};
 		this._element.listview("refresh");
 	};
 
-	TimerWidgetList.prototype.getElement = function()
+	TimerListWidget.prototype.getElement = function()
 	{
 		return this._element;
 	};
 
-	timerwimer.TimerWidgetList = TimerWidgetList;
+	timerwimer.TimerListWidget = TimerListWidget;
 
 	// Exported functions
 
@@ -445,7 +445,7 @@ var timerwimer = {};
 			var widget;
 			var widgetList;
 
-			widgetList = new TimerWidgetList();
+			widgetList = new TimerListWidget();
 
 			timer = new Timer();
 			timer.setLabel("Nine minutes");
