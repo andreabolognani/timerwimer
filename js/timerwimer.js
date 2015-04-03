@@ -370,7 +370,7 @@ var timerwimer = {};
 
 		ul = document.createElement("ul");
 
-		$(ul).listview({ splitIcon: "gear" });
+		$(ul).listview({ splitIcon: "edit" });
 
 		this._element = $(ul);
 
