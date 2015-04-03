@@ -472,6 +472,13 @@ var timerwimer = {};
 			widgetList.add(widget);
 
 			$("#timerlist").append(widgetList.getElement());
+
+			$("#add").on("tap", function() {
+
+				// Add a new timer using default settings
+				widgetList.add(new TimerWidget(new Timer()));
+				$("#menu").panel("close");
+			});
 		});
 	};
 }());
