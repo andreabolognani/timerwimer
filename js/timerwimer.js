@@ -187,6 +187,14 @@ var timerwimer = {};
 		// Changing the target time causes the timer to stop
 		this.stop();
 
+		// Make sure the value is in the permitted range
+		if (targetMinutes < 0) {
+			targetMinutes = 0;
+		}
+		if (targetMinutes > 99) {
+			targetMinutes = 99;
+		}
+
 		this._targetMinutes = targetMinutes;
 
 		this._targetTime = ((this._targetMinutes * 60) + this._targetSeconds) * 1000;
@@ -202,6 +210,14 @@ var timerwimer = {};
 	{
 		// Changing the target time causes the timer to stop
 		this.stop();
+
+		// Make sure the value is in the permitted range
+		if (targetSeconds < 0) {
+			targetSeconds = 0;
+		}
+		if (targetSeconds > 59) {
+			targetSeconds = 59;
+		}
 
 		this._targetSeconds = targetSeconds;
 
