@@ -448,6 +448,67 @@ var timerwimer = {};
 
 	timerwimer.TimerListWidget = TimerListWidget;
 
+	// Application class
+
+	var Application;
+
+	Application = function()
+	{
+		this._timerList = null;
+		this._interval = null;
+
+		this._load();
+	};
+
+	Application.prototype._load = function()
+	{
+		var timer;
+		var timerList;
+
+		timerList = new TimerListWidget();
+
+		timer = new Timer();
+		timer.setLabel("Nine minutes");
+		timer.setTargetMinutes(9);
+		timer.setTargetSeconds(0);
+		timerList.add(new TimerWidget(timer));
+
+		timer = new Timer();
+		timer.setLabel("Three seconds");
+		timer.setTargetMinutes(0);
+		timer.setTargetSeconds(3);
+		timerList.add(new TimerWidget(timer));
+
+		timer = new Timer();
+		timer.setLabel("One minute");
+		timer.setTargetMinutes(1);
+		timer.setTargetSeconds(0);
+		timerList.add(new TimerWidget(timer));
+
+		$("#timerlist").append(timerList.getElement());
+
+		$("#add").on("tap", function() {
+
+			// Add a new timer using default settings
+			timerList.add(new TimerWidget(new Timer()));
+			$("#menu").panel("close");
+		});
+
+		this._timerList = timerList;
+	};
+
+	Application.prototype.update = function()
+	{
+		this._timerList.update();
+	};
+
+	Application.prototype.run = function()
+	{
+		this._interval = setInterval(this.update.bind(this), 100);
+	};
+
+	timerwimer.Application = Application;
+
 	// Exported functions
 
 	timerwimer.main = function()
@@ -456,45 +517,7 @@ var timerwimer = {};
 		$.event.special.tap.emitTapOnTaphold = false;
 
 		$(document).on("pageinit", "#main", function() {
-
-			var timer;
-			var widget;
-			var widgetList;
-
-			widgetList = new TimerListWidget();
-
-			timer = new Timer();
-			timer.setLabel("Nine minutes");
-			timer.setTargetMinutes(9);
-			timer.setTargetSeconds(0);
-
-			widget = new TimerWidget(timer);
-			widgetList.add(widget);
-
-			timer = new Timer();
-			timer.setLabel("Eleven seconds");
-			timer.setTargetMinutes(0);
-			timer.setTargetSeconds(11);
-
-			widget = new TimerWidget(timer);
-			widgetList.add(widget);
-
-			timer = new Timer();
-			timer.setLabel("One minute");
-			timer.setTargetMinutes(1);
-			timer.setTargetSeconds(0);
-
-			widget = new TimerWidget(timer);
-			widgetList.add(widget);
-
-			$("#timerlist").append(widgetList.getElement());
-
-			$("#add").on("tap", function() {
-
-				// Add a new timer using default settings
-				widgetList.add(new TimerWidget(new Timer()));
-				$("#menu").panel("close");
-			});
+			new Application().run();
 		});
 	};
 }());
