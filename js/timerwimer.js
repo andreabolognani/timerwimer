@@ -69,7 +69,6 @@ var timerwimer = {};
 		this._targetTime = 0;
 		this._remainingTime = 0;
 		this._lastUpdateTime = 0;
-		this._interval = null;
 	};
 
 	Timer.State =
@@ -88,8 +87,7 @@ var timerwimer = {};
 			this._state = Timer.State.RUNNING;
 			this._lastUpdateTime = Date.now();
 
-			this._update();
-			this._interval = setInterval(this._update.bind(this), 100);
+			this.update();
 		}
 	};
 
@@ -121,9 +119,6 @@ var timerwimer = {};
 
 	Timer.prototype.stop = function()
 	{
-		clearInterval(this._interval);
-		this._interval = null;
-
 		this._state = Timer.State.STOPPED;
 		this._remainingTime = this._targetTime;
 		this._lastUpdateTime = 0;
@@ -150,25 +145,25 @@ var timerwimer = {};
 
 	Timer.prototype._finish = function()
 	{
-		clearInterval(this._interval);
-		this._interval = null;
-
 		this._state = Timer.State.FINISHED;
 	};
 
-	Timer.prototype._update = function()
+	Timer.prototype.update = function()
 	{
 		var now;
 
-		now = Date.now();
-
-		this._remainingTime -= now - this._lastUpdateTime;
-		this._lastUpdateTime = now;
-
-		if (this._remainingTime <= 0)
+		if (this.getState() == Timer.State.RUNNING)
 		{
-			this._remainingTime = 0;
-			this._finish();
+			now = Date.now();
+
+			this._remainingTime -= now - this._lastUpdateTime;
+			this._lastUpdateTime = now;
+
+			if (this._remainingTime <= 0)
+			{
+				this._remainingTime = 0;
+				this._finish();
+			}
 		}
 	};
 
@@ -368,6 +363,7 @@ var timerwimer = {};
 
 	TimerWidget.prototype.update = function()
 	{
+		this._timer.update();
 		this._label.innerHTML = this._timer.getLabel();
 		this._remaining.innerHTML = Util.numberToDisplayString(this._timer.getRemainingMinutes()) +
 		                            ":" +
