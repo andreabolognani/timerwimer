@@ -90,6 +90,12 @@ var timerwimer = {};
 		if (this.getState() == Timer.State.STOPPED ||
 		    this.getState() == Timer.State.PAUSED)
 		{
+			// Don't start a timer with zero target time
+			if (this._targetTime <= 0)
+			{
+				return;
+			}
+
 			this._state = Timer.State.RUNNING;
 			this._lastUpdateTime = Date.now();
 
