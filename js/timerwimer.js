@@ -354,11 +354,11 @@ var timerwimer = {};
 
 	timerwimer.Timer = Timer;
 
-	// TimerListWidget class
+	// TimerList class
 
-	var TimerListWidget;
+	var TimerList;
 
-	TimerListWidget = function()
+	TimerList= function()
 	{
 		this._list = [];
 		this._interval = null;
@@ -367,7 +367,7 @@ var timerwimer = {};
 		this._prepare();
 	};
 
-	TimerListWidget.prototype._prepare = function()
+	TimerList.prototype._prepare = function()
 	{
 		// <ul>
 		// </ul>
@@ -385,7 +385,7 @@ var timerwimer = {};
 		this._interval = setInterval(this.update.bind(this), 100);
 	};
 
-	TimerListWidget.prototype.add = function(timer)
+	TimerList.prototype.add = function(timer)
 	{
 		this._list.push(timer);
 
@@ -393,7 +393,7 @@ var timerwimer = {};
 		this._element.listview("refresh");
 	};
 
-	TimerListWidget.prototype.each = function(f)
+	TimerList.prototype.each = function(f)
 	{
 		for (var i = 0; i < this._list.length; i++)
 		{
@@ -401,7 +401,7 @@ var timerwimer = {};
 		}
 	};
 
-	TimerListWidget.prototype.update = function()
+	TimerList.prototype.update = function()
 	{
 		this.each(function(timer) {
 			timer.update();
@@ -409,12 +409,12 @@ var timerwimer = {};
 		this._element.listview("refresh");
 	};
 
-	TimerListWidget.prototype.getElement = function()
+	TimerList.prototype.getElement = function()
 	{
 		return this._element;
 	};
 
-	timerwimer.TimerListWidget = TimerListWidget;
+	timerwimer.TimerList = TimerList;
 
 	// Application class
 
@@ -433,7 +433,7 @@ var timerwimer = {};
 		var timer;
 		var timerList;
 
-		timerList = new TimerListWidget();
+		timerList = new TimerList();
 
 		timer = new Timer();
 		timer.setLabel("Nine minutes");
