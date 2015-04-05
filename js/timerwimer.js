@@ -109,20 +109,6 @@ var timerwimer = {};
 		}
 	};
 
-	Timer.prototype.toggle = function()
-	{
-		switch (this.getState())
-		{
-			case Timer.State.RUNNING:
-				this.pause();
-				break;
-
-			case Timer.State.PAUSED:
-				this.start();
-				break;
-		}
-	};
-
 	Timer.prototype.stop = function()
 	{
 		this._state = Timer.State.STOPPED;
