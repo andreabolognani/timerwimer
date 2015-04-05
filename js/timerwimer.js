@@ -65,7 +65,7 @@ var timerwimer = {};
 		this._targetMinutes = 0;
 		this._targetSeconds = 0;
 
-		this._state = Timer.State.STOPPED;
+		this._state = Timer.State.IDLE;
 		this._targetTime = 0;
 		this._remainingTime = 0;
 		this._lastUpdateTime = 0;
@@ -79,15 +79,15 @@ var timerwimer = {};
 
 	Timer.State =
 	{
-		STOPPED:  "STOPPED",
-		RUNNING:  "RUNNING",
-		PAUSED:   "PAUSED",
-		FINISHED: "FINISHED"
+		IDLE:    "IDLE",
+		RUNNING: "RUNNING",
+		PAUSED:  "PAUSED",
+		ELAPSED: "ELAPSED"
 	};
 
 	Timer.prototype.start = function()
 	{
-		if (this.getState() == Timer.State.STOPPED ||
+		if (this.getState() == Timer.State.IDLE ||
 		    this.getState() == Timer.State.PAUSED)
 		{
 			// Don't start a timer with zero target time
@@ -114,9 +114,9 @@ var timerwimer = {};
 		}
 	};
 
-	Timer.prototype.stop = function()
+	Timer.prototype.reset = function()
 	{
-		this._state = Timer.State.STOPPED;
+		this._state = Timer.State.IDLE;
 		this._remainingTime = this._targetTime;
 		this._lastUpdateTime = 0;
 	};
@@ -125,7 +125,7 @@ var timerwimer = {};
 	{
 		switch (this.getState())
 		{
-			case Timer.State.STOPPED:
+			case Timer.State.IDLE:
 				this.start();
 				break;
 			case Timer.State.RUNNING:
@@ -134,8 +134,8 @@ var timerwimer = {};
 			case Timer.State.PAUSED:
 				this.start();
 				break;
-			case Timer.State.FINISHED:
-				this.stop();
+			case Timer.State.ELAPSED:
+				this.reset();
 				break;
 		}
 	};
@@ -167,8 +167,8 @@ var timerwimer = {};
 		// Perform a state-sensitive operation on tap
 		$(a).on("tap", this.action.bind(this));
 
-		// Stop the timer on long press
-		$(a).on("taphold", this.stop.bind(this));
+		// Reset the timer on long press
+		$(a).on("taphold", this.reset.bind(this));
 
 		// Remaining time
 
@@ -253,7 +253,7 @@ var timerwimer = {};
 			if (this._remainingTime <= 0)
 			{
 				this._remainingTime = 0;
-				this._state = Timer.State.FINISHED;
+				this._state = Timer.State.ELAPSED;
 			}
 
 		}
@@ -276,8 +276,8 @@ var timerwimer = {};
 
 	Timer.prototype.setTargetMinutes = function(targetMinutes)
 	{
-		// Changing the target time causes the timer to stop
-		this.stop();
+		// Changing the target time causes the timer to reset
+		this.reset();
 
 		// Make sure the value is in the permitted range
 		if (targetMinutes < 0) {
@@ -300,8 +300,8 @@ var timerwimer = {};
 
 	Timer.prototype.setTargetSeconds = function(targetSeconds)
 	{
-		// Changing the target time causes the timer to stop
-		this.stop();
+		// Changing the target time causes the timer to reset
+		this.reset();
 
 		// Make sure the value is in the permitted range
 		if (targetSeconds < 0) {
