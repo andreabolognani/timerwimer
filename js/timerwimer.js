@@ -70,12 +70,11 @@ var timerwimer = {};
 		this._remainingTime = 0;
 		this._lastUpdateTime = 0;
 
-		this._element = null;
+		this._rootElement = null;
 		this._labelElement = null;
 		this._remainingElement = null;
 
 		this._prepare();
-		this.update();
 	};
 
 	Timer.State =
@@ -84,100 +83,6 @@ var timerwimer = {};
 		RUNNING:  "RUNNING",
 		PAUSED:   "PAUSED",
 		FINISHED: "FINISHED"
-	};
-
-	Timer.prototype._prepare = function()
-	{
-		// <li>
-		//   <a href="#">
-		//     <div class="timer-remaining"></div>
-		//     <div class="timer-label"></div>
-		//   </a>
-		//   <a href="#"></a>
-		// </li>
-
-		var li;
-		var div;
-		var a;
-
-		// Root element
-
-		li = document.createElement("li");
-
-		this._element = $(li);
-
-		// Action button
-
-		a = document.createElement("a");
-		li.appendChild(a);
-
-		// Perform a state-sensitive operation on tap
-		$(a).on("tap", this.action.bind(this));
-
-		// Stop the timer on long press
-		$(a).on("taphold", this.stop.bind(this));
-
-		// Remaining time
-
-		div = document.createElement("div");
-		div.className = "timer-remaining";
-		a.appendChild(div);
-
-		this._remainingElement = div;
-
-		// Label
-
-		div = document.createElement("div");
-		div.className = "timer-label";
-		a.appendChild(div);
-
-		this._labelElement = div;
-
-		// Edit button
-
-		a = document.createElement("a");
-		li.appendChild(a);
-
-		$(a).on("tap", function() {
-
-			var editLabel;
-			var editMinutes;
-			var editSeconds;
-
-			// Load and enhance page in advance.
-			// This is required to ensure sliders are properly set
-			// when the page is displayed to the user
-			$.mobile.loadPage("#edit");
-
-			editLabel = $("#edit-label");
-			editMinutes = $("#edit-minutes");
-			editSeconds = $("#edit-seconds");
-
-			// Set values
-			editLabel.val(this.getLabel());
-			editMinutes.val(this.getTargetMinutes());
-			editSeconds.val(this.getTargetSeconds());
-
-			// Remove previous event handlers
-			editLabel.off("change");
-			editMinutes.off("change");
-			editSeconds.off("change");
-
-			// Install new event handlers
-			editLabel.on("change", function() {
-				this.setLabel(editLabel.val());
-			}.bind(this));
-			editMinutes.on("change", function() {
-				this.setTargetMinutes(editMinutes.val());
-			}.bind(this));
-			editSeconds.on("change", function() {
-				this.setTargetSeconds(editSeconds.val());
-			}.bind(this));
-
-			// Change page
-			$.mobile.changePage("#edit",
-			                    { transition: "slide" });
-		}.bind(this));
 	};
 
 	Timer.prototype.start = function()
@@ -247,6 +152,105 @@ var timerwimer = {};
 	Timer.prototype._finish = function()
 	{
 		this._state = Timer.State.FINISHED;
+	};
+
+	Timer.prototype._prepare = function()
+	{
+		// <li>
+		//   <a href="#">
+		//     <div class="timer-remaining"></div>
+		//     <div class="timer-label"></div>
+		//   </a>
+		//   <a href="#"></a>
+		// </li>
+
+		var li;
+		var div;
+		var a;
+
+		// Root element
+
+		li = document.createElement("li");
+		this._rootElement = $(li);
+
+		// Action button
+
+		a = document.createElement("a");
+		li.appendChild(a);
+
+		// Perform a state-sensitive operation on tap
+		$(a).on("tap", this.action.bind(this));
+
+		// Stop the timer on long press
+		$(a).on("taphold", this.stop.bind(this));
+
+		// Remaining time
+
+		div = document.createElement("div");
+		div.className = "timer-remaining";
+		a.appendChild(div);
+
+		this._remainingElement = div;
+
+		// Label
+
+		div = document.createElement("div");
+		div.className = "timer-label";
+		a.appendChild(div);
+
+		this._labelElement = div;
+
+		// Edit button
+
+		a = document.createElement("a");
+		li.appendChild(a);
+
+		$(a).on("tap", function() {
+
+			var editLabel;
+			var editMinutes;
+			var editSeconds;
+			var deleteButton;
+
+			// Load and enhance page in advance.
+			// This is required to ensure sliders are properly set
+			// when the page is displayed to the user
+			$.mobile.loadPage("#edit");
+
+			editLabel = $("#edit-label");
+			editMinutes = $("#edit-minutes");
+			editSeconds = $("#edit-seconds");
+			deleteButton = $("#delete");
+
+			// Set values
+			editLabel.val(this.getLabel());
+			editMinutes.val(this.getTargetMinutes());
+			editSeconds.val(this.getTargetSeconds());
+
+			// Remove previous event handlers
+			editLabel.off("change");
+			editMinutes.off("change");
+			editSeconds.off("change");
+			deleteButton.off("tap");
+
+			// Install new event handlers
+			editLabel.on("change", function() {
+				this.setLabel(editLabel.val());
+			}.bind(this));
+			editMinutes.on("change", function() {
+				this.setTargetMinutes(editMinutes.val());
+			}.bind(this));
+			editSeconds.on("change", function() {
+				this.setTargetSeconds(editSeconds.val());
+			}.bind(this));
+			deleteButton.on("tap", function() {
+				$(this).trigger("deleteRequest");
+			}.bind(this));
+
+			// Change page
+			$.mobile.changePage("#edit",
+			                    { transition: "slide" });
+		}.bind(this));
 	};
 
 	Timer.prototype.update = function()
@@ -347,9 +351,9 @@ var timerwimer = {};
 		return Math.ceil(this._remainingTime / 1000) % 60;
 	};
 
-	Timer.prototype.getElement = function()
+	Timer.prototype.getRootElement = function()
 	{
-		return this._element;
+		return this._rootElement;
 	};
 
 	timerwimer.Timer = Timer;
@@ -358,13 +362,55 @@ var timerwimer = {};
 
 	var TimerList;
 
-	TimerList= function()
+	TimerList = function()
 	{
 		this._list = [];
-		this._interval = null;
-		this._element = null;
+		this._rootElement = null;
 
 		this._prepare();
+	};
+
+	TimerList.prototype.add = function(timer)
+	{
+		this._list.push(timer);
+
+		this._rootElement.append(timer.getRootElement());
+		this._rootElement.listview("refresh");
+
+		$(timer).on("deleteRequest", function() {
+			this.remove(timer);
+			$.mobile.changePage("#main",
+			                    { transition: "slide",
+			                      reverse:    true });
+		}.bind(this));
+	};
+
+	TimerList.prototype.remove = function(timer)
+	{
+		var oldList;
+
+		oldList = this._list;
+		this._list = [];
+
+		for (var i = 0; i < oldList.length; i++)
+		{
+			if (oldList[i] != timer)
+			{
+				this._list.push(oldList[i]);
+			}
+		}
+
+		timer.getRootElement().remove();
+
+		this._rootElement.listview("refresh");
+	};
+
+	TimerList.prototype.each = function(f)
+	{
+		for (var i = 0; i < this._list.length; i++)
+		{
+			f(this._list[i]);
+		}
 	};
 
 	TimerList.prototype._prepare = function()
@@ -377,28 +423,9 @@ var timerwimer = {};
 		// Root element
 
 		ul = document.createElement("ul");
+		this._rootElement = $(ul);
 
 		$(ul).listview({ splitIcon: "edit" });
-
-		this._element = $(ul);
-
-		this._interval = setInterval(this.update.bind(this), 100);
-	};
-
-	TimerList.prototype.add = function(timer)
-	{
-		this._list.push(timer);
-
-		this._element.append(timer.getElement());
-		this._element.listview("refresh");
-	};
-
-	TimerList.prototype.each = function(f)
-	{
-		for (var i = 0; i < this._list.length; i++)
-		{
-			f(this._list[i]);
-		}
 	};
 
 	TimerList.prototype.update = function()
@@ -406,12 +433,12 @@ var timerwimer = {};
 		this.each(function(timer) {
 			timer.update();
 		});
-		this._element.listview("refresh");
+		this._rootElement.listview("refresh");
 	};
 
-	TimerList.prototype.getElement = function()
+	TimerList.prototype.getRootElement = function()
 	{
-		return this._element;
+		return this._rootElement;
 	};
 
 	timerwimer.TimerList = TimerList;
@@ -453,7 +480,7 @@ var timerwimer = {};
 		timer.setTargetSeconds(0);
 		timerList.add(timer);
 
-		$("#timerlist").append(timerList.getElement());
+		$("#timerlist").append(timerList.getRootElement());
 
 		$("#add").on("tap", function() {
 
@@ -465,14 +492,14 @@ var timerwimer = {};
 		this._timerList = timerList;
 	};
 
-	Application.prototype.update = function()
-	{
-		this._timerList.update();
-	};
-
 	Application.prototype.run = function()
 	{
 		this._interval = setInterval(this.update.bind(this), 100);
+	};
+
+	Application.prototype.update = function()
+	{
+		this._timerList.update();
 	};
 
 	timerwimer.Application = Application;
