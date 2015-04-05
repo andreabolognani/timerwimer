@@ -107,7 +107,6 @@ var timerwimer = {};
 	{
 		if (this.getState() == Timer.State.RUNNING)
 		{
-			clearInterval(this._interval);
 			this._interval = null;
 
 			this._state = Timer.State.PAUSED;
