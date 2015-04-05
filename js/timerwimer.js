@@ -30,7 +30,8 @@ var timerwimer = {};
 		};
 	}
 
-	// Utility functions
+
+	// === Utility functions === //
 
 	var Util;
 
@@ -55,7 +56,8 @@ var timerwimer = {};
 
 	timerwimer.Util = Util;
 
-	// Timer class
+
+	// === Timer class === //
 
 	var Timer;
 
@@ -344,7 +346,8 @@ var timerwimer = {};
 
 	timerwimer.Timer = Timer;
 
-	// TimerList class
+
+	// === TimerList class === //
 
 	var TimerList;
 
@@ -360,35 +363,44 @@ var timerwimer = {};
 	{
 		this._list.push(timer);
 
-		this._rootElement.append(timer.getRootElement());
-		this._rootElement.listview("refresh");
+		this.getRootElement().append(timer.getRootElement());
 
 		$(timer).on("deleteRequest", function() {
+
+			// Remove the timer from the list
 			this.remove(timer);
+
+			// Return to the main page
 			$.mobile.changePage("#main",
 			                    { transition: "slide",
 			                      reverse:    true });
 		}.bind(this));
+
+		this.getRootElement().listview("refresh");
 	};
 
 	TimerList.prototype.remove = function(timer)
 	{
 		var oldList;
 
+		// Replace the timer list with a new, empty one
 		oldList = this._list;
 		this._list = [];
 
+		// Copy all timers to the new list...
 		for (var i = 0; i < oldList.length; i++)
 		{
+			// ... except the one we're removing
 			if (oldList[i] != timer)
 			{
 				this._list.push(oldList[i]);
 			}
 		}
 
+		// Remove the timer from the document
 		timer.getRootElement().remove();
 
-		this._rootElement.listview("refresh");
+		this.getRootElement().listview("refresh");
 	};
 
 	TimerList.prototype.each = function(f)
@@ -411,6 +423,7 @@ var timerwimer = {};
 		ul = document.createElement("ul");
 		this._rootElement = $(ul);
 
+		// Initialize listview with a suitable split icon
 		$(ul).listview({ splitIcon: "edit" });
 	};
 
@@ -419,7 +432,6 @@ var timerwimer = {};
 		this.each(function(timer) {
 			timer.update();
 		});
-		this._rootElement.listview("refresh");
 	};
 
 	TimerList.prototype.getRootElement = function()
@@ -429,7 +441,8 @@ var timerwimer = {};
 
 	timerwimer.TimerList = TimerList;
 
-	// Application class
+
+	// === Application class === //
 
 	var Application;
 
@@ -472,6 +485,8 @@ var timerwimer = {};
 
 			// Add a new timer using default settings
 			timerList.add(new Timer());
+
+			// The panel doesn't close automatically
 			$("#menu").panel("close");
 		});
 
@@ -490,7 +505,8 @@ var timerwimer = {};
 
 	timerwimer.Application = Application;
 
-	// Exported functions
+
+	// === Exported functions === //
 
 	timerwimer.main = function()
 	{
