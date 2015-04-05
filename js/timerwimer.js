@@ -135,11 +135,6 @@ var timerwimer = {};
 		}
 	};
 
-	Timer.prototype._finish = function()
-	{
-		this._state = Timer.State.FINISHED;
-	};
-
 	Timer.prototype._prepare = function()
 	{
 		// <li>
@@ -253,7 +248,7 @@ var timerwimer = {};
 			if (this._remainingTime <= 0)
 			{
 				this._remainingTime = 0;
-				this._finish();
+				this._state = Timer.State.FINISHED;
 			}
 
 		}
