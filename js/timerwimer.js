@@ -98,6 +98,8 @@ var timerwimer = {};
 				return;
 			}
 
+			console.log(this.stringify());
+
 			this._state = Timer.State.RUNNING;
 			this._lastUpdateTime = Date.now();
 
@@ -264,6 +266,31 @@ var timerwimer = {};
 		this._remainingElement.innerHTML = Util.numberToDisplayString(this.getRemainingMinutes()) +
 		                                   ":" +
 		                                   Util.numberToDisplayString(this.getRemainingSeconds());
+	};
+
+	Timer.prototype.stringify = function()
+	{
+		var properties;
+
+		// Only stringify user-configured properties
+		properties = {
+			label:         this.getLabel(),
+			targetMinutes: this.getTargetMinutes(),
+			targetSeconds: this.getTargetSeconds()
+		};
+
+		return JSON.stringify(properties);
+	};
+
+	Timer.prototype.parse = function(json)
+	{
+		var properties;
+
+		properties = JSON.parse(json);
+
+		this.setLabel(properties.label);
+		this.setTargetMinutes(properties.targetMinutes);
+		this.setTargetSeconds(properties.targetSeconds);
 	};
 
 	Timer.prototype.setLabel = function(label)
