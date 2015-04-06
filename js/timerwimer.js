@@ -79,71 +79,6 @@ var timerwimer = {};
 		this._prepare();
 	};
 
-	Timer.State =
-	{
-		IDLE:    "IDLE",
-		RUNNING: "RUNNING",
-		PAUSED:  "PAUSED",
-		ELAPSED: "ELAPSED"
-	};
-
-	Timer.prototype.start = function()
-	{
-		if (this.getState() == Timer.State.IDLE ||
-		    this.getState() == Timer.State.PAUSED)
-		{
-			// Don't start a timer with zero target time
-			if (this._targetTime <= 0)
-			{
-				return;
-			}
-
-			console.log(this.stringify());
-
-			this._state = Timer.State.RUNNING;
-			this._lastUpdateTime = Date.now();
-
-			this.update();
-		}
-	};
-
-	Timer.prototype.pause = function()
-	{
-		if (this.getState() == Timer.State.RUNNING)
-		{
-			this._interval = null;
-
-			this._state = Timer.State.PAUSED;
-			this._lastUpdateTime = Date.now();
-		}
-	};
-
-	Timer.prototype.reset = function()
-	{
-		this._state = Timer.State.IDLE;
-		this._remainingTime = this._targetTime;
-		this._lastUpdateTime = 0;
-	};
-
-	Timer.prototype.action = function()
-	{
-		switch (this.getState())
-		{
-			case Timer.State.IDLE:
-				this.start();
-				break;
-			case Timer.State.RUNNING:
-				this.pause();
-				break;
-			case Timer.State.PAUSED:
-				this.start();
-				break;
-			case Timer.State.ELAPSED:
-				this.reset();
-				break;
-		}
-	};
-
 	Timer.prototype._prepare = function()
 	{
 		// <li>
@@ -243,6 +178,69 @@ var timerwimer = {};
 		}.bind(this));
 	};
 
+	Timer.State =
+	{
+		IDLE:    "IDLE",
+		RUNNING: "RUNNING",
+		PAUSED:  "PAUSED",
+		ELAPSED: "ELAPSED"
+	};
+
+	Timer.prototype.start = function()
+	{
+		if (this.getState() == Timer.State.IDLE ||
+		    this.getState() == Timer.State.PAUSED)
+		{
+			// Don't start a timer with zero target time
+			if (this._targetTime <= 0)
+			{
+				return;
+			}
+
+			this._state = Timer.State.RUNNING;
+			this._lastUpdateTime = Date.now();
+
+			this.update();
+		}
+	};
+
+	Timer.prototype.pause = function()
+	{
+		if (this.getState() == Timer.State.RUNNING)
+		{
+			this._interval = null;
+
+			this._state = Timer.State.PAUSED;
+			this._lastUpdateTime = Date.now();
+		}
+	};
+
+	Timer.prototype.reset = function()
+	{
+		this._state = Timer.State.IDLE;
+		this._remainingTime = this._targetTime;
+		this._lastUpdateTime = 0;
+	};
+
+	Timer.prototype.action = function()
+	{
+		switch (this.getState())
+		{
+			case Timer.State.IDLE:
+				this.start();
+				break;
+			case Timer.State.RUNNING:
+				this.pause();
+				break;
+			case Timer.State.PAUSED:
+				this.start();
+				break;
+			case Timer.State.ELAPSED:
+				this.reset();
+				break;
+		}
+	};
+
 	Timer.prototype.update = function()
 	{
 		var now;
@@ -268,7 +266,7 @@ var timerwimer = {};
 		                                   Util.numberToDisplayString(this.getRemainingSeconds());
 	};
 
-	Timer.prototype.stringify = function()
+	Timer.prototype.toProperties = function()
 	{
 		var properties;
 
@@ -279,15 +277,11 @@ var timerwimer = {};
 			targetSeconds: this.getTargetSeconds()
 		};
 
-		return JSON.stringify(properties);
+		return properties;
 	};
 
-	Timer.prototype.parse = function(json)
+	Timer.prototype.fromProperties = function(properties)
 	{
-		var properties;
-
-		properties = JSON.parse(json);
-
 		this.setLabel(properties.label);
 		this.setTargetMinutes(properties.targetMinutes);
 		this.setTargetSeconds(properties.targetSeconds);
@@ -296,6 +290,8 @@ var timerwimer = {};
 	Timer.prototype.setLabel = function(label)
 	{
 		this._label = label;
+
+		$(this).trigger("changed");
 	};
 
 	Timer.prototype.getLabel = function()
@@ -320,6 +316,8 @@ var timerwimer = {};
 
 		this._targetTime = ((this._targetMinutes * 60) + this._targetSeconds) * 1000;
 		this._remainingTime = this._targetTime;
+
+		$(this).trigger("changed");
 	};
 
 	Timer.prototype.getTargetMinutes = function()
@@ -344,6 +342,8 @@ var timerwimer = {};
 
 		this._targetTime = ((this._targetMinutes * 60) + this._targetSeconds) * 1000;
 		this._remainingTime = this._targetTime;
+
+		$(this).trigger("changed");
 	};
 
 	Timer.prototype.getTargetSeconds = function()
@@ -386,12 +386,31 @@ var timerwimer = {};
 		this._prepare();
 	};
 
+	TimerList.prototype._prepare = function()
+	{
+		// <ul>
+		// </ul>
+
+		var ul;
+
+		// Root element
+
+		ul = document.createElement("ul");
+		this._rootElement = $(ul);
+
+		// Initialize listview with a suitable split icon
+		$(ul).listview({ splitIcon: "edit" });
+	};
+
 	TimerList.prototype.add = function(timer)
 	{
 		this._list.push(timer);
 
-		this.getRootElement().append(timer.getRootElement());
+		$(timer).on("changed", function() {
 
+			// Changing a timer changes the whole list
+			$(this).trigger("changed");
+		}.bind(this));
 		$(timer).on("deleteRequest", function() {
 
 			// Remove the timer from the list
@@ -399,11 +418,15 @@ var timerwimer = {};
 
 			// Return to the main page
 			$.mobile.changePage("#main",
-			                    { transition: "slide",
-			                      reverse:    true });
+					    { transition: "slide",
+					      reverse:    true });
 		}.bind(this));
 
+		this.getRootElement().append(timer.getRootElement());
+
 		this.getRootElement().listview("refresh");
+
+		$(this).trigger("changed");
 	};
 
 	TimerList.prototype.remove = function(timer)
@@ -428,6 +451,20 @@ var timerwimer = {};
 		timer.getRootElement().remove();
 
 		this.getRootElement().listview("refresh");
+
+		$(this).trigger("changed");
+	};
+
+	TimerList.prototype.empty = function()
+	{
+		this.each(function(timer) {
+			timer.getRootElement().remove();
+		});
+		this.getRootElement().listview("refresh");
+
+		this._list = [];
+
+		$(this).trigger("changed");
 	};
 
 	TimerList.prototype.each = function(f)
@@ -438,20 +475,18 @@ var timerwimer = {};
 		}
 	};
 
-	TimerList.prototype._prepare = function()
+	TimerList.prototype.map = function(f)
 	{
-		// <ul>
-		// </ul>
+		var result;
 
-		var ul;
+		result = [];
 
-		// Root element
+		for (var i = 0; i < this._list.length; i++)
+		{
+			result.push(f(this._list[i]));
+		}
 
-		ul = document.createElement("ul");
-		this._rootElement = $(ul);
-
-		// Initialize listview with a suitable split icon
-		$(ul).listview({ splitIcon: "edit" });
+		return result;
 	};
 
 	TimerList.prototype.update = function()
@@ -459,6 +494,27 @@ var timerwimer = {};
 		this.each(function(timer) {
 			timer.update();
 		});
+	};
+
+	TimerList.prototype.toProperties = function()
+	{
+		return this.map(function(timer) {
+			return timer.toProperties();
+		});
+	};
+
+	TimerList.prototype.fromProperties = function(properties)
+	{
+		var timer;
+
+		this.empty();
+
+		for (var i = 0; i < properties.length; i++)
+		{
+			timer = new Timer();
+			timer.fromProperties(properties[i]);
+			this.add(timer);
+		}
 	};
 
 	TimerList.prototype.getRootElement = function()
@@ -478,46 +534,38 @@ var timerwimer = {};
 		this._timerList = null;
 		this._interval = null;
 
-		this._load();
+		this._prepare();
 	};
 
-	Application.prototype._load = function()
+	Application.prototype._prepare = function()
 	{
-		var timer;
 		var timerList;
 
 		timerList = new TimerList();
-
-		timer = new Timer();
-		timer.setLabel("Nine minutes");
-		timer.setTargetMinutes(9);
-		timer.setTargetSeconds(0);
-		timerList.add(timer);
-
-		timer = new Timer();
-		timer.setLabel("Three seconds");
-		timer.setTargetMinutes(0);
-		timer.setTargetSeconds(3);
-		timerList.add(timer);
-
-		timer = new Timer();
-		timer.setLabel("One minute");
-		timer.setTargetMinutes(1);
-		timer.setTargetSeconds(0);
-		timerList.add(timer);
+		this._timerList = timerList;
 
 		$("#timerlist").append(timerList.getRootElement());
 
+		if (localStorage.getItem("org.kiyuko.timerwimer")) {
+
+			// Load previous timer list, if available
+			timerList.fromProperties(JSON.parse(localStorage.getItem("org.kiyuko.timerwimer")));
+		}
+
+		$(timerList).on("changed", function() {
+
+			// Store timer list
+			localStorage.setItem("org.kiyuko.timerwimer",
+			                     JSON.stringify(timerList.toProperties()));
+		});
+
 		$("#add").on("tap", function() {
 
-			// Add a new timer using default settings
 			timerList.add(new Timer());
 
 			// The panel doesn't close automatically
 			$("#menu").panel("close");
 		});
-
-		this._timerList = timerList;
 	};
 
 	Application.prototype.run = function()
