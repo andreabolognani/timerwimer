@@ -152,6 +152,10 @@ var timerwimer = {};
 			editMinutes.val(this.getTargetMinutes());
 			editSeconds.val(this.getTargetSeconds());
 
+			// Update slider position
+			editMinutes.slider("refresh");
+			editSeconds.slider("refresh");
+
 			// Remove previous event handlers
 			editLabel.off("change");
 			editMinutes.off("change");
