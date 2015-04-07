@@ -537,6 +537,11 @@ var timerwimer = {};
 		this._prepare();
 	};
 
+	Application.Storage =
+	{
+		TIMERS: "org.kiyuko.timerwimer.timers"
+	};
+
 	Application.prototype._prepare = function()
 	{
 		var timerList;
@@ -546,16 +551,16 @@ var timerwimer = {};
 
 		$("#timerlist").append(timerList.getRootElement());
 
-		if (localStorage.getItem("org.kiyuko.timerwimer")) {
+		if (localStorage.getItem(Application.Storage.TIMERS)) {
 
 			// Load previous timer list, if available
-			timerList.fromProperties(JSON.parse(localStorage.getItem("org.kiyuko.timerwimer")));
+			timerList.fromProperties(JSON.parse(localStorage.getItem(Application.Storage.TIMERS)));
 		}
 
 		$(timerList).on("changed", function() {
 
 			// Store timer list
-			localStorage.setItem("org.kiyuko.timerwimer",
+			localStorage.setItem(Application.Storage.TIMERS,
 			                     JSON.stringify(timerList.toProperties()));
 		});
 
