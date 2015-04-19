@@ -11,3 +11,7 @@
 	overflow: hidden;
 	white-space: nowrap;
 }
+
+#options a {
+	min-width: 10em;
+}
