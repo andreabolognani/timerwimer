@@ -424,9 +424,7 @@ var timerwimer = {};
 			this.remove(timer);
 
 			// Return to the main page
-			$.mobile.changePage("#main",
-					    { transition: "slide",
-					      reverse:    true });
+			$.mobile.changePage("#main");
 		}.bind(this));
 
 		this.getRootElement().append(timer.getRootElement());
