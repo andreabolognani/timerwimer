@@ -159,10 +159,10 @@ var timerwimer = {};
 				this.setLabel(editLabel.val());
 			}.bind(this));
 			editMinutes.on("change", function() {
-				this.setTargetMinutes(editMinutes.val());
+				this.setTargetMinutes(Number(editMinutes.val()));
 			}.bind(this));
 			editSeconds.on("change", function() {
-				this.setTargetSeconds(editSeconds.val());
+				this.setTargetSeconds(Number(editSeconds.val()));
 			}.bind(this));
 
 			$("#options").popup("open");
