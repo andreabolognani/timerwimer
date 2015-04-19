@@ -107,7 +107,9 @@ var timerwimer = {};
 		$(a).on("tap", this.action.bind(this));
 
 		// Reset the timer on long press
-		$(a).on("taphold", this.reset.bind(this));
+		$(a).on("taphold", function() {
+			$("#options").popup("open");
+		});
 
 		// Remaining time
 
