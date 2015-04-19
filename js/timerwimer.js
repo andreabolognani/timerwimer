@@ -86,7 +86,6 @@ var timerwimer = {};
 		//     <div class="timer-remaining"></div>
 		//     <div class="timer-label"></div>
 		//   </a>
-		//   <a href="#"></a>
 		// </li>
 
 		var li;
@@ -108,8 +107,66 @@ var timerwimer = {};
 
 		// Reset the timer on long press
 		$(a).on("taphold", function() {
+
+			var resetAction;
+			var editAction;
+			var deleteAction;
+			var editLabel;
+			var editMinutes;
+			var editSeconds;
+
+			// Load and enhance page in advance.
+			// This is required to ensure sliders are properly set
+			// when the page is displayed to the user
+			$.mobile.loadPage("#edit");
+
+			resetAction = $("#timer-action-reset");
+			editAction = $("#timer-action-edit");
+			deleteAction = $("#timer-action-delete");
+			editLabel = $("#edit-label");
+			editMinutes = $("#edit-minutes");
+			editSeconds = $("#edit-seconds");
+
+			// Set values
+			editLabel.val(this.getLabel());
+			editMinutes.val(this.getTargetMinutes());
+			editSeconds.val(this.getTargetSeconds());
+
+			// Update slider position
+			editMinutes.slider("refresh");
+			editSeconds.slider("refresh");
+
+			// Remove previous event handlers
+			resetAction.off("tap");
+			editAction.off("tap");
+			deleteAction.off("tap");
+			editLabel.off("change");
+			editMinutes.off("change");
+			editSeconds.off("change");
+
+			// Install new event handlers
+			resetAction.on("tap", function() {
+				this.reset()
+				$("#options").popup("close");
+			}.bind(this));
+			editAction.on("tap", function() {
+				$.mobile.changePage("#edit");
+			});
+			deleteAction.on("tap", function() {
+				$(this).trigger("deleteRequest");
+			}.bind(this));
+			editLabel.on("change", function() {
+				this.setLabel(editLabel.val());
+			}.bind(this));
+			editMinutes.on("change", function() {
+				this.setTargetMinutes(editMinutes.val());
+			}.bind(this));
+			editSeconds.on("change", function() {
+				this.setTargetSeconds(editSeconds.val());
+			}.bind(this));
+
 			$("#options").popup("open");
-		});
+		}.bind(this));
 
 		// Remaining time
 
@@ -126,62 +183,6 @@ var timerwimer = {};
 		a.appendChild(div);
 
 		this._labelElement = div;
-
-		// Edit button
-
-		a = document.createElement("a");
-//		li.appendChild(a);
-
-		$(a).on("tap", function() {
-
-			var editLabel;
-			var editMinutes;
-			var editSeconds;
-			var deleteButton;
-
-			// Load and enhance page in advance.
-			// This is required to ensure sliders are properly set
-			// when the page is displayed to the user
-			$.mobile.loadPage("#edit");
-
-			editLabel = $("#edit-label");
-			editMinutes = $("#edit-minutes");
-			editSeconds = $("#edit-seconds");
-			deleteButton = $("#delete");
-
-			// Set values
-			editLabel.val(this.getLabel());
-			editMinutes.val(this.getTargetMinutes());
-			editSeconds.val(this.getTargetSeconds());
-
-			// Update slider position
-			editMinutes.slider("refresh");
-			editSeconds.slider("refresh");
-
-			// Remove previous event handlers
-			editLabel.off("change");
-			editMinutes.off("change");
-			editSeconds.off("change");
-			deleteButton.off("tap");
-
-			// Install new event handlers
-			editLabel.on("change", function() {
-				this.setLabel(editLabel.val());
-			}.bind(this));
-			editMinutes.on("change", function() {
-				this.setTargetMinutes(editMinutes.val());
-			}.bind(this));
-			editSeconds.on("change", function() {
-				this.setTargetSeconds(editSeconds.val());
-			}.bind(this));
-			deleteButton.on("tap", function() {
-				$(this).trigger("deleteRequest");
-			}.bind(this));
-
-			// Change page
-			$.mobile.changePage("#edit",
-			                    { transition: "slide" });
-		}.bind(this));
 	};
 
 	Timer.State =
