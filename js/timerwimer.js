@@ -130,7 +130,7 @@ var timerwimer = {};
 		// Edit button
 
 		a = document.createElement("a");
-		li.appendChild(a);
+//		li.appendChild(a);
 
 		$(a).on("tap", function() {
 
@@ -404,8 +404,8 @@ var timerwimer = {};
 		ul = document.createElement("ul");
 		this._rootElement = $(ul);
 
-		// Initialize listview with a suitable split icon
-		$(ul).listview({ splitIcon: "edit" });
+		// Initialize listview with no icons
+		$(ul).listview({ icon: false });
 	};
 
 	TimerList.prototype.add = function(timer)
