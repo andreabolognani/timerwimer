@@ -87,8 +87,8 @@ label.ui-btn {
 -----------------------------------------------------------------------------------------------------------*/
 /* Class ui-btn-corner-all deprecated in 1.4 */
 .ui-corner-all {
-	-webkit-border-radius: 0.5em /*{global-radii-blocks}*/;
-	border-radius: 0.5em /*{global-radii-blocks}*/;
+	-webkit-border-radius: 0 /*{global-radii-blocks}*/;
+	border-radius: 0 /*{global-radii-blocks}*/;
 }
 /* Buttons */
 .ui-btn-corner-all,
@@ -99,8 +99,8 @@ label.ui-btn {
 .ui-flipswitch.ui-corner-all,
 /* Count bubble */
 .ui-li-count {
-	-webkit-border-radius: 0.5em /*{global-radii-buttons}*/;
-	border-radius: 0.5em /*{global-radii-buttons}*/;
+	-webkit-border-radius: 0 /*{global-radii-buttons}*/;
+	border-radius: 0 /*{global-radii-buttons}*/;
 }
 /* Icon-only buttons */
 .ui-btn-icon-notext.ui-btn-corner-all,
@@ -116,10 +116,10 @@ label.ui-btn {
 }
 /* Popup arrow */
 .ui-popup.ui-corner-all > .ui-popup-arrow-guide {
-	left: 0.5em /*{global-radii-blocks}*/;
-	right: 0.5em /*{global-radii-blocks}*/;
-	top: 0.5em /*{global-radii-blocks}*/;
-	bottom: 0.5em /*{global-radii-blocks}*/;
+	left: 0 /*{global-radii-blocks}*/;
+	right: 0 /*{global-radii-blocks}*/;
+	top: 0 /*{global-radii-blocks}*/;
+	bottom: 0 /*{global-radii-blocks}*/;
 }
 /* Shadow
 -----------------------------------------------------------------------------------------------------------*/
