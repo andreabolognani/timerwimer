@@ -120,9 +120,9 @@ var timerwimer = {};
 			// when the page is displayed to the user
 			$.mobile.loadPage("#edit");
 
-			resetAction = $("#timer-action-reset");
-			editAction = $("#timer-action-edit");
-			deleteAction = $("#timer-action-delete");
+			resetAction = $("#action-reset");
+			editAction = $("#action-edit");
+			deleteAction = $("#action-delete");
 			editLabel = $("#edit-label");
 			editMinutes = $("#edit-minutes");
 			editSeconds = $("#edit-seconds");
@@ -147,7 +147,7 @@ var timerwimer = {};
 			// Install new event handlers
 			resetAction.on("tap", function() {
 				this.reset()
-				$("#options").popup("close");
+				$("#actions").popup("close");
 			}.bind(this));
 			editAction.on("tap", function() {
 				$.mobile.changePage("#edit");
@@ -165,7 +165,7 @@ var timerwimer = {};
 				this.setTargetSeconds(Number(editSeconds.val()));
 			}.bind(this));
 
-			$("#options").popup("open");
+			$("#actions").popup("open");
 		}.bind(this));
 
 		// Remaining time
