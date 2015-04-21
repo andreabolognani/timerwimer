@@ -150,7 +150,7 @@ var timerwimer = {};
 				$("#actions").popup("close");
 			}.bind(this));
 			editAction.on("tap", function() {
-				$.mobile.changePage("#edit");
+				$.mobile.changePage("#edit", { transition: "none" });
 			});
 			deleteAction.on("tap", function() {
 				$(this).trigger("deleteRequest");
@@ -424,7 +424,7 @@ var timerwimer = {};
 			this.remove(timer);
 
 			// Return to the main page
-			$.mobile.changePage("#main");
+ 			$.mobile.changePage("#main", { transition: "none" });
 		}.bind(this));
 
 		this.getRootElement().append(timer.getRootElement());
