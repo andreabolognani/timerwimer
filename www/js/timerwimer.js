@@ -188,8 +188,15 @@ var timerwimer = {};
 
 		// Sound
 
-		this._sound = new buzz.sound("sounds/elapsed",
-		                             { formats: [ "ogg", "mp3", "wav" ] });
+		if (buzz.isMP3Supported()) {
+			this._sound = new buzz.sound("sounds/elapsed.mp3");
+		}
+		else if (buzz.isOGGSupported()) {
+			this._sound = new buzz.sound("sounds/elapsed.ogg");
+		}
+		else if (buzz.isWAVSupported()) {
+			this._sound = new buzz.sound("sounds/elapsed.wav");
+		}
 	};
 
 	Timer.State =
@@ -271,7 +278,9 @@ var timerwimer = {};
 				this._remainingTime = 0;
 				this._state = Timer.State.ELAPSED;
 
-				this._sound.play();
+				if (this._sound) {
+					this._sound.play();
+				}
 			}
 
 		}
