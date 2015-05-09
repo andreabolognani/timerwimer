@@ -76,6 +76,8 @@ var timerwimer = {};
 		this._labelElement = null;
 		this._remainingElement = null;
 
+		this._sound = null;
+
 		this._prepare();
 	};
 
@@ -183,6 +185,11 @@ var timerwimer = {};
 		a.appendChild(div);
 
 		this._labelElement = div;
+
+		// Sound
+
+		this._sound = new buzz.sound("sounds/elapsed",
+		                             { formats: [ "ogg", "mp3" ] });
 	};
 
 	Timer.State =
@@ -263,6 +270,8 @@ var timerwimer = {};
 			{
 				this._remainingTime = 0;
 				this._state = Timer.State.ELAPSED;
+
+				this._sound.play();
 			}
 
 		}
@@ -599,6 +608,7 @@ var timerwimer = {};
 		$.event.special.tap.emitTapOnTaphold = false;
 
 		$(document).on("pageinit", "#main", function() {
+
 			new Application().run();
 		});
 	};
