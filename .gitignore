@@ -1,3 +1,4 @@
 *.swp
-android/bin/
-android/gen/
+hooks/
+platforms/
+plugins/
