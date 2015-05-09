@@ -241,6 +241,10 @@ var timerwimer = {};
 		this._state = Timer.State.IDLE;
 		this._remainingTime = this._targetTime;
 		this._lastUpdateTime = 0;
+
+		if (this._sound) {
+			this._sound.stop();
+		}
 	};
 
 	Timer.prototype.action = function()
