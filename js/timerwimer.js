@@ -189,7 +189,7 @@ var timerwimer = {};
 		// Sound
 
 		this._sound = new buzz.sound("sounds/elapsed",
-		                             { formats: [ "ogg", "mp3" ] });
+		                             { formats: [ "ogg", "mp3", "wav" ] });
 	};
 
 	Timer.State =
