@@ -620,11 +620,33 @@ var timerwimer = {};
 		// Don't emit a tap event right after a taphold event
 		$.event.special.tap.emitTapOnTaphold = false;
 
-		$(document).on("pageinit", "#main", function() {
-
-			new Application().run();
-		});
+		new Application().run();
 	};
 }());
 
-timerwimer.main();
+// Make sure both Cordova and jQuery Mobile are ready before
+// initializing the application; this way, any feature can
+// be used safely regardless of the library it comes from
+
+var cordovaReady = false;
+var jQueryMobileReady = false;
+
+document.addEventListener("deviceready", function() {
+
+	cordovaReady = true;
+
+	if (jQueryMobileReady)
+	{
+		timerwimer.main();
+	}
+}, false);
+
+$(document).on("pageinit", "#main", function() {
+
+	jQueryMobileReady = true;
+
+	if (cordovaReady)
+	{
+		timerwimer.main();
+	}
+});
