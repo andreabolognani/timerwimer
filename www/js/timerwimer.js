@@ -188,15 +188,8 @@ var timerwimer = {};
 
 		// Sound
 
-		if (buzz.isMP3Supported()) {
-			this._sound = new buzz.sound("sounds/elapsed.mp3");
-		}
-		else if (buzz.isOGGSupported()) {
-			this._sound = new buzz.sound("sounds/elapsed.ogg");
-		}
-		else if (buzz.isWAVSupported()) {
-			this._sound = new buzz.sound("sounds/elapsed.wav");
-		}
+		this._sound = new buzz.sound("sounds/elapsed",
+		                             { formats: [ "mp3", "ogg" ] });
 	};
 
 	Timer.State =
