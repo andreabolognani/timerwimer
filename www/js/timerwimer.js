@@ -188,8 +188,17 @@ var timerwimer = {};
 
 		// Sound
 
-		this._sound = new buzz.sound("sounds/elapsed",
-		                             { formats: [ "mp3", "ogg" ] });
+		if (device.platform.toLowerCase() == "android")
+		{
+			// Use cordova-plugin-media
+			this._sound = new Media("/android_asset/www/sounds/elapsed.mp3");
+		}
+		else
+		{
+			// Use Buzz
+			this._sound = new buzz.sound("sounds/elapsed",
+						     { formats: [ "mp3", "ogg" ] });
+		}
 	};
 
 	Timer.State =
