@@ -20,3 +20,7 @@
 #actions a {
 	min-width: 12em;
 }
+
+.hidden {
+	display: none;
+}

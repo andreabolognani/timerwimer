@@ -551,6 +551,11 @@ var timerwimer = {};
 		return this._rootElement;
 	};
 
+	TimerList.prototype.size = function()
+	{
+		return this._list.length;
+	};
+
 	timerwimer.TimerList = TimerList;
 
 
@@ -610,6 +615,16 @@ var timerwimer = {};
 	Application.prototype.update = function()
 	{
 		this._timerList.update();
+
+		// Show a message when no timer has been created
+		if (this._timerList.size() > 0)
+		{
+			$("#no-timers").addClass("hidden");
+		}
+		else
+		{
+			$("#no-timers").removeClass("hidden");
+		}
 	};
 
 	timerwimer.Application = Application;
