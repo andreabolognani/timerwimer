@@ -622,6 +622,11 @@ var timerwimer = {};
 		// Don't emit a tap event right after a taphold event
 		$.event.special.tap.emitTapOnTaphold = false;
 
+		if (device.platform.toLowerCase() == "android")
+		{
+			StatusBar.backgroundColorByHexString("#2b4d63");
+		}
+
 		new Application().run();
 	};
 }());
