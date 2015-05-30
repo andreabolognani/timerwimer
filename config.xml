@@ -8,6 +8,14 @@
         Andrea Bolognani
     </author>
     <content src="index.html" />
+    <icon src="www/images/timerwimer.png" />
+    <platform name="android">
+        <icon src="www/images/timerwimer-mdpi.png" density="mdpi" />
+        <icon src="www/images/timerwimer-hdpi.png" density="hdpi" />
+        <icon src="www/images/timerwimer-xhdpi.png" density="xhdpi" />
+        <icon src="www/images/timerwimer-xxhdpi.png" density="xxhdpi" />
+        <icon src="www/images/timerwimer-xxxhdpi.png" density="xxxhdpi" />
+    </platform>
     <plugin name="cordova-plugin-whitelist" version="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
