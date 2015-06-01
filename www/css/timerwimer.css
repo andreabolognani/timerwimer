@@ -24,3 +24,14 @@
 .hidden {
 	display: none;
 }
+
+/* This avoids a gap at the top and bottom
+ * of text-only pages, eg. Help and About */
+
+.ui-content > p:first-child {
+	margin-top: 0;
+}
+
+.ui-content > p:last-child {
+	margin-bottom: 0;
+}
