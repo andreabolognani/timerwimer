@@ -598,7 +598,7 @@ var timerwimer = {};
 			                     JSON.stringify(timerList.toProperties()));
 		});
 
-		$("#add").on("tap", function() {
+		$("#action-add").on("tap", function() {
 
 			timerList.add(new Timer());
 
