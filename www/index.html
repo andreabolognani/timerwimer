@@ -19,6 +19,29 @@
 	</head>
 	<body>
 
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		   - Timer Wimer - Countdown timers for your device                          -
+		   - Copyright (C) 2013-2015  Andrea Bolognani <eof@kiyuko.org>              -
+		   -                                                                         -
+		   - This program is free software; you can redistribute it and/or modify    -
+		   - it under the terms of the GNU General Public License as published by    -
+		   - the Free Software Foundation; either version 2 of the License, or       -
+		   - (at your option) any later version.                                     -
+		   -                                                                         -
+		   - This program is distributed in the hope that it will be useful,         -
+		   - but WITHOUT ANY WARRANTY; without even the implied warranty of          -
+		   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           -
+		   - GNU General Public License for more details.                            -
+		   -                                                                         -
+		   - You should have received a copy of the GNU General Public License along -
+		   - with this program; if not, write to the Free Software Foundation, Inc., -
+		   - 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.             -
+		   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<!-- - - - - - -
+		   - Main page -
+		   - - - - - - -->
+
 		<div data-role="page" id="main">
 
 			<div data-role="header" data-position="fixed">
@@ -35,12 +58,14 @@
 				</div>
 
 				<div id="no-timers" class="hidden">
+
 					<p>
 						There are no timers yet.
 					</p>
 					<p>
 						Open the application menu and select <strong>Add</strong> to create one.
 					</p>
+
 				</div>
 
 			</div><!-- /content -->
@@ -48,11 +73,16 @@
 			<div data-role="panel" data-position="left" data-display="slide" data-theme="b" data-position-fixed="true" id="menu">
 
 				<ul data-role="listview">
+
 					<li data-role="list-divider">Timers</li>
+
 					<li data-icon="plus"><a href="#" id="add">Add</a></li>
+
 					<li data-role="list-divider">Application</li>
+
 					<li data-icon="info"><a href="#help" data-transition="none">Help</a></li>
 					<li data-icon="false"><a href="#about" data-transition="none">About</a></li>
+
 				</ul>
 
 			</div><!-- /panel -->
@@ -62,10 +92,13 @@
 				<div role="main" class="ui-content">
 
 					<ul data-role="listview">
+
 						<li data-role="list-divider">Timer</li>
+
 						<li data-icon="false"><a href="#" id="action-reset">Reset</a></li>
 						<li data-icon="false"><a href="#" id="action-edit">Edit</a></li>
 						<li data-icon="false"><a href="#" id="action-delete">Delete</a></li>
+
 					</ul>
 
 				</div><!-- /content -->
@@ -73,6 +106,10 @@
 			</div><!-- /popup -->
 
 		</div><!-- /page -->
+
+		<!-- - - - - - -
+		   - Edit page -
+		   - - - - - - -->
 
 		<div data-role="page" id="edit">
 
@@ -87,6 +124,7 @@
 			<div role="main" class="ui-content">
 
 				<form>
+
 					<label for="edit-label"><strong>Label</strong></label>
 					<input type="text" name="edit-label" id="edit-label" placeholder="Label" />
 					<div>&nbsp;</div>
@@ -96,11 +134,16 @@
 
 					<label for="edit-seconds"><strong>Seconds</strong></label>
 					<input type="range" name="edit-seconds" id="edit-seconds" min="0" max="59" />
+
 				</form>
 
 			</div><!-- /content -->
 
 		</div><!-- /page -->
+
+		<!-- - - - - - -
+		   - Help page -
+		   - - - - - - -->
 
 		<div data-role="page" id="help">
 
@@ -152,6 +195,10 @@
 			</div><!-- /content -->
 
 		</div><!-- /page -->
+
+		<!-- - - - - - - -
+		   - About page  -
+		   - - - - - - - -->
 
 		<div data-role="page" id="about">
 
