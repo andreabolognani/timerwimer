@@ -58,8 +58,22 @@
 	margin-bottom: 0;
 }
 
+/* Size of the application icon in
+ * the About page */
+
+.ui-content img {
+	width: 10em;
+	height: 10em;
+}
+
 /* Utility class to hide parts of the UI */
 
 .hidden {
 	display: none;
+}
+
+/* Utility class to center text */
+
+.center {
+	text-align: center;
 }
