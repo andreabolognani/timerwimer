@@ -26,6 +26,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static String KEY_NUMBER = "number";
+
     private int number = 0;
     private TextView textView = null;
 
@@ -39,6 +41,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        number = savedInstanceState.getInt(KEY_NUMBER);
+        updateTextView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(KEY_NUMBER, number);
     }
 
     private void updateTextView() {
