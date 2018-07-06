@@ -7,15 +7,6 @@ on your device.
 Very much a work in progress.
 
 
-Installation
-------------
-
-Just open `index.html` in any modern browser.
-
-Expect installable apps for at least Android and Firefox OS once the
-code is mature.
-
-
 License
 -------
 
