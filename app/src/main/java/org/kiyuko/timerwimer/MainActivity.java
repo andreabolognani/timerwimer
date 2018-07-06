@@ -18,9 +18,11 @@
 
 package org.kiyuko.timerwimer;
 
+import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -77,8 +79,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void addTextViewFor(int n) {
-        TextView textView = new TextView(getBaseContext());
-        textView.setText(String.format("%d", n));
-        linearLayout.addView(textView);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View timerView = inflater.inflate(R.layout.view_timer, null);
+
+        TextView label = timerView.findViewById(R.id.label);
+        label.setText(String.format("%d", n));
+
+        linearLayout.addView(timerView);
     }
 }
