@@ -22,22 +22,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static String KEY_NUMBER = "number";
 
+    private LinearLayout linearLayout = null;
+
     private int number = 0;
-    private TextView textView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = findViewById(R.id.textView);
-        updateTextView();
+        linearLayout = findViewById(R.id.linearLayout);
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(this);
@@ -48,7 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onRestoreInstanceState(savedInstanceState);
 
         number = savedInstanceState.getInt(KEY_NUMBER);
-        updateTextView();
+        for (int i = 1; i <= number; i++) {
+            addTextViewFor(i);
+        }
     }
 
     @Override
@@ -58,13 +61,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         outState.putInt(KEY_NUMBER, number);
     }
 
-    private void updateTextView() {
-        textView.setText(String.format("%d", number));
-    }
-
     @Override
     public void onClick(View view) {
         number++;
-        updateTextView();
+        addTextViewFor(number);
+    }
+
+    private void addTextViewFor(int n) {
+        TextView textView = new TextView(getBaseContext());
+        textView.setText(String.format("%d", n));
+        linearLayout.addView(textView);
     }
 }
