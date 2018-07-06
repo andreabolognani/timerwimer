@@ -35,15 +35,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         textView = findViewById(R.id.textView);
-        textView.setText(String.format("%d", number));
+        updateTextView();
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(this);
     }
 
+    private void updateTextView() {
+        textView.setText(String.format("%d", number));
+    }
+
     @Override
     public void onClick(View view) {
         number++;
-        textView.setText(String.format("%d", number));
+        updateTextView();
     }
 }
