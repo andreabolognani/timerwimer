@@ -43,4 +43,8 @@ public class TimerViewModel extends AndroidViewModel {
     public void insert(TimerInfo info) {
         mRepository.insert(info);
     }
+
+    public void delete(TimerInfo info) {
+        mRepository.delete(info);
+    }
 }

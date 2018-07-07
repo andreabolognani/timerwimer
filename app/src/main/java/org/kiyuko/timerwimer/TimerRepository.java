@@ -42,6 +42,10 @@ public class TimerRepository {
         new AsyncInsertTask(mDao).execute(info);
     }
 
+    public void delete(TimerInfo info) {
+        new AsyncDeleteTask(mDao).execute(info);
+    }
+
     private static class AsyncInsertTask extends AsyncTask<TimerInfo, Void, Void> {
 
         private TimerDao mDao;
@@ -53,6 +57,21 @@ public class TimerRepository {
         @Override
         protected Void doInBackground(TimerInfo... args) {
             mDao.insert(args[0]);
+            return null;
+        }
+    }
+
+    private static class AsyncDeleteTask extends AsyncTask<TimerInfo, Void, Void> {
+
+        private TimerDao mDao;
+
+        public AsyncDeleteTask(TimerDao dao) {
+            mDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(TimerInfo... args) {
+            mDao.delete(args[0]);
             return null;
         }
     }

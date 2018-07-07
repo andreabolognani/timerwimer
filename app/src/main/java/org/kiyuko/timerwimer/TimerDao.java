@@ -20,6 +20,7 @@ package org.kiyuko.timerwimer;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -30,6 +31,9 @@ public interface TimerDao {
 
     @Insert
     void insert(TimerInfo info);
+
+    @Delete
+    void delete(TimerInfo info);
 
     @Query("DELETE FROM TimerInfo")
     void deleteAll();
