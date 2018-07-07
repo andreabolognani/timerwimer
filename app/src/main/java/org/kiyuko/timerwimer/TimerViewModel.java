@@ -21,28 +21,26 @@ package org.kiyuko.timerwimer;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+
+import java.util.List;
 
 public class TimerViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Integer> mCount;
+    private TimerRepository mRepository;
+    private LiveData<List<TimerInfo>> mAllTimerInfo;
 
     public TimerViewModel(Application application) {
         super(application);
 
-        mCount = new MutableLiveData<Integer>();
-        mCount.setValue(0);
+        mRepository = new TimerRepository(application);
+        mAllTimerInfo = mRepository.getAllTimerInfo();
     }
 
-    public void setCount(int count) {
-        mCount.setValue(count);
+    public LiveData<List<TimerInfo>> getAllTimerInfo() {
+        return mAllTimerInfo;
     }
 
-    public LiveData<Integer> getCount() {
-        return mCount;
-    }
-
-    public void increaseCount() {
-        mCount.setValue(mCount.getValue() + 1);
+    public void insert(TimerInfo info) {
+        mRepository.insert(info);
     }
 }

@@ -21,6 +21,7 @@ package org.kiyuko.timerwimer;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,17 +31,25 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ScrollView scrollView = null;
     private LinearLayout linearLayout = null;
 
     private TimerViewModel viewModel = null;
+    private DateFormat mDateFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SS");
 
         scrollView = findViewById(R.id.scrollView);
         linearLayout = findViewById(R.id.linearLayout);
@@ -49,24 +58,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         floatingActionButton.setOnClickListener(this);
 
         viewModel = ViewModelProviders.of(this).get(TimerViewModel.class);
-
-        Observer<Integer> countObserver = new Observer<Integer>() {
+        viewModel.getAllTimerInfo().observe(this, new Observer<List<TimerInfo>>() {
             @Override
-            public void onChanged(Integer count) {
-                int existing = linearLayout.getChildCount();
-
-                while (existing < count) {
-                    addViewFor(existing);
-                    existing++;
+            public void onChanged(@Nullable List<TimerInfo> infos) {
+                for (int i = 0; i < infos.size(); i++) {
+                    addViewFor(infos.get(i));
                 }
             }
-        };
-        viewModel.getCount().observe(this, countObserver);
+        });
     }
 
     @Override
     public void onClick(View view) {
-        viewModel.increaseCount();
+        TimerInfo info = new TimerInfo();
+        info.setLabel(mDateFormat.format(new Date()));
+
+        viewModel.insert(info);
         scrollView.post(new Runnable() {
             @Override
             public void run() {
@@ -75,12 +82,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void addViewFor(int n) {
+    private void addViewFor(TimerInfo info) {
+        for (int i = 0; i < linearLayout.getChildCount(); i++) {
+            View timerView = linearLayout.getChildAt(i);
+            TextView label = timerView.findViewById(R.id.label);
+
+            if (label.getText().equals(info.getLabel())) {
+                return;
+            }
+        }
+
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View timerView = inflater.inflate(R.layout.view_timer, null);
 
         TextView label = timerView.findViewById(R.id.label);
-        label.setText(String.format("%d", n));
+        label.setText(info.getLabel());
 
         linearLayout.addView(timerView);
     }
