@@ -22,11 +22,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-public class MainViewModel extends ViewModel {
+public class TimerViewModel extends ViewModel {
 
     private MutableLiveData<Integer> mCount;
 
-    public MainViewModel() {
+    public TimerViewModel() {
         mCount = new MutableLiveData<Integer>();
         mCount.setValue(0);
     }
