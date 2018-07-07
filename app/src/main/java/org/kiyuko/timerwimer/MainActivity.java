@@ -22,6 +22,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.design.button.MaterialButton;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -101,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         TextView label = timerView.findViewById(R.id.label);
         label.setText(info.getLabel());
+
+        MaterialButton deleteButton = timerView.findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(this);
 
         linearLayout.addView(timerView);
     }
