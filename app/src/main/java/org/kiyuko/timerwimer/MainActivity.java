@@ -61,9 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewModel.getAllTimerInfo().observe(this, new Observer<List<TimerInfo>>() {
             @Override
             public void onChanged(@Nullable List<TimerInfo> infos) {
-                for (int i = 0; i < infos.size(); i++) {
-                    addViewFor(infos.get(i));
-                }
+                updateInterface(infos);
             }
         });
     }
@@ -99,5 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         label.setText(info.getLabel());
 
         linearLayout.addView(timerView);
+    }
+
+    private void updateInterface(List<TimerInfo> infos) {
+        for (int i = 0; i < infos.size(); i++) {
+            addViewFor(infos.get(i));
+        }
     }
 }
