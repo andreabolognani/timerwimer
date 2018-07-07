@@ -68,16 +68,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        TimerInfo info = new TimerInfo();
-        info.setLabel(mDateFormat.format(new Date()));
+        switch (view.getId()) {
+            case R.id.floatingActionButton: {
+                TimerInfo info = new TimerInfo();
+                info.setLabel(mDateFormat.format(new Date()));
 
-        viewModel.insert(info);
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                viewModel.insert(info);
+                scrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                });
+                break;
             }
-        });
+        }
     }
 
     private void addViewFor(TimerInfo info) {
