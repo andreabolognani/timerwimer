@@ -18,15 +18,18 @@
 
 package org.kiyuko.timerwimer;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 
-public class TimerViewModel extends ViewModel {
+public class TimerViewModel extends AndroidViewModel {
 
     private MutableLiveData<Integer> mCount;
 
-    public TimerViewModel() {
+    public TimerViewModel(Application application) {
+        super(application);
+
         mCount = new MutableLiveData<Integer>();
         mCount.setValue(0);
     }
