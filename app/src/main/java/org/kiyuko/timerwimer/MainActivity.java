@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
-        for (int i = 1; i <= viewModel.getCount(); i++) {
-            addTextViewFor(i);
+        for (int n = 1; n <= viewModel.getCount(); n++) {
+            addViewFor(n);
         }
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         viewModel.increaseCount();
-        addTextViewFor(viewModel.getCount());
+        addViewFor(viewModel.getCount());
         scrollView.post(new Runnable() {
             @Override
             public void run() {
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void addTextViewFor(int n) {
+    private void addViewFor(int n) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View timerView = inflater.inflate(R.layout.view_timer, null);
 
