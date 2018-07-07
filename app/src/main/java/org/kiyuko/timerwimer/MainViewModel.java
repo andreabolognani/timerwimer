@@ -20,7 +20,7 @@ package org.kiyuko.timerwimer;
 
 import android.arch.lifecycle.ViewModel;
 
-class MainViewModel extends ViewModel {
+public class MainViewModel extends ViewModel {
 
     private int mCount = 0;
 
