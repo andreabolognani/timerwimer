@@ -82,6 +82,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
                 break;
             }
+            case R.id.deleteButton: {
+                View timerView = (View) view.getParent();
+                TextView label = timerView.findViewById(R.id.label);
+
+                TimerInfo info = new TimerInfo();
+                info.setLabel(label.getText().toString());
+
+                viewModel.delete(info);
+                break;
+            }
         }
     }
 
