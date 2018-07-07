@@ -18,6 +18,7 @@
 
 package org.kiyuko.timerwimer;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
@@ -44,20 +45,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scrollView = findViewById(R.id.scrollView);
         linearLayout = findViewById(R.id.linearLayout);
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-
-        for (int n = 1; n <= viewModel.getCount(); n++) {
-            addViewFor(n);
-        }
-
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(this);
+
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+        Observer<Integer> countObserver = new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer count) {
+                int existing = linearLayout.getChildCount();
+
+                while (existing < count) {
+                    addViewFor(existing);
+                    existing++;
+                }
+            }
+        };
+        viewModel.getCount().observe(this, countObserver);
     }
 
     @Override
     public void onClick(View view) {
         viewModel.increaseCount();
-        addViewFor(viewModel.getCount());
         scrollView.post(new Runnable() {
             @Override
             public void run() {

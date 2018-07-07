@@ -18,21 +18,28 @@
 
 package org.kiyuko.timerwimer;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {
 
-    private int mCount = 0;
+    private MutableLiveData<Integer> mCount;
 
-    public void setCount(int count) {
-        mCount = count;
+    public MainViewModel() {
+        mCount = new MutableLiveData<Integer>();
+        mCount.setValue(0);
     }
 
-    public int getCount() {
+    public void setCount(int count) {
+        mCount.setValue(count);
+    }
+
+    public LiveData<Integer> getCount() {
         return mCount;
     }
 
     public void increaseCount() {
-        mCount++;
+        mCount.setValue(mCount.getValue() + 1);
     }
 }
