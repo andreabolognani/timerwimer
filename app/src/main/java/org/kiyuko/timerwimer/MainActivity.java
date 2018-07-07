@@ -81,15 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void addViewFor(TimerInfo info) {
-        for (int i = 0; i < linearLayout.getChildCount(); i++) {
-            View timerView = linearLayout.getChildAt(i);
-            TextView label = timerView.findViewById(R.id.label);
-
-            if (label.getText().equals(info.getLabel())) {
-                return;
-            }
-        }
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View timerView = inflater.inflate(R.layout.view_timer, null);
 
@@ -100,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateInterface(List<TimerInfo> infos) {
+        linearLayout.removeAllViews();
         for (int i = 0; i < infos.size(); i++) {
             addViewFor(infos.get(i));
         }
