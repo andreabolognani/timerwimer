@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TimerViewModel viewModel = null;
     private DateFormat mDateFormat;
+    private LayoutInflater mInflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SS");
+        mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         scrollView = findViewById(R.id.scrollView);
         linearLayout = findViewById(R.id.linearLayout);
@@ -97,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void addViewFor(TimerInfo info) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View timerView = inflater.inflate(R.layout.view_timer, null);
+        View timerView = mInflater.inflate(R.layout.view_timer, null);
 
         TextView label = timerView.findViewById(R.id.label);
         label.setText(info.getLabel());
