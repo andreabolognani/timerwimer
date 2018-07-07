@@ -18,6 +18,7 @@
 
 package org.kiyuko.timerwimer;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -30,12 +31,10 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static String KEY_NUMBER = "number";
-
     private ScrollView scrollView = null;
     private LinearLayout linearLayout = null;
 
-    private int number = 0;
+    private MainViewModel viewModel = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,31 +44,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scrollView = findViewById(R.id.scrollView);
         linearLayout = findViewById(R.id.linearLayout);
 
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+        for (int i = 1; i <= viewModel.getCount(); i++) {
+            addTextViewFor(i);
+        }
+
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(this);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        number = savedInstanceState.getInt(KEY_NUMBER);
-        for (int i = 1; i <= number; i++) {
-            addTextViewFor(i);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt(KEY_NUMBER, number);
-    }
-
-    @Override
     public void onClick(View view) {
-        number++;
-        addTextViewFor(number);
+        viewModel.increaseCount();
+        addTextViewFor(viewModel.getCount());
         scrollView.post(new Runnable() {
             @Override
             public void run() {
