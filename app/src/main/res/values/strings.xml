@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Timer Wimer</string>
     <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>
