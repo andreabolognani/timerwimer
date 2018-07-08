@@ -40,6 +40,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String EXTRA_TIMER_ID = "org.kiyuko.timerwimer.TIMER_ID";
+
     private ScrollView scrollView = null;
     private LinearLayout linearLayout = null;
 
@@ -88,6 +90,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.editButton: {
                 Intent intent = new Intent(this, EditActivity.class);
+
+                View timerView = (View) view.getParent();
+                intent.putExtra(EXTRA_TIMER_ID, timerView.getId());
+
                 startActivity(intent);
                 break;
             }
