@@ -20,6 +20,7 @@ package org.kiyuko.timerwimer;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ import java.util.List;
 
 public class EditActivity extends AppCompatActivity implements View.OnFocusChangeListener, TextView.OnEditorActionListener {
 
+    private InputMethodManager mInputMethodManager;
     private EditText mLabelEditText;
     private TimerViewModel mViewModel;
     private int mTimerId;
@@ -42,6 +45,8 @@ public class EditActivity extends AppCompatActivity implements View.OnFocusChang
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+
+        mInputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         mLabelEditText = findViewById(R.id.labelEditText);
 
@@ -89,6 +94,7 @@ public class EditActivity extends AppCompatActivity implements View.OnFocusChang
     @Override
     public boolean onEditorAction(TextView textView, int action, KeyEvent keyEvent) {
         if (action == EditorInfo.IME_ACTION_DONE) {
+            mInputMethodManager.hideSoftInputFromWindow(mLabelEditText.getWindowToken(), 0);
             updateModel();
             return true;
         }
