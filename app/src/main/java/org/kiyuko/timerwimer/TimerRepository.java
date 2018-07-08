@@ -42,6 +42,10 @@ public class TimerRepository {
         new AsyncInsertTask(mDao).execute(info);
     }
 
+    public void update(TimerInfo info) {
+        new AsyncUpdateTask(mDao).execute(info);
+    }
+
     public void delete(TimerInfo info) {
         new AsyncDeleteTask(mDao).execute(info);
     }
@@ -57,6 +61,21 @@ public class TimerRepository {
         @Override
         protected Void doInBackground(TimerInfo... args) {
             mDao.insert(args[0]);
+            return null;
+        }
+    }
+
+    private static class AsyncUpdateTask extends AsyncTask<TimerInfo, Void, Void> {
+
+        private TimerDao mDao;
+
+        public AsyncUpdateTask(TimerDao dao) {
+            mDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(TimerInfo... args) {
+            mDao.update(args[0]);
             return null;
         }
     }

@@ -24,20 +24,26 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.List;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity implements View.OnFocusChangeListener, TextView.OnEditorActionListener {
 
+    private EditText mLabelEditText;
     private TimerViewModel mViewModel;
-
     private int mTimerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+
+        mLabelEditText = findViewById(R.id.labelEditText);
 
         Intent intent = getIntent();
         mTimerId = intent.getIntExtra(MainActivity.EXTRA_TIMER_ID, -1);
@@ -49,6 +55,9 @@ public class EditActivity extends AppCompatActivity {
                 updateInterface(infos);
             }
         });
+
+        mLabelEditText.setOnFocusChangeListener(this);
+        mLabelEditText.setOnEditorActionListener(this);
     }
 
     private void updateInterface(List<TimerInfo> infos) {
@@ -56,9 +65,33 @@ public class EditActivity extends AppCompatActivity {
             TimerInfo info = infos.get(i);
 
             if (info.getId() == mTimerId) {
-                EditText labelEditText = findViewById(R.id.labelEditText);
-                labelEditText.setText(info.getLabel());
+                mLabelEditText.setText(info.getLabel());
             }
         }
+    }
+
+    private void updateModel() {
+        TimerInfo info = new TimerInfo();
+
+        info.setId(mTimerId);
+        info.setLabel(mLabelEditText.getText().toString());
+
+        mViewModel.update(info);
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean hasFocus) {
+        if (!hasFocus) {
+            updateModel();
+        }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int action, KeyEvent keyEvent) {
+        if (action == EditorInfo.IME_ACTION_DONE) {
+            updateModel();
+            return true;
+        }
+        return false;
     }
 }
