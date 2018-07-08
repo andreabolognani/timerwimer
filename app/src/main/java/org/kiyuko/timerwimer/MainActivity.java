@@ -33,9 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -46,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout linearLayout = null;
 
     private TimerViewModel viewModel = null;
-    private DateFormat mDateFormat;
     private LayoutInflater mInflater;
 
     @Override
@@ -54,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         scrollView = findViewById(R.id.scrollView);
@@ -76,16 +71,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.floatingActionButton: {
-                TimerInfo info = new TimerInfo();
-                info.setLabel(mDateFormat.format(new Date()));
-
-                viewModel.insert(info);
+                Intent intent = new Intent(this, CreateActivity.class);
+                startActivity(intent);
+                /*
                 scrollView.post(new Runnable() {
                     @Override
                     public void run() {
                         scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                     }
                 });
+                */
                 break;
             }
             case R.id.editButton: {
