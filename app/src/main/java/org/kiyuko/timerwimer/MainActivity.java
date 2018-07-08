@@ -21,6 +21,7 @@ package org.kiyuko.timerwimer;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.FloatingActionButton;
@@ -85,6 +86,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
                 break;
             }
+            case R.id.editButton: {
+                Intent intent = new Intent(this, EditActivity.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.deleteButton: {
                 View timerView = (View) view.getParent();
 
@@ -103,6 +109,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         TextView label = timerView.findViewById(R.id.label);
         label.setText(info.getLabel());
+
+
+        MaterialButton editButton = timerView.findViewById(R.id.editButton);
+        editButton.setOnClickListener(this);
 
         MaterialButton deleteButton = timerView.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(this);
