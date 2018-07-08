@@ -71,7 +71,7 @@ public class TimerRepository {
 
         @Override
         protected Void doInBackground(TimerInfo... args) {
-            mDao.delete(args[0]);
+            mDao.delete(args[0].getId());
             return null;
         }
     }

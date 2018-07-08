@@ -18,6 +18,7 @@
 
 package org.kiyuko.timerwimer;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -25,9 +26,21 @@ import android.support.annotation.NonNull;
 @Entity
 public class TimerInfo {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
+    @ColumnInfo(name = "id")
+    private int mId;
+
+    @ColumnInfo(name = "label")
     private String mLabel;
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
 
     public String getLabel() {
         return mLabel;
@@ -35,5 +48,10 @@ public class TimerInfo {
 
     public void setLabel(String label) {
         mLabel = label;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("id=%d, label=%s", mId, mLabel);
     }
 }

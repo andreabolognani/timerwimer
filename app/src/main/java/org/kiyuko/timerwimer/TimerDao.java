@@ -32,12 +32,12 @@ public interface TimerDao {
     @Insert
     void insert(TimerInfo info);
 
-    @Delete
-    void delete(TimerInfo info);
+    @Query("DELETE FROM TimerInfo WHERE id = :id")
+    public void delete(int id);
 
     @Query("DELETE FROM TimerInfo")
     void deleteAll();
 
-    @Query("SELECT * from TimerInfo")
+    @Query("SELECT * from TimerInfo ORDER BY id ASC")
     LiveData<List<TimerInfo>> getAllTimerInfo();
 }

@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SS");
+        mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         scrollView = findViewById(R.id.scrollView);
@@ -87,10 +87,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.deleteButton: {
                 View timerView = (View) view.getParent();
-                TextView label = timerView.findViewById(R.id.label);
 
                 TimerInfo info = new TimerInfo();
-                info.setLabel(label.getText().toString());
+                info.setId(timerView.getId());
 
                 viewModel.delete(info);
                 break;
@@ -100,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void addViewFor(TimerInfo info) {
         View timerView = mInflater.inflate(R.layout.view_timer, null);
+        timerView.setId(info.getId());
 
         TextView label = timerView.findViewById(R.id.label);
         label.setText(info.getLabel());
