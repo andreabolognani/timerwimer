@@ -32,11 +32,10 @@
         android:layout_marginRight="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:tint="@android:color/white"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@drawable/ic_add" />
 
 </android.support.constraint.ConstraintLayout>
