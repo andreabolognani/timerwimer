@@ -21,6 +21,8 @@ package org.kiyuko.timerwimer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
@@ -48,20 +50,21 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                updateModel();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_create, menu);
+        return true;
     }
 
     @Override
-    public void onBackPressed() {
-        updateModel();
-
-        super.onBackPressed();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.confirm:
+                updateModel();
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
