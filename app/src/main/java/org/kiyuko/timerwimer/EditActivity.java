@@ -29,7 +29,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -37,7 +36,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class EditActivity extends AppCompatActivity implements View.OnFocusChangeListener, TextView.OnEditorActionListener {
+public class EditActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
 
     private InputMethodManager mInputMethodManager;
     private EditText mLabelEditText;
@@ -64,7 +63,6 @@ public class EditActivity extends AppCompatActivity implements View.OnFocusChang
             }
         });
 
-        mLabelEditText.setOnFocusChangeListener(this);
         mLabelEditText.setOnEditorActionListener(this);
     }
 
@@ -88,17 +86,9 @@ public class EditActivity extends AppCompatActivity implements View.OnFocusChang
     }
 
     @Override
-    public void onFocusChange(View view, boolean hasFocus) {
-        if (!hasFocus) {
-            updateModel();
-        }
-    }
-
-    @Override
     public boolean onEditorAction(TextView textView, int action, KeyEvent keyEvent) {
         if (action == EditorInfo.IME_ACTION_DONE) {
             mInputMethodManager.hideSoftInputFromWindow(mLabelEditText.getWindowToken(), 0);
-            updateModel();
             return true;
         }
         return false;
