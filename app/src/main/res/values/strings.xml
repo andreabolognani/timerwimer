@@ -2,6 +2,7 @@
     <string name="app_name">Timer Wimer</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="create">Create</string>
     <string name="label">Label</string>
     <string name="confirm">Confirm</string>
 </resources>
