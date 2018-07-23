@@ -24,10 +24,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.button.MaterialButton;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -55,9 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scrollView = findViewById(R.id.scrollView);
         linearLayout = findViewById(R.id.linearLayout);
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
-        floatingActionButton.setOnClickListener(this);
-
         viewModel = ViewModelProviders.of(this).get(TimerViewModel.class);
         viewModel.getAllTimerInfo().observe(this, new Observer<List<TimerInfo>>() {
             @Override
@@ -68,9 +67,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.floatingActionButton: {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.create:
                 Intent intent = new Intent(this, CreateActivity.class);
                 startActivity(intent);
                 /*
@@ -81,8 +87,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
                 */
-                break;
-            }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.editButton: {
                 Intent intent = new Intent(this, EditActivity.class);
 
