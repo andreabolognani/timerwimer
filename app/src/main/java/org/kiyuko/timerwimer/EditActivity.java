@@ -40,6 +40,7 @@ public class EditActivity extends AppCompatActivity implements TextView.OnEditor
 
     private InputMethodManager mInputMethodManager;
     private EditText mLabelEditText;
+    private EditText mTargetTimeEditText;
     private TimerViewModel mViewModel;
     private int mTimerId;
 
@@ -51,6 +52,7 @@ public class EditActivity extends AppCompatActivity implements TextView.OnEditor
         mInputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         mLabelEditText = findViewById(R.id.labelEditText);
+        mTargetTimeEditText = findViewById(R.id.targetTimeEditText);
 
         Intent intent = getIntent();
         mTimerId = intent.getIntExtra(MainActivity.EXTRA_TIMER_ID, -1);
@@ -72,6 +74,7 @@ public class EditActivity extends AppCompatActivity implements TextView.OnEditor
 
             if (info.getId() == mTimerId) {
                 mLabelEditText.setText(info.getLabel());
+                mTargetTimeEditText.setText(String.format("%d", info.getTargetTime()));
             }
         }
     }
@@ -81,6 +84,7 @@ public class EditActivity extends AppCompatActivity implements TextView.OnEditor
 
         info.setId(mTimerId);
         info.setLabel(mLabelEditText.getText().toString());
+        info.setTargetTime(Integer.parseInt(mTargetTimeEditText.getText().toString()));
 
         mViewModel.update(info);
     }

@@ -34,6 +34,9 @@ public class TimerInfo {
     @ColumnInfo(name = "label")
     private String mLabel;
 
+    @ColumnInfo(name = "target_time")
+    private int mTargetTime;
+
     public int getId() {
         return mId;
     }
@@ -50,8 +53,16 @@ public class TimerInfo {
         mLabel = label;
     }
 
+    public int getTargetTime() {
+        return mTargetTime;
+    }
+
+    public void setTargetTime(int targetTime) {
+        mTargetTime = targetTime;
+    }
+
     @Override
     public String toString() {
-        return String.format("id=%d, label=%s", mId, mLabel);
+        return String.format("{id=%d, label=%s, targetTime=%d}", mId, mLabel, mTargetTime);
     }
 }

@@ -121,9 +121,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View timerView = mInflater.inflate(R.layout.view_timer, null);
         timerView.setId(info.getId());
 
+        TextView time = timerView.findViewById(R.id.time);
+        time.setText(String.format("%06d", info.getTargetTime()));
+
         TextView label = timerView.findViewById(R.id.label);
         label.setText(info.getLabel());
-
 
         MaterialButton editButton = timerView.findViewById(R.id.editButton);
         editButton.setOnClickListener(this);

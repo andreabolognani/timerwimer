@@ -29,6 +29,7 @@ import android.widget.EditText;
 public class CreateActivity extends AppCompatActivity {
 
     private EditText mLabelEditText;
+    private EditText mTargetTimeEditText;
     private TimerViewModel mViewModel;
 
     @Override
@@ -37,6 +38,7 @@ public class CreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create);
 
         mLabelEditText = findViewById(R.id.labelEditText);
+        mTargetTimeEditText = findViewById(R.id.targetTimeEditText);
 
         mViewModel = ViewModelProviders.of(this).get(TimerViewModel.class);
     }
@@ -45,6 +47,7 @@ public class CreateActivity extends AppCompatActivity {
         TimerInfo info = new TimerInfo();
 
         info.setLabel(mLabelEditText.getText().toString());
+        info.setTargetTime(Integer.parseInt(mTargetTimeEditText.getText().toString()));
 
         mViewModel.insert(info);
     }
