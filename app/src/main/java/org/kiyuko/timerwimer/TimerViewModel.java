@@ -27,17 +27,27 @@ import java.util.HashMap;
 public class TimerViewModel extends AndroidViewModel {
 
     private TimerRepository mRepository;
+    private TimerRunner mRunner;
+
     private LiveData<HashMap<Integer, TimerInfo>> mAllTimerInfo;
+    private LiveData<HashMap<Integer, TimerState>> mAllTimerState;
 
     public TimerViewModel(Application application) {
         super(application);
 
         mRepository = TimerRepository.getRepository(application);
         mAllTimerInfo = mRepository.getAllTimerInfo();
+
+        mRunner = TimerRunner.getRunner(mAllTimerInfo);
+        mAllTimerState = mRunner.getAllTimerState();
     }
 
     public LiveData<HashMap<Integer, TimerInfo>> getAllTimerInfo() {
         return mAllTimerInfo;
+    }
+
+    public LiveData<HashMap<Integer, TimerState>> getAllTimerState() {
+        return mAllTimerState;
     }
 
     public void insert(TimerInfo info) {

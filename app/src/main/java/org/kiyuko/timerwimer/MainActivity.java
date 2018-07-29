@@ -62,7 +62,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mViewModel.getAllTimerInfo().observe(this, new Observer<HashMap<Integer, TimerInfo>>() {
             @Override
             public void onChanged(@Nullable HashMap<Integer, TimerInfo> allTimerInfo) {
-                updateInterface(allTimerInfo);
+                updateInterfaceInfo(allTimerInfo);
+            }
+        });
+        mViewModel.getAllTimerState().observe(this, new Observer<HashMap<Integer, TimerState>>() {
+            @Override
+            public void onChanged(@Nullable HashMap<Integer, TimerState> allTimerState) {
+                updateInterfaceState(allTimerState);
             }
         });
     }
@@ -123,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         timerView.setId(info.getId());
 
         TextView time = timerView.findViewById(R.id.time);
-        time.setText(String.format("%06d", info.getTargetTime()));
+        time.setText("000000");
 
         TextView label = timerView.findViewById(R.id.label);
         label.setText(info.getLabel());
@@ -137,11 +143,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLinearLayout.addView(timerView);
     }
 
-    private void updateInterface(HashMap<Integer, TimerInfo> allTimerInfo) {
+    private void updateViewFor(TimerState state) {
+        View timerView = mLinearLayout.findViewById(state.getId());
+
+        if (timerView == null) {
+            return;
+        }
+
+        TextView time = timerView.findViewById(R.id.time);
+        time.setText(String.format("%06d", state.getCurrentTime()));
+    }
+
+    private void updateInterfaceInfo(HashMap<Integer, TimerInfo> allTimerInfo) {
         mLinearLayout.removeAllViews();
 
         for (TimerInfo info: allTimerInfo.values()) {
             addViewFor(info);
+        }
+    }
+
+    private void updateInterfaceState(HashMap<Integer, TimerState> allTimerState) {
+        for (TimerState state: allTimerState.values()) {
+            updateViewFor(state);
         }
     }
 }
