@@ -30,11 +30,24 @@ import java.util.List;
 
 public class TimerRepository {
 
+    private static TimerRepository INSTANCE;
+
     private TimerDao mDao;
     private LiveData<List<TimerInfo>> mSourceTimerInfo;
     private MutableLiveData<HashMap<Integer, TimerInfo>> mAllTimerInfo;
 
-    public TimerRepository(Application application) {
+    public static TimerRepository getRepository(Application application) {
+        if (INSTANCE == null) {
+            synchronized (TimerRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new TimerRepository(application);
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    private TimerRepository(Application application) {
         mAllTimerInfo = new MutableLiveData<>();
 
         mDao = TimerDatabase.getDatabase(application).getDao();

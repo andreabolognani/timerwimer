@@ -32,7 +32,7 @@ public class TimerViewModel extends AndroidViewModel {
     public TimerViewModel(Application application) {
         super(application);
 
-        mRepository = new TimerRepository(application);
+        mRepository = TimerRepository.getRepository(application);
         mAllTimerInfo = mRepository.getAllTimerInfo();
     }
 
