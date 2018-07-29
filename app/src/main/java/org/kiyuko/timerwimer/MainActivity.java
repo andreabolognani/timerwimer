@@ -41,10 +41,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static final String EXTRA_TIMER_ID = "org.kiyuko.timerwimer.TIMER_ID";
 
-    private ScrollView scrollView = null;
-    private LinearLayout linearLayout = null;
+    private TimerViewModel mViewModel;
 
-    private TimerViewModel viewModel = null;
+    private ScrollView mScrollView;
+    private LinearLayout mLinearLayout;
+
     private LayoutInflater mInflater;
 
     @Override
@@ -54,11 +55,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        scrollView = findViewById(R.id.scrollView);
-        linearLayout = findViewById(R.id.linearLayout);
+        mScrollView = findViewById(R.id.scrollView);
+        mLinearLayout = findViewById(R.id.linearLayout);
 
-        viewModel = ViewModelProviders.of(this).get(TimerViewModel.class);
-        viewModel.getAllTimerInfo().observe(this, new Observer<HashMap<Integer, TimerInfo>>() {
+        mViewModel = ViewModelProviders.of(this).get(TimerViewModel.class);
+        mViewModel.getAllTimerInfo().observe(this, new Observer<HashMap<Integer, TimerInfo>>() {
             @Override
             public void onChanged(@Nullable HashMap<Integer, TimerInfo> allTimerInfo) {
                 updateInterface(allTimerInfo);
@@ -80,10 +81,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(this, CreateActivity.class);
                 startActivity(intent);
                 /*
-                scrollView.post(new Runnable() {
+                mScrollView.post(new Runnable() {
                     @Override
                     public void run() {
-                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                        mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
                     }
                 });
                 */
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TimerInfo info = new TimerInfo();
                 info.setId(timerView.getId());
 
-                viewModel.delete(info);
+                mViewModel.delete(info);
                 break;
             }
         }
@@ -133,11 +134,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MaterialButton deleteButton = timerView.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(this);
 
-        linearLayout.addView(timerView);
+        mLinearLayout.addView(timerView);
     }
 
     private void updateInterface(HashMap<Integer, TimerInfo> allTimerInfo) {
-        linearLayout.removeAllViews();
+        mLinearLayout.removeAllViews();
 
         for (TimerInfo info: allTimerInfo.values()) {
             addViewFor(info);
