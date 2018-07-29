@@ -72,7 +72,16 @@ public class TimerRepository {
 
         public LiveDataWrapper(LiveData<List<TimerInfo>> sourceLiveData) {
             mSourceLiveData = sourceLiveData;
+        }
+
+        @Override
+        protected void onActive() {
             mSourceLiveData.observeForever(this);
+        }
+
+        @Override
+        protected void onInactive() {
+            mSourceLiveData.removeObserver(this);
         }
 
         @Override
