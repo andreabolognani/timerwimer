@@ -20,7 +20,6 @@ package org.kiyuko.timerwimer;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
@@ -33,8 +32,7 @@ public class TimerRepository {
     private static TimerRepository INSTANCE;
 
     private TimerDao mDao;
-    private LiveData<List<TimerInfo>> mSourceTimerInfo;
-    private MutableLiveData<HashMap<Integer, TimerInfo>> mAllTimerInfo;
+    private LiveDataWrapper mAllTimerInfo;
 
     public static TimerRepository getRepository(Application application) {
         if (INSTANCE == null) {
@@ -48,22 +46,8 @@ public class TimerRepository {
     }
 
     private TimerRepository(Application application) {
-        mAllTimerInfo = new MutableLiveData<>();
-
         mDao = TimerDatabase.getDatabase(application).getDao();
-        mSourceTimerInfo = mDao.getAllTimerInfo();
-        mSourceTimerInfo.observeForever(new Observer<List<TimerInfo>>() {
-            @Override
-            public void onChanged(@Nullable List<TimerInfo> allTimerInfo) {
-                HashMap<Integer, TimerInfo> temp = new HashMap<>();
-
-                for (TimerInfo info: allTimerInfo) {
-                    temp.put(info.getId(), info);
-                }
-
-                mAllTimerInfo.postValue(temp);
-            }
-        });
+        mAllTimerInfo = new LiveDataWrapper(mDao.getAllTimerInfo());
     }
 
     public LiveData<HashMap<Integer, TimerInfo>> getAllTimerInfo() {
@@ -80,6 +64,27 @@ public class TimerRepository {
 
     public void delete(TimerInfo info) {
         new AsyncDeleteTask(mDao).execute(info);
+    }
+
+    private class LiveDataWrapper extends LiveData<HashMap<Integer, TimerInfo>> implements Observer<List<TimerInfo>> {
+
+        private LiveData<List<TimerInfo>> mSourceLiveData;
+
+        public LiveDataWrapper(LiveData<List<TimerInfo>> sourceLiveData) {
+            mSourceLiveData = sourceLiveData;
+            mSourceLiveData.observeForever(this);
+        }
+
+        @Override
+        public void onChanged(@Nullable List<TimerInfo> sourceData) {
+            HashMap<Integer, TimerInfo> temp = new HashMap<>();
+
+            for (TimerInfo info: sourceData) {
+                temp.put(info.getId(), info);
+            }
+
+            postValue(temp);
+        }
     }
 
     private static class AsyncInsertTask extends AsyncTask<TimerInfo, Void, Void> {
