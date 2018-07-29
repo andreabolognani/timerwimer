@@ -20,21 +20,40 @@ package org.kiyuko.timerwimer;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class TimerRepository {
 
     private TimerDao mDao;
-    private LiveData<List<TimerInfo>> mAllTimerInfo;
+    private LiveData<List<TimerInfo>> mSourceTimerInfo;
+    private MutableLiveData<HashMap<Integer, TimerInfo>> mAllTimerInfo;
 
     public TimerRepository(Application application) {
+        mAllTimerInfo = new MutableLiveData<>();
+
         mDao = TimerDatabase.getDatabase(application).getDao();
-        mAllTimerInfo = mDao.getAllTimerInfo();
+        mSourceTimerInfo = mDao.getAllTimerInfo();
+        mSourceTimerInfo.observeForever(new Observer<List<TimerInfo>>() {
+            @Override
+            public void onChanged(@Nullable List<TimerInfo> allTimerInfo) {
+                HashMap<Integer, TimerInfo> temp = new HashMap<>();
+
+                for (TimerInfo info: allTimerInfo) {
+                    temp.put(info.getId(), info);
+                }
+
+                mAllTimerInfo.postValue(temp);
+            }
+        });
     }
 
-    public LiveData<List<TimerInfo>> getAllTimerInfo() {
+    public LiveData<HashMap<Integer, TimerInfo>> getAllTimerInfo() {
         return mAllTimerInfo;
     }
 

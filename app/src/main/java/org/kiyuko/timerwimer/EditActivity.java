@@ -34,7 +34,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class EditActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
 
@@ -58,24 +58,22 @@ public class EditActivity extends AppCompatActivity implements TextView.OnEditor
         mTimerId = intent.getIntExtra(MainActivity.EXTRA_TIMER_ID, -1);
 
         mViewModel = ViewModelProviders.of(this).get(TimerViewModel.class);
-        mViewModel.getAllTimerInfo().observe(this, new Observer<List<TimerInfo>>() {
+        mViewModel.getAllTimerInfo().observe(this, new Observer<HashMap<Integer, TimerInfo>>() {
             @Override
-            public void onChanged(@Nullable List<TimerInfo> infos) {
-                updateInterface(infos);
+            public void onChanged(@Nullable HashMap<Integer, TimerInfo> allTimerInfo) {
+                updateInterface(allTimerInfo);
             }
         });
 
         mLabelEditText.setOnEditorActionListener(this);
     }
 
-    private void updateInterface(List<TimerInfo> infos) {
-        for (int i = 0; i < infos.size(); i++) {
-            TimerInfo info = infos.get(i);
+    private void updateInterface(HashMap<Integer, TimerInfo> allTimerInfo) {
+        if (allTimerInfo.containsKey(mTimerId)) {
+            TimerInfo info = allTimerInfo.get(mTimerId);
 
-            if (info.getId() == mTimerId) {
-                mLabelEditText.setText(info.getLabel());
-                mTargetTimeEditText.setText(String.format("%d", info.getTargetTime()));
-            }
+            mLabelEditText.setText(info.getLabel());
+            mTargetTimeEditText.setText(String.format("%d", info.getTargetTime()));
         }
     }
 

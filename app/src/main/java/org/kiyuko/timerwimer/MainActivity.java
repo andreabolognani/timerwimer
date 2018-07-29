@@ -35,7 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         linearLayout = findViewById(R.id.linearLayout);
 
         viewModel = ViewModelProviders.of(this).get(TimerViewModel.class);
-        viewModel.getAllTimerInfo().observe(this, new Observer<List<TimerInfo>>() {
+        viewModel.getAllTimerInfo().observe(this, new Observer<HashMap<Integer, TimerInfo>>() {
             @Override
-            public void onChanged(@Nullable List<TimerInfo> infos) {
-                updateInterface(infos);
+            public void onChanged(@Nullable HashMap<Integer, TimerInfo> allTimerInfo) {
+                updateInterface(allTimerInfo);
             }
         });
     }
@@ -136,10 +136,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         linearLayout.addView(timerView);
     }
 
-    private void updateInterface(List<TimerInfo> infos) {
+    private void updateInterface(HashMap<Integer, TimerInfo> allTimerInfo) {
         linearLayout.removeAllViews();
-        for (int i = 0; i < infos.size(); i++) {
-            addViewFor(infos.get(i));
+
+        for (TimerInfo info: allTimerInfo.values()) {
+            addViewFor(info);
         }
     }
 }

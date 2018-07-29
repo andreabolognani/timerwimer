@@ -22,12 +22,12 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class TimerViewModel extends AndroidViewModel {
 
     private TimerRepository mRepository;
-    private LiveData<List<TimerInfo>> mAllTimerInfo;
+    private LiveData<HashMap<Integer, TimerInfo>> mAllTimerInfo;
 
     public TimerViewModel(Application application) {
         super(application);
@@ -36,7 +36,7 @@ public class TimerViewModel extends AndroidViewModel {
         mAllTimerInfo = mRepository.getAllTimerInfo();
     }
 
-    public LiveData<List<TimerInfo>> getAllTimerInfo() {
+    public LiveData<HashMap<Integer, TimerInfo>> getAllTimerInfo() {
         return mAllTimerInfo;
     }
 
