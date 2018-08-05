@@ -72,7 +72,7 @@ public class EditActivity extends AppCompatActivity implements TextView.OnEditor
             TimerInfo info = allTimerInfo.get(mTimerId);
 
             mLabelEditText.setText(info.getLabel());
-            mTargetTimeEditText.setText(String.format("%d", info.getTargetTime()));
+            mTargetTimeEditText.setText(String.format("%d", info.getTargetTime() / 1000));
         }
     }
 
@@ -81,7 +81,7 @@ public class EditActivity extends AppCompatActivity implements TextView.OnEditor
 
         info.setId(mTimerId);
         info.setLabel(mLabelEditText.getText().toString());
-        info.setTargetTime(Integer.parseInt(mTargetTimeEditText.getText().toString()));
+        info.setTargetTime(Integer.parseInt(mTargetTimeEditText.getText().toString()) * 1000);
 
         mViewModel.update(info);
     }

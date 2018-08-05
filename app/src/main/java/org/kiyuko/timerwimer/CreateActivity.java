@@ -46,7 +46,7 @@ public class CreateActivity extends AppCompatActivity {
         TimerInfo info = new TimerInfo();
 
         info.setLabel(mLabelEditText.getText().toString());
-        info.setTargetTime(Integer.parseInt(mTargetTimeEditText.getText().toString()));
+        info.setTargetTime(Integer.parseInt(mTargetTimeEditText.getText().toString()) * 1000);
 
         mViewModel.insert(info);
     }
