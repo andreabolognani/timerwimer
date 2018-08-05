@@ -29,6 +29,8 @@ import java.util.TimerTask;
 
 public class TimerRunner extends TimerTask {
 
+    private static int UPDATE_PERIOD = 100;
+
     private static TimerRunner INSTANCE;
 
     private LiveDataWrapper mAllTimerState;
@@ -49,7 +51,7 @@ public class TimerRunner extends TimerTask {
         mAllTimerState = new LiveDataWrapper(allTimerInfo);
 
         mTimer = new Timer();
-        mTimer.scheduleAtFixedRate(this, 0, 1000);
+        mTimer.scheduleAtFixedRate(this, 0, UPDATE_PERIOD);
     }
 
     public LiveData<HashMap<Integer, TimerState>> getAllTimerState() {
@@ -98,7 +100,7 @@ public class TimerRunner extends TimerTask {
             if (state.getStatus() == TimerState.Status.RUNNING) {
                 int currentTime = state.getCurrentTime();
 
-                currentTime--;
+                currentTime -= UPDATE_PERIOD;
                 state.setCurrentTime(currentTime);
 
                 if (currentTime <= 0) {
