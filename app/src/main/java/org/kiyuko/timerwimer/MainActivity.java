@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         timerView.setId(info.getId());
 
         TextView time = timerView.findViewById(R.id.time);
-        time.setText("000000");
+        time.setText("00:00");
 
         TextView label = timerView.findViewById(R.id.label);
         label.setText(info.getLabel());
@@ -164,7 +164,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView time = timerView.findViewById(R.id.time);
         MaterialButton actionButton = (MaterialButton) timerView.findViewById(R.id.actionButton);
 
-        time.setText(String.format("%06d", state.getCurrentTime()));
+        int currentTime = state.getCurrentTime();
+        int milliseconds = currentTime % 1000;
+        currentTime = (currentTime - milliseconds) / 1000;
+        int seconds = currentTime % 60;
+        currentTime = (currentTime - seconds) / 60;
+        int minutes = currentTime;
+
+        if (milliseconds > 0) {
+            seconds++;
+        }
+
+        time.setText(String.format("%02d:%02d", minutes, seconds));
+
         actionButton.setText(state.getActionLabel());
     }
 
