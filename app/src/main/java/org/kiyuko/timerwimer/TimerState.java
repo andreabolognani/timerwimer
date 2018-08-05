@@ -98,7 +98,10 @@ public class TimerState {
 
     public void setTargetTime(int targetTime) {
         mTargetTime = targetTime;
-        mCurrentTime = targetTime;
+
+        if (mStatus == Status.STOPPED) {
+            mCurrentTime = targetTime;
+        }
     }
 
     @Override

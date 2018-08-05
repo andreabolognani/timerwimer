@@ -91,24 +91,29 @@ public class TimerRunner {
             Set<Integer> infoSet = allTimerInfo.keySet();
             Set<Integer> stateSet = mAllTimerState.keySet();
 
-            Set<Integer> addSet = new HashSet<>(infoSet);
-            addSet.removeAll(stateSet);
-
-            for (Integer id: addSet) {
-                TimerInfo info = allTimerInfo.get(id);
-                TimerState state = new TimerState();
-
-                state.setId(info.getId());
-                state.setTargetTime(info.getTargetTime());
-
-                mAllTimerState.put(id, state);
-            }
-
             Set<Integer> removeSet = new HashSet<>(stateSet);
             removeSet.removeAll(infoSet);
 
             for (Integer id: removeSet) {
                 mAllTimerState.remove(id);
+            }
+
+            Set<Integer> addSet = new HashSet<>(infoSet);
+            addSet.removeAll(stateSet);
+
+            for (Integer id: addSet) {
+                mAllTimerState.put(id, new TimerState());
+            }
+
+            for (TimerInfo info: allTimerInfo.values()) {
+                TimerState state = mAllTimerState.get(info.getId());
+
+                if (state == null) {
+                    continue;
+                }
+
+                state.setId(info.getId());
+                state.setTargetTime(info.getTargetTime());
             }
 
             post();
