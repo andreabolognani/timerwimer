@@ -120,6 +120,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mViewModel.delete(info);
                 break;
             }
+            case R.id.actionButton: {
+                View timerView = (View) view.getParent();
+
+                TimerState state = new TimerState();
+                state.setId(timerView.getId());
+
+                mViewModel.action(state);
+                break;
+            }
         }
     }
 
@@ -138,6 +147,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         MaterialButton deleteButton = timerView.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(this);
+
+        MaterialButton actionButton = timerView.findViewById(R.id.actionButton);
+        actionButton.setOnClickListener(this);
 
         mLinearLayout.addView(timerView);
     }

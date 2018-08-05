@@ -50,6 +50,18 @@ public class TimerRunner {
         return mAllTimerState;
     }
 
+    public void action(TimerState state) {
+        TimerState actualState = mAllTimerState.getValue().get(state.getId());
+
+        if (actualState == null) {
+            return;
+        }
+
+        actualState.setCurrentTime((actualState.getCurrentTime() - 1));
+
+        mAllTimerState.post();
+    }
+
     private class LiveDataWrapper extends LiveData<HashMap<Integer, TimerState>> implements Observer<HashMap<Integer, TimerInfo>> {
 
         private LiveData<HashMap<Integer, TimerInfo>> mSourceLiveData;
@@ -58,6 +70,10 @@ public class TimerRunner {
         public LiveDataWrapper(LiveData<HashMap<Integer, TimerInfo>> sourceLiveData) {
             mAllTimerState = new HashMap<>();
             mSourceLiveData = sourceLiveData;
+        }
+
+        public void post() {
+            postValue(mAllTimerState);
         }
 
         @Override
@@ -95,7 +111,7 @@ public class TimerRunner {
                 mAllTimerState.remove(id);
             }
 
-            postValue(mAllTimerState);
+            post();
         }
     }
 }

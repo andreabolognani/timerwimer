@@ -60,4 +60,8 @@ public class TimerViewModel extends AndroidViewModel {
     public void delete(TimerInfo info) {
         mRepository.delete(info);
     }
+
+    public void action(TimerState state) {
+        mRunner.action(state);
+    }
 }
