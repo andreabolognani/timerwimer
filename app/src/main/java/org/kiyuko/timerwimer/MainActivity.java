@@ -30,13 +30,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
     public static final String EXTRA_TIMER_ID = "org.kiyuko.timerwimer.TIMER_ID";
 
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mLinearLayout;
 
     private LayoutInflater mInflater;
+
+    private int mCurrentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,33 +105,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        View timerView = (View) view.getParent();
+        mCurrentId = timerView.getId();
+
         switch (view.getId()) {
-            case R.id.editButton: {
-                Intent intent = new Intent(this, EditActivity.class);
+            case R.id.menuButton: {
+                PopupMenu popup = new PopupMenu(this, view);
 
-                View timerView = (View) view.getParent();
-                intent.putExtra(EXTRA_TIMER_ID, timerView.getId());
+                popup.setOnMenuItemClickListener(this);
 
-                startActivity(intent);
-                break;
-            }
-            case R.id.deleteButton: {
-                View timerView = (View) view.getParent();
+                popup.inflate(R.menu.menu_timer);
+                popup.show();
 
-                TimerInfo info = new TimerInfo();
-                info.setId(timerView.getId());
-
-                mViewModel.delete(info);
                 break;
             }
             case R.id.actionButton: {
-                View timerView = (View) view.getParent();
-
                 TimerState state = new TimerState();
-                state.setId(timerView.getId());
+                state.setId(mCurrentId);
 
                 mViewModel.action(state);
                 break;
+            }
+        }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.edit: {
+                Intent intent = new Intent(this, EditActivity.class);
+
+                intent.putExtra(EXTRA_TIMER_ID, mCurrentId);
+
+                startActivity(intent);
+                return true;
+            }
+            case R.id.delete: {
+                TimerInfo info = new TimerInfo();
+                info.setId(mCurrentId);
+
+                mViewModel.delete(info);
+                return true;
+            }
+            default: {
+                return false;
             }
         }
     }
@@ -142,11 +163,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView label = timerView.findViewById(R.id.label);
         label.setText(info.getLabel());
 
-        MaterialButton editButton = timerView.findViewById(R.id.editButton);
-        editButton.setOnClickListener(this);
-
-        MaterialButton deleteButton = timerView.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(this);
+        ImageButton menuButton = timerView.findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(this);
 
         MaterialButton actionButton = timerView.findViewById(R.id.actionButton);
         actionButton.setOnClickListener(this);
