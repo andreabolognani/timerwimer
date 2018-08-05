@@ -36,35 +36,6 @@ public class TimerState {
         mStatus = Status.STOPPED;
     }
 
-    public void action() {
-        switch (mStatus) {
-            case STOPPED: {
-                mStatus = Status.RUNNING;
-                mCurrentTime--;
-                break;
-            }
-            case RUNNING: {
-                mStatus = Status.PAUSED;
-                break;
-            }
-            case PAUSED: {
-                mStatus = Status.RUNNING;
-                mCurrentTime--;
-                break;
-            }
-            case FINISHED: {
-                mStatus = Status.STOPPED;
-                mCurrentTime = mTargetTime;
-                break;
-            }
-        }
-
-        if (mCurrentTime <= 0) {
-            mStatus = Status.FINISHED;
-            mCurrentTime = 0;
-        }
-    }
-
     public int getActionLabel() {
         switch (mStatus) {
             case STOPPED: {
@@ -94,6 +65,22 @@ public class TimerState {
 
     public int getCurrentTime() {
         return mCurrentTime;
+    }
+
+    public void setCurrentTime(int currentTime) {
+        mCurrentTime = currentTime;
+    }
+
+    public Status getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(Status status) {
+        mStatus = status;
+    }
+
+    public int getTargetTime() {
+        return mTargetTime;
     }
 
     public void setTargetTime(int targetTime) {

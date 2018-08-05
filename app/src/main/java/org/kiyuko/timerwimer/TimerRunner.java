@@ -24,12 +24,15 @@ import android.support.annotation.Nullable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class TimerRunner {
+public class TimerRunner extends TimerTask {
 
     private static TimerRunner INSTANCE;
 
     private LiveDataWrapper mAllTimerState;
+    private Timer mTimer;
 
     public static TimerRunner getRunner(LiveData<HashMap<Integer, TimerInfo>> allTimerInfo) {
         if (INSTANCE == null) {
@@ -44,6 +47,9 @@ public class TimerRunner {
 
     private TimerRunner(LiveData<HashMap<Integer, TimerInfo>> allTimerInfo) {
         mAllTimerState = new LiveDataWrapper(allTimerInfo);
+
+        mTimer = new Timer();
+        mTimer.scheduleAtFixedRate(this, 0, 1000);
     }
 
     public LiveData<HashMap<Integer, TimerState>> getAllTimerState() {
@@ -51,13 +57,56 @@ public class TimerRunner {
     }
 
     public void action(TimerState state) {
-        TimerState actualState = mAllTimerState.getValue().get(state.getId());
+        state = mAllTimerState.getValue().get(state.getId());
 
-        if (actualState == null) {
+        if (state == null) {
             return;
         }
 
-        actualState.action();
+        switch (state.getStatus()) {
+            case STOPPED: {
+                state.setStatus(TimerState.Status.RUNNING);
+                break;
+            }
+            case RUNNING: {
+                state.setStatus(TimerState.Status.PAUSED);
+                break;
+            }
+            case PAUSED: {
+                state.setStatus(TimerState.Status.RUNNING);
+                break;
+            }
+            case FINISHED: {
+                state.setStatus(TimerState.Status.STOPPED);
+                state.setCurrentTime(state.getTargetTime());
+                break;
+            }
+        }
+
+        mAllTimerState.post();
+    }
+
+    @Override
+    public void run() {
+        HashMap<Integer, TimerState> allTimerState = mAllTimerState.getValue();
+
+        if (allTimerState == null) {
+            return;
+        }
+
+        for (TimerState state: allTimerState.values()) {
+            if (state.getStatus() == TimerState.Status.RUNNING) {
+                int currentTime = state.getCurrentTime();
+
+                currentTime--;
+                state.setCurrentTime(currentTime);
+
+                if (currentTime <= 0) {
+                    state.setStatus(TimerState.Status.FINISHED);
+                    state.setCurrentTime(0);
+                }
+            }
+        }
 
         mAllTimerState.post();
     }
