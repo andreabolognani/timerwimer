@@ -162,7 +162,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         TextView time = timerView.findViewById(R.id.time);
+        MaterialButton actionButton = (MaterialButton) timerView.findViewById(R.id.actionButton);
+
         time.setText(String.format("%06d", state.getCurrentTime()));
+        actionButton.setText(state.getActionLabel());
     }
 
     private void updateInterfaceInfo(HashMap<Integer, TimerInfo> allTimerInfo) {

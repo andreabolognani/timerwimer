@@ -57,7 +57,7 @@ public class TimerRunner {
             return;
         }
 
-        actualState.setCurrentTime((actualState.getCurrentTime() - 1));
+        actualState.action();
 
         mAllTimerState.post();
     }
@@ -99,7 +99,7 @@ public class TimerRunner {
                 TimerState state = new TimerState();
 
                 state.setId(info.getId());
-                state.setCurrentTime(info.getTargetTime());
+                state.setTargetTime(info.getTargetTime());
 
                 mAllTimerState.put(id, state);
             }

@@ -18,8 +18,71 @@
 package org.kiyuko.timerwimer;
 
 public class TimerState {
+
+    public enum Status {
+        STOPPED,
+        RUNNING,
+        PAUSED,
+        FINISHED;
+    }
+
     private int mId;
+    private int mTargetTime;
+
+    private Status mStatus;
     private int mCurrentTime;
+
+    public TimerState() {
+        mStatus = Status.STOPPED;
+    }
+
+    public void action() {
+        switch (mStatus) {
+            case STOPPED: {
+                mStatus = Status.RUNNING;
+                mCurrentTime--;
+                break;
+            }
+            case RUNNING: {
+                mStatus = Status.PAUSED;
+                break;
+            }
+            case PAUSED: {
+                mStatus = Status.RUNNING;
+                mCurrentTime--;
+                break;
+            }
+            case FINISHED: {
+                mStatus = Status.STOPPED;
+                mCurrentTime = mTargetTime;
+                break;
+            }
+        }
+
+        if (mCurrentTime <= 0) {
+            mStatus = Status.FINISHED;
+            mCurrentTime = 0;
+        }
+    }
+
+    public int getActionLabel() {
+        switch (mStatus) {
+            case STOPPED: {
+                return R.string.action_start;
+            }
+            case RUNNING: {
+                return R.string.action_pause;
+            }
+            case PAUSED: {
+                return R.string.action_resume;
+            }
+            case FINISHED: {
+                return R.string.action_reset;
+            }
+        }
+
+        return R.string.error;
+    }
 
     public int getId() {
         return mId;
@@ -33,12 +96,13 @@ public class TimerState {
         return mCurrentTime;
     }
 
-    public void setCurrentTime(int currentTime) {
-        mCurrentTime = currentTime;
+    public void setTargetTime(int targetTime) {
+        mTargetTime = targetTime;
+        mCurrentTime = targetTime;
     }
 
     @Override
     public String toString() {
-        return String.format("{id=%d, currentTime=%d}", mId, mCurrentTime);
+        return String.format("{id=%d, %status=%s, targetTime=%d, currentTime=%d}", mId, mStatus, mTargetTime, mCurrentTime);
     }
 }

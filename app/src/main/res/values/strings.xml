@@ -2,9 +2,13 @@
     <string name="app_name">Timer Wimer</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
-    <string name="action">Action</string>
+    <string name="action_start">Start</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_resume">Resume</string>
+    <string name="action_reset">Reset</string>
     <string name="create">Create</string>
     <string name="confirm">Confirm</string>
     <string name="label">Label</string>
     <string name="target_time">Target time</string>
+    <string name="error">Error</string>
 </resources>
